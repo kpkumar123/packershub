@@ -153,14 +153,54 @@ import cities from '../data/cities.json';
           </div>
         </div>
 
-        <!-- Row 4: Message -->
+        <!-- Row 4: Floor Numbers -->
+        <div class="grid md:grid-cols-2 gap-5">
+          <div>
+            <label for="fromFloor" class="block text-sm font-bold text-brand-dark mb-2">From Floor <span class="text-brand-orange" aria-hidden="true">*</span></label>
+            <select
+              required
+              id="fromFloor"
+              name="fromFloor"
+              class="w-full px-4 py-3.5 rounded-xl border-2 border-gray-200 focus:border-brand-orange outline-none transition-all duration-200 text-brand-dark bg-white"
+            >
+              <option value="">Select from floor</option>
+              <option value="Ground">Ground Floor</option>
+              <option value="1">1st Floor</option>
+              <option value="2">2nd Floor</option>
+              <option value="3">3rd Floor</option>
+              <option value="4">4th Floor</option>
+              <option value="5+">5th Floor or above</option>
+              <option value="Lift Available">Lift Available</option>
+            </select>
+          </div>
+          <div>
+            <label for="toFloor" class="block text-sm font-bold text-brand-dark mb-2">To Floor <span class="text-brand-orange" aria-hidden="true">*</span></label>
+            <select
+              required
+              id="toFloor"
+              name="toFloor"
+              class="w-full px-4 py-3.5 rounded-xl border-2 border-gray-200 focus:border-brand-orange outline-none transition-all duration-200 text-brand-dark bg-white"
+            >
+              <option value="">Select to floor</option>
+              <option value="Ground">Ground Floor</option>
+              <option value="1">1st Floor</option>
+              <option value="2">2nd Floor</option>
+              <option value="3">3rd Floor</option>
+              <option value="4">4th Floor</option>
+              <option value="5+">5th Floor or above</option>
+              <option value="Lift Available">Lift Available</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Row 5: Message -->
         <div>
           <label for="message" class="block text-sm font-bold text-brand-dark mb-2">Special Requirements <span class="text-gray-400 font-normal">(optional)</span></label>
           <textarea
             id="message"
             name="message"
             rows="3"
-            placeholder="Floor number, heavy items, fragile goods, pet transport, urgent deadline, etc."
+            placeholder="Heavy items, fragile goods, pet transport, urgent deadline, etc."
             class="w-full px-4 py-3.5 rounded-xl border-2 border-gray-200 focus:border-brand-orange focus:ring-4 focus:ring-brand-orange/10 outline-none transition-all duration-200 text-brand-dark placeholder-gray-400 resize-none"
           ></textarea>
         </div>
