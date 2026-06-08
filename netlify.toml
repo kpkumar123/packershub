@@ -1,0 +1,32 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  environment = { NODE_VERSION = "20" }
+
+[build.environment]
+  NODE_OPTIONS = "--max_old_space_size=4096"
+
+[[plugins]]
+  package = "@netlify/plugin-lighthouse"
+
+[dev]
+  command = "npm run dev"
+  port = 4321
+  targetPort = 4321
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+
+[[redirects]]
+  from = "http://packershub.in/*"
+  to = "https://www.packershub.in/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://packershub.in/*"
+  to = "https://www.packershub.in/:splat"
+  status = 301
+  force = true

@@ -1,0 +1,75 @@
+---
+import SEOHead from '../components/SEOHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ChatBot from '../components/ChatBot.astro';
+import CallButton from '../components/CallButton.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import '../styles/global.css';
+
+const {
+  title, description, keywords, image, canonical,
+  schema, cityName, stateName, geoLat, geoLng, geoRegion, geoPlace,
+  articleDate, articleModified,
+} = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en-IN" dir="ltr">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    keywords={keywords}
+    image={image}
+    canonical={canonical}
+    schema={schema}
+    cityName={cityName}
+    stateName={stateName}
+    geoLat={geoLat}
+    geoLng={geoLng}
+    geoRegion={geoRegion}
+    geoPlace={geoPlace}
+    articleDate={articleDate}
+    articleModified={articleModified}
+  />
+</head>
+<body class="font-sans bg-white text-brand-dark antialiased">
+
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-brand-orange focus:text-white focus:rounded-lg focus:font-bold">
+    Skip to main content
+  </a>
+
+  <Header />
+
+  <main id="main-content" tabindex="-1">
+    <slot />
+  </main>
+
+  <Footer />
+
+  <!-- Floating Buttons -->
+  <WhatsAppButton />
+  <CallButton />
+
+  <!-- AI Chatbot -->
+  <ChatBot />
+
+  <!-- Scroll Reveal Init -->
+  <script is:inline>
+    const ro = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+    );
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+  </script>
+
+  <!-- Performance: SW registration -->
+  <script is:inline>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

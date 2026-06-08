@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Page Not Found — PackersHub"
+  description="The page you're looking for doesn't exist. Return to PackersHub homepage."
+>
+  <section class="min-h-[70vh] hero-bg flex items-center justify-center py-20">
+    <div class="max-w-lg mx-auto px-4 text-center">
+      <div class="text-8xl mb-6" aria-hidden="true">🚚</div>
+      <h1 class="font-display font-extrabold text-6xl text-brand-dark mb-4">404</h1>
+      <p class="text-2xl font-bold text-brand-dark mb-3">Oops! Page not found</p>
+      <p class="text-brand-grey mb-8">Looks like this page moved — just like your belongings during a relocation! Let's get you back on track.</p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="/" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold btn-shine">
+          🏠 Go Home
+        </a>
+        <a href="tel:+917731074075" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border-2 border-brand-orange/30 text-brand-dark font-bold hover:border-brand-orange transition-colors">
+          📞 Call Us
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

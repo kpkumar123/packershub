@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import FAQ from '../components/FAQ.astro';
+
+const services = [
+  { id:'household', icon:'🏠', title:'Household Shifting', price:'From ₹3,500', features:['Professional packing team','All packing materials included','GPS-tracked truck fleet','Unloading & unpacking','Furniture assembly','100% transit insurance','GST bill provided'] },
+  { id:'office', icon:'🏢', title:'Office Relocation', price:'From ₹12,000', features:['IT equipment specialists','Server & data safety protocol','Minimal business downtime','Weekend/night moves available','Inventory management','Corporate billing (GST)','Project manager assigned'] },
+  { id:'vehicle', icon:'🚗', title:'Vehicle Transport', price:'From ₹2,500', features:['Enclosed carrier trucks','GPS live tracking','Zero scratch guarantee','Door-to-door delivery','Insurance included','Pan-India coverage','Condition report issued'] },
+  { id:'storage', icon:'📦', title:'Storage & Warehousing', price:'From ₹1,500/month', features:['Climate-controlled facility','CCTV 24×7 monitoring','Security guard on premises','Goods remain insured','Flexible in/out scheduling','Weekly & monthly plans','Multiple locations in South India'] },
+  { id:'international', icon:'🌍', title:'International Moving', price:'Custom Quote', features:['Customs documentation','Sea & air freight options','Door-to-door worldwide','Origin & destination service','Professional crating','Real-time shipment tracking','Dedicated move coordinator'] },
+  { id:'special', icon:'🎸', title:'Special Items', price:'Custom Quote', features:['Piano & organ transport','Fine art & antiques','Lab equipment handling','Specialist wooden crating','White-glove service','Declared value coverage','Expert handlers only'] },
+];
+---
+<BaseLayout
+  title="Moving Services — Household, Office, Vehicle, Storage | PackersHub"
+  description="Complete packers & movers services: Household shifting, office relocation, vehicle transport, storage, international moving, special items. 100% insured. Free quote: +91 77310 74075"
+  canonical="https://www.packershub.in/services"
+  keywords="packers movers services, household shifting, office relocation, vehicle transport, storage, international moving, special item movers south india"
+>
+  <section class="hero-bg pt-16 pb-16">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <nav aria-label="Breadcrumb" class="mb-6">
+        <ol class="flex justify-center items-center gap-2 text-sm text-brand-grey" role="list">
+          <li><a href="/" class="hover:text-brand-orange">Home</a></li>
+          <li aria-hidden="true">›</li>
+          <li class="text-brand-orange font-semibold" aria-current="page">Services</li>
+        </ol>
+      </nav>
+      <h1 class="font-display font-extrabold text-5xl text-brand-dark mb-5">Our <span class="text-gradient">Moving Services</span></h1>
+      <p class="text-xl text-brand-grey max-w-2xl mx-auto">Every move is different. Our services are designed to match your exact needs — from studio apartments to multinational corporate relocations.</p>
+    </div>
+  </section>
+
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
+      {services.map((s, i) => (
+        <div id={s.id} class={`grid lg:grid-cols-2 gap-12 items-center ${i % 2 !== 0 ? 'lg:grid-flow-col-dense' : ''}`}>
+          <div class={i % 2 !== 0 ? 'lg:col-start-2' : ''}>
+            <span class="text-6xl block mb-5">{s.icon}</span>
+            <h2 class="font-display font-extrabold text-4xl text-brand-dark mb-3">{s.title}</h2>
+            <p class="text-brand-orange font-bold text-xl mb-6">{s.price}</p>
+            <div class="grid grid-cols-2 gap-2">
+              {s.features.map(f => (
+                <div class="flex items-center gap-2 text-sm text-brand-grey">
+                  <span class="w-4 h-4 rounded-full bg-green-100 text-green-600 text-[10px] grid place-items-center font-bold shrink-0">✓</span>
+                  {f}
+                </div>
+              ))}
+            </div>
+            <div class="flex gap-3 mt-8">
+              <a href="#quote" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold btn-shine">
+                Get Quote →
+              </a>
+              <a href="tel:+917731074075" class="inline-flex items-center gap-2 px-6 py-3 rounded-full border-2 border-brand-orange/30 text-brand-orange font-bold hover:bg-orange-50 transition-colors">
+                📞 Call Us
+              </a>
+            </div>
+          </div>
+          <div class={`rounded-3xl bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-100 p-10 flex items-center justify-center ${i % 2 !== 0 ? 'lg:col-start-1' : ''}`} style="min-height:280px">
+            <div class="text-center">
+              <div class="text-8xl mb-4">{s.icon}</div>
+              <div class="font-display font-bold text-2xl text-brand-dark">{s.title}</div>
+              <div class="text-brand-orange font-bold mt-2">{s.price}</div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <QuoteForm />
+  <FAQ />
+</BaseLayout>

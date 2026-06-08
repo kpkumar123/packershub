@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = [
+  { slug:'how-to-choose-packers-movers', title:'How to Choose the Best Packers & Movers in South India', date:'2025-01-10', cat:'Tips', read:'6 min', excerpt:'10 proven tips to identify reliable movers. Avoid scams, check credentials, and get the best value for your relocation budget.' },
+  { slug:'packing-tips-household-shifting', title:'15 Expert Packing Tips for Stress-Free Household Shifting', date:'2025-01-08', cat:'Guide', read:'8 min', excerpt:'From labeling boxes to protecting fragile items — professional packing secrets that prevent damage and save unpacking time.' },
+  { slug:'office-relocation-checklist', title:'Office Relocation Checklist — Move Without Business Disruption', date:'2025-01-05', cat:'Office', read:'7 min', excerpt:'A complete office relocation checklist for businesses. Plan your corporate move with zero downtime using this proven framework.' },
+  { slug:'vehicle-transport-guide', title:'Car Transport by Packers & Movers — Complete Guide 2025', date:'2025-01-03', cat:'Vehicle', read:'5 min', excerpt:'Everything you need to know about transporting your car safely across South India. Costs, insurance, and what to check on delivery.' },
+  { slug:'storage-solutions-south-india', title:'Secure Storage & Warehousing — When & Why You Need It', date:'2024-12-28', cat:'Storage', read:'4 min', excerpt:'Need temporary storage between moves? Learn how professional warehousing protects your belongings and saves relocation costs.' },
+  { slug:'moving-cost-calculator', title:'Packers & Movers Cost in South India — Full Price Guide 2025', date:'2024-12-20', cat:'Pricing', read:'9 min', excerpt:'Detailed pricing guide for movers in AP, Telangana, Tamil Nadu, Karnataka, and Kerala. Understand every cost component.' },
+];
+---
+<BaseLayout
+  title="PackersHub Blog — Moving Tips, Guides & Advice | South India Relocation"
+  description="Expert moving tips, packing guides, and relocation advice from PackersHub — South India's #1 movers. Read practical guides for household shifting, office moves, vehicle transport."
+  canonical="https://www.packershub.in/blog"
+  keywords="packers movers blog, moving tips south india, relocation guide, packing tips, office shifting, vehicle transport guide"
+>
+  <section class="hero-bg pt-16 pb-12">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <nav aria-label="Breadcrumb" class="mb-6">
+        <ol class="flex justify-center items-center gap-2 text-sm text-brand-grey" role="list">
+          <li><a href="/" class="hover:text-brand-orange">Home</a></li>
+          <li aria-hidden="true">›</li>
+          <li class="text-brand-orange font-semibold" aria-current="page">Blog</li>
+        </ol>
+      </nav>
+      <h1 class="font-display font-extrabold text-5xl text-brand-dark mb-4">Moving <span class="text-gradient">Tips & Guides</span></h1>
+      <p class="text-xl text-brand-grey">Expert advice for stress-free relocation across South India</p>
+    </div>
+  </section>
+
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {posts.map((p, i) => (
+          <article class="group bg-white rounded-3xl border border-gray-100 shadow-card hover:shadow-xl overflow-hidden card-lift reveal" style={`animation-delay:${i*.08}s`}>
+            <div class="aspect-video bg-gradient-to-br from-orange-100 to-amber-100 flex items-center justify-center">
+              <span class="text-6xl">📰</span>
+            </div>
+            <div class="p-6">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="px-3 py-1 rounded-full bg-orange-100 text-brand-orange text-xs font-bold">{p.cat}</span>
+                <span class="text-xs text-brand-grey">{p.read} read</span>
+              </div>
+              <h2 class="font-display font-bold text-lg text-brand-dark mb-3 group-hover:text-brand-orange transition-colors line-clamp-2">
+                <a href={`/blog/${p.slug}`}>{p.title}</a>
+              </h2>
+              <p class="text-sm text-brand-grey mb-4 line-clamp-2">{p.excerpt}</p>
+              <div class="flex items-center justify-between">
+                <time datetime={p.date} class="text-xs text-brand-grey">{new Date(p.date).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</time>
+                <a href={`/blog/${p.slug}`} class="text-brand-orange font-bold text-sm hover:gap-2 flex items-center gap-1 transition-all">Read →</a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

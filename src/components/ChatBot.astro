@@ -1,0 +1,212 @@
+---
+// ChatBot.astro — 24x7 AI Chatbot with Knowledge Base
+---
+<div id="chatbot-root" class="fixed bottom-5 right-5 z-50" role="complementary" aria-label="PackersHub chat support">
+
+  <!-- Toggle Button -->
+  <button
+    id="chatbot-toggle"
+    aria-label="Open PackersHub chat support"
+    aria-expanded="false"
+    aria-controls="chatbot-window"
+    class="relative w-16 h-16 rounded-full bg-gradient-to-br from-brand-orange via-brand-gold to-brand-orange text-white grid place-items-center shadow-cta hover:scale-110 transition-transform duration-200"
+  >
+    <svg class="w-7 h-7" id="chatIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+    </svg>
+    <svg class="w-6 h-6 hidden" id="closeIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+    </svg>
+    <!-- Notification badge -->
+    <span id="chatBadge" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-[10px] font-bold grid place-items-center animate-bounce" aria-label="1 new message">1</span>
+    <!-- Pulse ring -->
+    <span class="absolute w-full h-full rounded-full border-2 border-brand-orange animate-ping opacity-20" aria-hidden="true"></span>
+  </button>
+
+  <!-- Chat Window -->
+  <div
+    id="chatbot-window"
+    role="dialog"
+    aria-label="PackersHub AI Chat Support"
+    aria-modal="true"
+    class="hidden absolute bottom-20 right-0 w-[92vw] sm:w-96 h-[540px] bg-white rounded-2xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden"
+  >
+    <!-- Chat Header -->
+    <div class="bg-gradient-to-r from-brand-orange to-brand-gold text-white p-4 flex items-center justify-between shrink-0">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-full bg-white/25 grid place-items-center text-2xl" aria-hidden="true">🤖</div>
+        <div>
+          <div class="font-display font-bold text-base">PackersHub AI</div>
+          <div class="text-xs flex items-center gap-1.5 text-orange-100">
+            <span class="w-1.5 h-1.5 rounded-full bg-green-300 animate-pulse"></span>
+            Online 24×7 — Instant Reply
+          </div>
+        </div>
+      </div>
+      <button id="chatbot-close" aria-label="Close chat" class="text-white/80 hover:text-white hover:rotate-90 transition-all p-1 rounded-lg">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Quick chips -->
+    <div id="quick-replies" class="px-3 pt-3 flex flex-wrap gap-1.5 shrink-0">
+      {['💰 Pricing', '🚚 Services', '📞 Contact', '🛡️ Insurance', '📅 Book Now', '📍 Track'].map(chip => (
+        <button class="quick-chip px-3 py-1.5 rounded-full bg-orange-50 hover:bg-brand-orange hover:text-white text-brand-orange text-xs font-semibold border border-orange-100 transition-all">{chip}</button>
+      ))}
+    </div>
+
+    <!-- Messages -->
+    <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-3 text-sm min-h-0" aria-live="polite" aria-label="Chat messages"></div>
+
+    <!-- Input -->
+    <div class="p-3 border-t border-gray-100 bg-white flex gap-2 shrink-0">
+      <input
+        id="chat-input"
+        type="text"
+        placeholder="Ask about pricing, services, booking..."
+        aria-label="Chat message input"
+        class="flex-1 px-4 py-2.5 rounded-full border-2 border-gray-200 focus:border-brand-orange outline-none text-sm text-brand-dark placeholder-gray-400 transition-colors"
+        maxlength="200"
+      />
+      <button
+        id="chat-send"
+        aria-label="Send message"
+        class="px-4 py-2.5 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold text-sm hover:scale-105 transition-transform btn-shine"
+      >
+        Send
+      </button>
+    </div>
+
+    <!-- WhatsApp fallback -->
+    <div class="px-3 pb-3 shrink-0">
+      <a
+        href="https://wa.me/917731074075?text=Hi%20PackersHub%2C%20I%20need%20help%20with%20my%20move"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center justify-center gap-2 w-full py-2 rounded-full bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#25D366] text-xs font-bold transition-colors border border-[#25D366]/20"
+      >
+        💬 Continue on WhatsApp
+      </a>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+(function() {
+  const toggle  = document.getElementById('chatbot-toggle');
+  const win     = document.getElementById('chatbot-window');
+  const close   = document.getElementById('chatbot-close');
+  const msgs    = document.getElementById('chat-messages');
+  const input   = document.getElementById('chat-input');
+  const send    = document.getElementById('chat-send');
+  const badge   = document.getElementById('chatBadge');
+  const chatIcon = document.getElementById('chatIcon');
+  const closeIcon = document.getElementById('closeIcon');
+  const chips   = document.querySelectorAll('.quick-chip');
+
+  // Knowledge Base
+  const KB = {
+    greeting:  ['hi','hello','hey','namaste','hii','good morning','good evening'],
+    price:     ['price','cost','charge','rate','₹','rupee','how much','quote','estimate','cheap','affordable','expensive'],
+    service:   ['service','offer','provide','moving','shifting','packing','what do','relocation','transport','types'],
+    contact:   ['contact','phone','call','email','address','location','reach','number','whatsapp','where'],
+    insurance: ['insurance','insur','damage','safe','protect','guarantee','cover','loss','claim'],
+    book:      ['book','schedule','reserve','appointment','date','when','available','urgent','same day','emergency'],
+    track:     ['track','tracking','gps','location','status','where','live','monitor'],
+    time:      ['time','hours','open','working','available','24','weekend','holiday'],
+    storage:   ['storage','warehouse','store','keep','hold','temporary'],
+    vehicle:   ['car','bike','vehicle','two wheeler','four wheeler','automobile','truck','auto'],
+    pricing:   ['₹3500','₹6500','1bhk','2bhk','3bhk','4bhk','office price','rates'],
+  };
+
+  const REPLIES = {
+    greeting:  '👋 Namaste! Welcome to PackersHub — South India\'s #1 Movers & Packers.\n\nHow can I help you today? Ask about pricing, services, booking, or insurance!',
+    price:     '💰 Our Starting Prices:\n\n• 1 BHK Local — ₹3,500+\n• 2 BHK Local — ₹6,500+\n• 3 BHK Local — ₹9,500+\n• Intercity (1 BHK) — ₹10,000+\n• Office Move — ₹12,000+\n• Car Transport — ₹4,500+\n• Storage/month — ₹1,500+\n\n*Exact quote after free assessment.*\n📞 +91 77310 74075',
+    service:   '🚚 Our Complete Services:\n\n🏠 Household Shifting (1BHK–5BHK+)\n🏢 Office Relocation\n🚗 Car & Bike Transport\n📦 Storage & Warehousing\n🌍 International Moves\n🎹 Special Items (Piano/Art)\n\nAll services include packing, insurance & GPS tracking!',
+    contact:   '📞 Contact PackersHub:\n\n• Phone: +91 77310 74075\n• WhatsApp: +91 77310 74075\n• Email: info@packershub.in\n• Address: BV Nagar, Nellore, AP — 524004\n• Website: www.packershub.in\n\n⏰ Available 24×7, 365 days!',
+    insurance: '🛡️ Full Insurance Coverage:\n\n✓ 100% transit insurance included\n✓ Covers damage, loss & theft\n✓ Claims processed in 7 working days\n✓ Zero damage rate: 0.02%\n✓ High-value item coverage available\n\nYour belongings are completely protected!',
+    book:      '📅 How to Book:\n\n1️⃣ Fill our online quote form\n2️⃣ Get instant price estimate\n3️⃣ Confirm your date & pay\n4️⃣ We dispatch trained crew\n\n⚡ Same-day & urgent moves available!\n📞 Call: +91 77310 74075',
+    track:     '📍 Real-Time GPS Tracking:\n\n✓ Live tracking link via WhatsApp\n✓ Updated every 5 minutes\n✓ ETA notifications sent\n✓ Dedicated coordinator assigned\n✓ 24×7 status support\n\nYou\'ll always know where your goods are!',
+    time:      '⏰ We Never Stop!\n\n• Operations: 24×7, 365 days\n• Phone support: 24×7\n• Moves: Any time, any day\n• No extra charge for weekends\n• No extra charge for nights\n• No extra charge for holidays',
+    storage:   '📦 Storage Solutions:\n\n• Climate-controlled facilities\n• CCTV monitored 24×7\n• Weekly & monthly plans\n• Goods remain insured\n• Easy pickup scheduling\n• Available across South India\n\nFrom ₹1,500/month!',
+    vehicle:   '🚗 Vehicle Transport:\n\n• Cars & bikes (enclosed carriers)\n• GPS tracked throughout\n• Zero scratch guarantee\n• Door-to-door delivery\n• Pan-India coverage\n• Starting ₹4,500\n\nYour vehicle arrives safely!',
+    default:   '🤔 I can help you with:\n\n💰 Pricing & quotes\n🚚 Services we offer\n🛡️ Insurance details\n📅 Booking a move\n📍 Live GPS tracking\n📞 Contact information\n\nOr call us directly: +91 77310 74075\n\nWhat would you like to know?',
+  };
+
+  function addMsg(text, sender) {
+    const div = document.createElement('div');
+    div.className = 'flex ' + (sender === 'user' ? 'justify-end' : 'justify-start');
+    const bubble = document.createElement('div');
+    bubble.className = sender === 'user'
+      ? 'bg-gradient-to-br from-brand-orange to-brand-gold text-white max-w-[82%] px-4 py-2.5 rounded-2xl rounded-tr-sm shadow-sm text-sm leading-relaxed'
+      : 'bg-gray-50 border border-gray-100 max-w-[88%] px-4 py-2.5 rounded-2xl rounded-tl-sm shadow-sm text-sm text-brand-dark leading-relaxed';
+    bubble.style.whiteSpace = 'pre-line';
+    bubble.textContent = text;
+    div.appendChild(bubble);
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function showTyping() {
+    const div = document.createElement('div');
+    div.id = 'typing';
+    div.className = 'flex justify-start';
+    div.innerHTML = '<div class="bg-gray-50 border border-gray-100 px-4 py-3 rounded-2xl rounded-tl-sm text-sm flex gap-1 items-center"><span class="w-2 h-2 bg-brand-orange rounded-full animate-bounce"></span><span class="w-2 h-2 bg-brand-orange rounded-full animate-bounce" style="animation-delay:.1s"></span><span class="w-2 h-2 bg-brand-orange rounded-full animate-bounce" style="animation-delay:.2s"></span></div>';
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function getReply(text) {
+    const t = text.toLowerCase();
+    for (const [key, patterns] of Object.entries(KB)) {
+      if (patterns.some(p => t.includes(p))) return REPLIES[key] || REPLIES.default;
+    }
+    return REPLIES.default;
+  }
+
+  function botReply(userText) {
+    showTyping();
+    setTimeout(() => {
+      document.getElementById('typing')?.remove();
+      addMsg(getReply(userText), 'bot');
+    }, 900);
+  }
+
+  function handleSend() {
+    const v = input.value.trim();
+    if (!v) return;
+    addMsg(v, 'user');
+    input.value = '';
+    botReply(v);
+  }
+
+  toggle.addEventListener('click', () => {
+    const isHidden = win.classList.toggle('hidden');
+    toggle.setAttribute('aria-expanded', String(!isHidden));
+    chatIcon.classList.toggle('hidden', !isHidden);
+    closeIcon.classList.toggle('hidden', isHidden);
+    badge?.remove();
+    if (!msgs.children.length) {
+      addMsg('👋 Hi! I\'m PackersHub AI — ask me about pricing, services, or book your move!', 'bot');
+    }
+  });
+
+  close.addEventListener('click', () => {
+    win.classList.add('hidden');
+    toggle.setAttribute('aria-expanded', 'false');
+    chatIcon.classList.remove('hidden');
+    closeIcon.classList.add('hidden');
+  });
+
+  send.addEventListener('click', handleSend);
+  input.addEventListener('keypress', e => e.key === 'Enter' && handleSend());
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const text = chip.textContent.replace(/^[^\w₹]+/, '').trim();
+      addMsg(text, 'user');
+      botReply(text);
+    });
+  });
+})();
+</script>

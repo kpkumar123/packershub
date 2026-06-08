@@ -1,0 +1,21 @@
+---
+// TrustStrip.astro
+---
+<section class="py-12 bg-gradient-to-r from-brand-dark via-slate-800 to-brand-dark" aria-label="Trust signals">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      {[
+        { num: '15,000+', label: 'Successful Moves', icon: '🚚' },
+        { num: '100+',    label: 'Cities Served',   icon: '📍' },
+        { num: '4.9★',   label: 'Google Rating',   icon: '⭐' },
+        { num: '7 Years', label: 'Of Excellence',   icon: '🏆' },
+      ].map(s => (
+        <div class="text-white reveal">
+          <div class="text-3xl mb-2" aria-hidden="true">{s.icon}</div>
+          <div class="font-display font-black text-3xl sm:text-4xl text-brand-gold stat-number">{s.num}</div>
+          <div class="text-gray-400 text-sm mt-1 font-medium">{s.label}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

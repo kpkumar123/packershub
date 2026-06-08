@@ -1,0 +1,27 @@
+---
+// CitiesGrid.astro
+const { cities, stateSlug, heading = 'Cities We Serve' } = Astro.props;
+---
+<section class="py-20 bg-white" aria-labelledby="cities-heading">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12 reveal">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-orange-100 text-brand-orange text-sm font-bold mb-4 uppercase tracking-wide">Coverage</span>
+      <h2 id="cities-heading" class="font-display text-4xl lg:text-5xl font-extrabold text-brand-dark mb-4">{heading}</h2>
+      <p class="text-brand-grey text-lg">Click a city to see local pricing, services & customer reviews</p>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+      {cities.map((city: any, i: number) => (
+        <a
+          href={`/${city.state || stateSlug}/${city.slug}`}
+          class="group p-4 rounded-2xl bg-gray-50 hover:bg-gradient-to-br hover:from-orange-50 hover:to-amber-50 border border-gray-100 hover:border-orange-200 transition-all duration-200 card-lift text-center reveal"
+          style={`animation-delay:${(i % 10) * .04}s`}
+        >
+          <div class="text-2xl mb-2 group-hover:scale-110 transition-transform duration-200" aria-hidden="true">📍</div>
+          <div class="font-bold text-sm text-brand-dark group-hover:text-brand-orange transition-colors">{city.name}</div>
+          <div class="text-[11px] text-brand-grey mt-0.5">{city.landmark}</div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

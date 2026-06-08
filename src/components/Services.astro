@@ -1,0 +1,111 @@
+---
+const services = [
+  {
+    icon: '🏠',
+    title: 'Household Shifting',
+    desc: 'Complete home relocation with professional packing, loading, GPS-tracked transport, unloading & unpacking. 1BHK to 5BHK+.',
+    href: '/services#household',
+    color: 'from-orange-50 to-amber-50 border-orange-100',
+    accent: 'text-brand-orange',
+  },
+  {
+    icon: '🏢',
+    title: 'Office Relocation',
+    desc: 'Minimal downtime corporate moves. IT servers, furniture, archives — managed with zero business disruption guarantee.',
+    href: '/services#office',
+    color: 'from-sky-50 to-blue-50 border-sky-100',
+    accent: 'text-accent-sky',
+  },
+  {
+    icon: '🚗',
+    title: 'Vehicle Transport',
+    desc: 'Enclosed car & bike carriers with GPS tracking. Door-to-door, zero scratch guarantee, transit insurance included.',
+    href: '/services#vehicle',
+    color: 'from-emerald-50 to-teal-50 border-emerald-100',
+    accent: 'text-accent-teal',
+  },
+  {
+    icon: '📦',
+    title: 'Storage & Warehousing',
+    desc: 'Climate-controlled, CCTV-monitored secure storage. Flexible short/long-term plans across South India.',
+    href: '/services#storage',
+    color: 'from-purple-50 to-violet-50 border-purple-100',
+    accent: 'text-purple-600',
+  },
+  {
+    icon: '🌍',
+    title: 'International Moves',
+    desc: 'Door-to-door global relocation with customs clearance, documentation, sea & air freight options.',
+    href: '/services#international',
+    color: 'from-rose-50 to-pink-50 border-rose-100',
+    accent: 'text-rose-600',
+  },
+  {
+    icon: '🎸',
+    title: 'Special Items',
+    desc: 'Pianos, artwork, antiques, lab equipment — specialist crating, white-glove handling & full insurance.',
+    href: '/services#special',
+    color: 'from-amber-50 to-yellow-50 border-amber-100',
+    accent: 'text-brand-gold',
+  },
+];
+---
+<section class="py-20 bg-white" id="services" aria-labelledby="services-heading">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Header -->
+    <div class="text-center mb-14 reveal">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-orange-100 text-brand-orange text-sm font-bold mb-4 uppercase tracking-wide">
+        Our Services
+      </span>
+      <h2 id="services-heading" class="font-display text-4xl lg:text-5xl font-extrabold text-brand-dark mb-4">
+        Complete Moving Solutions
+      </h2>
+      <p class="text-brand-grey text-lg max-w-2xl mx-auto">
+        From single-room shifts to multinational relocations — every move handled with the same precision and care.
+      </p>
+    </div>
+
+    <!-- Services Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {services.map((s, i) => (
+        <a
+          href={s.href}
+          class={`group p-8 rounded-3xl bg-gradient-to-br ${s.color} border card-lift transition-all duration-300 reveal`}
+          style={`animation-delay:${i * .08}s`}
+          aria-label={`Learn more about ${s.title}`}
+        >
+          <div class="text-5xl mb-5 group-hover:scale-110 transition-transform duration-300">{s.icon}</div>
+          <h3 class="font-display font-bold text-xl mb-3 text-brand-dark">{s.title}</h3>
+          <p class="text-brand-grey text-sm leading-relaxed mb-5">{s.desc}</p>
+          <div class={`inline-flex items-center gap-2 ${s.accent} font-bold text-sm group-hover:gap-3 transition-all`}>
+            Learn more
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <!-- Bottom CTA strip -->
+    <div class="mt-12 p-6 rounded-3xl bg-gradient-to-r from-brand-dark to-slate-800 text-white text-center reveal">
+      <p class="font-display font-bold text-xl mb-2">Not sure which service you need?</p>
+      <p class="text-gray-400 text-sm mb-4">Our experts will assess your requirements and suggest the best plan.</p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="tel:+917731074075" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold btn-shine">
+          📞 Call for Expert Advice
+        </a>
+        <a href="https://wa.me/917731074075?text=Hi%20PackersHub%2C%20I%20need%20help%20choosing%20a%20service" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#25D366]/20 hover:bg-[#25D366] border border-[#25D366]/40 text-white font-bold transition-colors">
+          💬 WhatsApp Us
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>

@@ -1,0 +1,64 @@
+---
+// Testimonials.astro
+const reviews = [
+  { name:'Priya Sharma', city:'Hyderabad', rating:5, text:'Exceptional! My 3BHK move from Hyderabad to Bangalore was flawless. Every item arrived wrapped exactly as packed. The GPS tracking gave me real-time peace of mind.', move:'Hyderabad → Bangalore', avatar:'PS' },
+  { name:'Rajesh Kumar', city:'Chennai', rating:5, text:'Professional team, transparent billing, zero damage. The crew was on time and the price matched the quote exactly. Highly recommend for office moves.', move:'Chennai → Coimbatore', avatar:'RK' },
+  { name:'Anitha Menon', city:'Kochi', rating:5, text:'Best movers in Kerala. On-time delivery, courteous staff. They assembled all furniture at the new home too. Will definitely use PackersHub again.', move:'Thiruvananthapuram → Kochi', avatar:'AM' },
+  { name:'Suresh Babu', city:'Visakhapatnam', rating:5, text:'Entire office moved in one day, zero business downtime. The IT equipment was handled with extraordinary care. Very impressed with the planning.', move:'Vizag → Hyderabad', avatar:'SB' },
+  { name:'Kavitha Rajan', city:'Bangalore', rating:5, text:'My antique piano arrived without a scratch! They used specialist wooden crating. Worth every rupee for the peace of mind. Outstanding service.', move:'Bangalore → Mysore', avatar:'KR' },
+  { name:'Mohammed Irfan', city:'Nellore', rating:5, text:'Used PackersHub twice now — consistently excellent. Insurance coverage, transparent billing, and the team treated our belongings like their own.', move:'Nellore → Chennai', avatar:'MI' },
+];
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "PackersHub",
+  "review": reviews.map(r => ({
+    "@type": "Review",
+    "author": { "@type": "Person", "name": r.name },
+    "reviewRating": { "@type": "Rating", "ratingValue": r.rating, "bestRating": 5 },
+    "reviewBody": r.text
+  }))
+};
+---
+<section class="py-20 bg-gradient-to-b from-orange-50/40 to-white" aria-labelledby="testimonials-heading">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14 reveal">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-yellow-100 text-yellow-700 text-sm font-bold mb-4 uppercase tracking-wide">
+        Customer Reviews
+      </span>
+      <h2 id="testimonials-heading" class="font-display text-4xl lg:text-5xl font-extrabold text-brand-dark mb-4">
+        2,847+ Happy Families
+      </h2>
+      <div class="flex items-center justify-center gap-1 mb-2">
+        {[1,2,3,4,5].map(() => <span class="text-yellow-400 text-2xl">★</span>)}
+        <span class="ml-2 font-bold text-brand-dark text-xl">4.9</span>
+        <span class="text-brand-grey">/5 average</span>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {reviews.map((r, i) => (
+        <div class={`p-8 rounded-3xl bg-white shadow-card border border-gray-100 card-lift reveal`} style={`animation-delay:${i*.08}s`}>
+          <div class="flex items-center gap-1 mb-4">
+            {Array.from({length:r.rating}).map(() => <span class="text-yellow-400">★</span>)}
+          </div>
+          <blockquote class="text-brand-grey leading-relaxed mb-6 text-sm italic">"{r.text}"</blockquote>
+          <div class="border-t border-gray-100 pt-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-orange to-brand-gold grid place-items-center text-white font-bold text-sm" aria-hidden="true">
+                {r.avatar}
+              </div>
+              <div>
+                <div class="font-bold text-brand-dark text-sm">{r.name}</div>
+                <div class="text-xs text-brand-grey">{r.city}</div>
+              </div>
+            </div>
+            <span class="text-xs text-brand-orange font-bold bg-orange-50 px-2 py-1 rounded-full">{r.move}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

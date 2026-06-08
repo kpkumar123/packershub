@@ -1,0 +1,22 @@
+{
+  "name": "PackersHub - South India's #1 Packers & Movers",
+  "short_name": "PackersHub",
+  "description": "Safe, affordable & on-time relocation across 100+ South Indian cities",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#E8510A",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "categories": ["business", "travel", "utilities"],
+  "lang": "en-IN",
+  "dir": "ltr",
+  "scope": "/",
+  "shortcuts": [
+    { "name": "Get Quote", "url": "/#quote", "description": "Get free moving quote" },
+    { "name": "Call Us", "url": "tel:+917731074075", "description": "Call PackersHub" }
+  ]
+}

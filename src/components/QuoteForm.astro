@@ -1,0 +1,247 @@
+---
+import cities from '../data/cities.json';
+---
+<section id="quote" class="py-20 bg-gradient-to-b from-white to-orange-50/30" aria-labelledby="quote-heading">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Header -->
+    <div class="text-center mb-10 reveal">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-brand-orange/10 text-brand-orange text-sm font-bold mb-4 uppercase tracking-wide">
+        Get Free Quote
+      </span>
+      <h2 id="quote-heading" class="font-display text-4xl lg:text-5xl font-extrabold text-brand-dark mb-4">
+        Book Your Move Today
+      </h2>
+      <p class="text-brand-grey text-lg">Instant pricing in 60 seconds. No hidden charges. No commitment needed.</p>
+    </div>
+
+    <!-- Trust row -->
+    <div class="flex flex-wrap justify-center gap-4 mb-8 reveal">
+      {[
+        { icon: '🛡️', text: '100% Insured' },
+        { icon: '📍', text: 'GPS Tracked' },
+        { icon: '💰', text: 'No Hidden Costs' },
+        { icon: '⭐', text: '4.9★ Rated' },
+        { icon: '⚡', text: 'Instant Response' },
+      ].map(t => (
+        <div class="flex items-center gap-1.5 text-sm text-brand-grey">
+          <span>{t.icon}</span>
+          <span class="font-medium">{t.text}</span>
+        </div>
+      ))}
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden reveal">
+
+      <!-- Form header bar -->
+      <div class="bg-gradient-to-r from-brand-orange to-brand-gold px-8 py-5 text-white">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-display font-bold text-xl">Request Free Moving Quote</h3>
+            <p class="text-orange-100 text-sm mt-0.5">Fill in details · We call back in &lt;30 mins</p>
+          </div>
+          <div class="hidden sm:flex items-center gap-1.5 bg-white/20 rounded-full px-3 py-1.5 text-sm">
+            <span class="w-2 h-2 rounded-full bg-green-300 animate-pulse"></span>
+            Online Now
+          </div>
+        </div>
+      </div>
+
+      <form
+        class="px-6 lg:px-10 py-8 space-y-6"
+        name="quote"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        id="quoteForm"
+        novalidate
+        aria-label="Moving quote request form"
+      >
+        <!-- Honeypot -->
+        <p class="hidden" aria-hidden="true"><input name="bot-field" tabindex="-1" /></p>
+        <input type="hidden" name="form-name" value="quote" />
+
+        <!-- Row 1: Name + Phone -->
+        <div class="grid md:grid-cols-2 gap-5">
+          <div>
+            <label for="name" class="block text-sm font-bold text-brand-dark mb-2">Full Name <span class="text-brand-orange" aria-hidden="true">*</span></label>
+            <input
+              required
+              type="text"
+              id="name"
+              name="name"
+              autocomplete="name"
+              placeholder="Your full name"
+              class="w-full px-4 py-3.5 rounded-xl border-2 border-gray-200 focus:border-brand-orange focus:ring-4 focus:ring-brand-orange/10 outline-none transition-all duration-200 text-brand-dark placeholder-gray-400"
+            />
+          </div>
+          <div>
+            <label for="phone" class="block text-sm font-bold text-brand-dark mb-2">Mobile Number <span class="text-brand-orange" aria-hidden="true">*</span></label>
+            <input
+              required
+              type="tel"
+              id="phone"
+              name="phone"
+              pattern="[6-9][0-9]{9}"
+              autocomplete="tel"
+              placeholder="10-digit mobile number"
+              class="w-full px-4 py-3.5 rounded-xl border-2 border-gray-200 focus:border-brand-orange focus:ring-4 focus:ring-brand-orange/10 outline-none transition-all duration-200 text-brand-dark placeholder-gray-400"
+            />
+          </div>
+        </div>
+
+        <!-- Row 2: From + To -->
+        <div class="grid md:grid-cols-2 gap-5">
+          <div>
+            <label for="from" class="block text-sm font-bold text-brand-dark mb-2">Moving From <span class="text-brand-orange" aria-hidden="true">*</span></label>
+            <select
+              required
+              id="from"
+              name="from"
+              class="w-full px-4 py-3.5 rounded-xl border-2 border-gray-200 focus:border-brand-orange outline-none transition-all duration-200 text-brand-dark bg-white"
+            >
+              <option value="">Select source city</option>
+              {cities.map(c => <option value={c.name}>{c.name}, {c.stateName}</option>)}
+            </select>
+          </div>
+          <div>
+            <label for="to" class="block text-sm font-bold text-brand-dark mb-2">Moving To <span class="text-brand-orange" aria-hidden="true">*</span></label>
+            <select
+              required
+              id="to"
+              name="to"
+              class="w-full px-4 py-3.5 rounded-xl border-2 border-gray-200 focus:border-brand-orange outline-none transition-all duration-200 text-brand-dark bg-white"
+            >
+              <option value="">Select destination city</option>
+              {cities.map(c => <option value={c.name}>{c.name}, {c.stateName}</option>)}
+            </select>
+          </div>
+        </div>
+
+        <!-- Row 3: Move Type + Date -->
+        <div class="grid md:grid-cols-2 gap-5">
+          <div>
+            <label for="type" class="block text-sm font-bold text-brand-dark mb-2">Move Type <span class="text-brand-orange" aria-hidden="true">*</span></label>
+            <select
+              required
+              id="type"
+              name="type"
+              class="w-full px-4 py-3.5 rounded-xl border-2 border-gray-200 focus:border-brand-orange outline-none transition-all duration-200 text-brand-dark bg-white"
+            >
+              <option value="">Select move type</option>
+              <option value="1BHK">1 BHK Household</option>
+              <option value="2BHK">2 BHK Household</option>
+              <option value="3BHK">3 BHK Household</option>
+              <option value="4BHK+">4 BHK+ Household</option>
+              <option value="Office">Office Relocation</option>
+              <option value="Vehicle">Vehicle Transport (Car/Bike)</option>
+              <option value="Storage">Storage & Warehousing</option>
+              <option value="International">International Move</option>
+              <option value="Special">Special Items (Piano/Art)</option>
+            </select>
+          </div>
+          <div>
+            <label for="date" class="block text-sm font-bold text-brand-dark mb-2">Preferred Move Date <span class="text-brand-orange" aria-hidden="true">*</span></label>
+            <input
+              required
+              type="date"
+              id="date"
+              name="date"
+              class="w-full px-4 py-3.5 rounded-xl border-2 border-gray-200 focus:border-brand-orange outline-none transition-all duration-200 text-brand-dark"
+            />
+          </div>
+        </div>
+
+        <!-- Row 4: Message -->
+        <div>
+          <label for="message" class="block text-sm font-bold text-brand-dark mb-2">Special Requirements <span class="text-gray-400 font-normal">(optional)</span></label>
+          <textarea
+            id="message"
+            name="message"
+            rows="3"
+            placeholder="Floor number, heavy items, fragile goods, pet transport, urgent deadline, etc."
+            class="w-full px-4 py-3.5 rounded-xl border-2 border-gray-200 focus:border-brand-orange focus:ring-4 focus:ring-brand-orange/10 outline-none transition-all duration-200 text-brand-dark placeholder-gray-400 resize-none"
+          ></textarea>
+        </div>
+
+        <!-- Submit -->
+        <div>
+          <button
+            type="submit"
+            id="submitBtn"
+            class="w-full py-4.5 py-[18px] rounded-full bg-gradient-to-r from-brand-orange via-brand-gold to-brand-orange bg-[length:200%] hover:bg-right text-white font-display font-bold text-lg shadow-cta hover:shadow-glow hover:scale-[1.01] transition-all duration-300 btn-shine flex items-center justify-center gap-2"
+          >
+            <span id="btnText">🚚 Get FREE Instant Quote</span>
+            <svg id="btnLoader" class="hidden w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+            </svg>
+          </button>
+          <p class="text-center text-xs text-brand-grey mt-3 flex items-center justify-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-green-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
+            Your data is 100% secure. We never share your information.
+          </p>
+        </div>
+      </form>
+
+      <!-- Success message (hidden) -->
+      <div id="formSuccess" class="hidden px-10 py-12 text-center">
+        <div class="text-6xl mb-4">✅</div>
+        <h3 class="font-display font-bold text-2xl text-brand-dark mb-2">Quote Request Received!</h3>
+        <p class="text-brand-grey mb-5">Our team will call you back within 30 minutes with a detailed quote.</p>
+        <a href="tel:+917731074075" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold">
+          📞 Call Now for Instant Quote
+        </a>
+      </div>
+    </div>
+
+    <!-- Alt contact -->
+    <div class="mt-6 text-center text-sm text-brand-grey reveal">
+      Prefer to call?
+      <a href="tel:+917731074075" class="font-bold text-brand-orange hover:underline">+91 77310 74075</a>
+      or
+      <a href="https://wa.me/917731074075?text=Hi%20PackersHub%2C%20I%20need%20a%20moving%20quote" target="_blank" rel="noopener noreferrer" class="font-bold text-[#25D366] hover:underline">WhatsApp us</a>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+(function() {
+  // Set min date to today
+  const dateInput = document.getElementById('date');
+  if (dateInput) {
+    dateInput.min = new Date().toISOString().split('T')[0];
+  }
+
+  // Form submit handling
+  const form = document.getElementById('quoteForm');
+  const btn = document.getElementById('submitBtn');
+  const btnText = document.getElementById('btnText');
+  const btnLoader = document.getElementById('btnLoader');
+  const success = document.getElementById('formSuccess');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    btnText.textContent = 'Sending...';
+    btnLoader?.classList.remove('hidden');
+    btn.disabled = true;
+
+    try {
+      const data = new FormData(form);
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(data).toString(),
+      });
+      form.classList.add('hidden');
+      success?.classList.remove('hidden');
+    } catch {
+      btnText.textContent = '🚚 Get FREE Instant Quote';
+      btnLoader?.classList.add('hidden');
+      btn.disabled = false;
+      alert('Quote request sent! Our team will contact you shortly.');
+    }
+  });
+})();
+</script>

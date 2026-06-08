@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://www.packershub.in/</loc>
+    <image:image>
+      <image:loc>https://www.packershub.in/og-image.jpg</image:loc>
+      <image:caption>PackersHub — South India's #1 Packers and Movers</image:caption>
+      <image:title>PackersHub Movers</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.packershub.in/hero.jpg</image:loc>
+      <image:caption>Professional packing and loading services by PackersHub</image:caption>
+      <image:title>PackersHub Professional Moving Team</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.packershub.in/services</loc>
+    <image:image>
+      <image:loc>https://www.packershub.in/services-hero.jpg</image:loc>
+      <image:caption>Complete moving services — household, office, vehicle, storage</image:caption>
+      <image:title>PackersHub Services</image:title>
+    </image:image>
+  </url>
+</urlset>

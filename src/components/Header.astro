@@ -1,0 +1,194 @@
+---
+import states from '../data/states.json';
+---
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-xl border-b border-gray-100 shadow-sm transition-all duration-300" id="site-header">
+
+  <!-- Top Bar — contact strip -->
+  <div class="bg-gradient-to-r from-brand-dark to-slate-800 text-white text-xs hidden md:block">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-9">
+      <div class="flex items-center gap-5">
+        <a href="tel:+917731074075" class="flex items-center gap-1.5 hover:text-brand-gold transition-colors" aria-label="Call PackersHub">
+          <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1v3.5a1 1 0 01-1 1A17 17 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/></svg>
+          +91 77310 74075
+        </a>
+        <a href="mailto:info@packershub.in" class="flex items-center gap-1.5 hover:text-brand-gold transition-colors">
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          info@packershub.in
+        </a>
+      </div>
+      <div class="flex items-center gap-4">
+        <span class="flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+          24×7 Available
+        </span>
+        <span class="text-gray-400">|</span>
+        <span>★ 4.9/5 · 2,847+ Reviews</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Nav -->
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 lg:h-18" role="navigation" aria-label="Main navigation">
+
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-2.5 group shrink-0" aria-label="PackersHub Home">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-orange to-brand-gold grid place-items-center shadow-md group-hover:scale-105 transition-transform duration-200" aria-hidden="true">
+        <span class="font-display font-black text-white text-sm leading-none">PH</span>
+      </div>
+      <div class="leading-none">
+        <div class="font-display font-bold text-xl text-brand-dark tracking-tight">
+          Packers<span class="text-brand-orange">Hub</span>
+        </div>
+        <div class="text-[10px] text-brand-grey font-medium tracking-wider uppercase">South India's #1 Movers</div>
+      </div>
+    </a>
+
+    <!-- Desktop Nav Links -->
+    <ul class="hidden lg:flex items-center gap-1 text-sm font-medium" role="list">
+      <li>
+        <a href="/" class="px-3 py-2 rounded-lg hover:bg-gray-50 hover:text-brand-orange text-brand-dark transition-colors duration-150">Home</a>
+      </li>
+      <li>
+        <a href="/about" class="px-3 py-2 rounded-lg hover:bg-gray-50 hover:text-brand-orange text-brand-dark transition-colors duration-150">About</a>
+      </li>
+      <li>
+        <a href="/services" class="px-3 py-2 rounded-lg hover:bg-gray-50 hover:text-brand-orange text-brand-dark transition-colors duration-150">Services</a>
+      </li>
+
+      <!-- Locations Mega Menu -->
+      <li class="relative group" role="none">
+        <button
+          class="flex items-center gap-1 px-3 py-2 rounded-lg hover:bg-gray-50 hover:text-brand-orange text-brand-dark transition-colors duration-150"
+          aria-haspopup="true"
+          aria-expanded="false"
+          id="locations-btn"
+        >
+          Locations
+          <svg class="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
+        </button>
+
+        <!-- Mega Dropdown -->
+        <div class="absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-all duration-200 z-50" role="menu">
+          <div class="bg-white rounded-2xl shadow-2xl border border-gray-100 p-4 w-72">
+            <p class="text-xs font-bold text-brand-grey uppercase tracking-wider mb-3 px-2">5 South Indian States</p>
+            <div class="space-y-0.5">
+              {states.map(s => (
+                <a href={`/${s.slug}`} class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-orange-50 hover:text-brand-orange text-brand-dark transition-colors group/item" role="menuitem">
+                  <span class="text-xl">{s.flag}</span>
+                  <div>
+                    <div class="font-semibold text-sm">{s.name}</div>
+                    <div class="text-xs text-brand-grey">20 cities</div>
+                  </div>
+                  <svg class="w-4 h-4 ml-auto text-brand-grey opacity-0 group-hover/item:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </a>
+              ))}
+            </div>
+            <div class="mt-3 pt-3 border-t border-gray-100">
+              <a href="/#quote" class="block w-full text-center py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold text-sm btn-shine">
+                Get Free Quote →
+              </a>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li>
+        <a href="/blog" class="px-3 py-2 rounded-lg hover:bg-gray-50 hover:text-brand-orange text-brand-dark transition-colors duration-150">Blog</a>
+      </li>
+      <li>
+        <a href="/contact" class="px-3 py-2 rounded-lg hover:bg-gray-50 hover:text-brand-orange text-brand-dark transition-colors duration-150">Contact</a>
+      </li>
+    </ul>
+
+    <!-- CTA + Mobile Toggle -->
+    <div class="flex items-center gap-3">
+      <a
+        href="tel:+917731074075"
+        class="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white text-sm font-bold shadow-cta hover:shadow-lg hover:scale-105 transition-all duration-200 btn-shine"
+        aria-label="Call PackersHub now"
+      >
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1v3.5a1 1 0 01-1 1A17 17 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/></svg>
+        Call Now
+      </a>
+
+      <!-- Mobile Menu Button -->
+      <button
+        id="mobileMenuBtn"
+        class="lg:hidden p-2 rounded-xl hover:bg-gray-100 text-brand-dark transition-colors"
+        aria-label="Toggle mobile menu"
+        aria-expanded="false"
+        aria-controls="mobileMenu"
+      >
+        <svg class="w-5 h-5" id="menuIconOpen" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+        <svg class="w-5 h-5 hidden" id="menuIconClose" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div
+    id="mobileMenu"
+    class="hidden lg:hidden border-t border-gray-100 bg-white shadow-xl max-h-[80vh] overflow-y-auto"
+    role="navigation"
+    aria-label="Mobile navigation"
+  >
+    <div class="px-4 py-4 space-y-1">
+      <a href="/" class="flex items-center gap-3 py-3 px-4 rounded-xl hover:bg-orange-50 font-semibold text-brand-dark hover:text-brand-orange transition-colors">🏠 Home</a>
+      <a href="/about" class="flex items-center gap-3 py-3 px-4 rounded-xl hover:bg-orange-50 font-semibold text-brand-dark hover:text-brand-orange transition-colors">ℹ️ About Us</a>
+      <a href="/services" class="flex items-center gap-3 py-3 px-4 rounded-xl hover:bg-orange-50 font-semibold text-brand-dark hover:text-brand-orange transition-colors">🚚 Services</a>
+      <a href="/blog" class="flex items-center gap-3 py-3 px-4 rounded-xl hover:bg-orange-50 font-semibold text-brand-dark hover:text-brand-orange transition-colors">📝 Blog</a>
+      <a href="/contact" class="flex items-center gap-3 py-3 px-4 rounded-xl hover:bg-orange-50 font-semibold text-brand-dark hover:text-brand-orange transition-colors">📞 Contact</a>
+
+      <div class="pt-2 pb-1">
+        <p class="px-4 text-xs font-bold text-brand-grey uppercase tracking-widest">States We Serve</p>
+      </div>
+      {states.map(s => (
+        <a href={`/${s.slug}`} class="flex items-center gap-3 py-2.5 px-6 rounded-xl hover:bg-orange-50 text-sm text-brand-dark hover:text-brand-orange transition-colors">
+          <span>{s.flag}</span>
+          <span class="font-medium">{s.name}</span>
+        </a>
+      ))}
+
+      <div class="pt-3 pb-2 space-y-2">
+        <a href="tel:+917731074075" class="flex items-center justify-center gap-2 py-3.5 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold text-base btn-shine">
+          📞 Call: +91 77310 74075
+        </a>
+        <a href="https://wa.me/917731074075?text=Hi%20PackersHub%2C%20I%20need%20a%20moving%20quote" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 py-3.5 rounded-full bg-[#25D366] text-white font-bold text-base">
+          💬 WhatsApp Us
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+(function() {
+  const btn = document.getElementById('mobileMenuBtn');
+  const menu = document.getElementById('mobileMenu');
+  const iconOpen = document.getElementById('menuIconOpen');
+  const iconClose = document.getElementById('menuIconClose');
+
+  btn?.addEventListener('click', () => {
+    const isHidden = menu.classList.toggle('hidden');
+    btn.setAttribute('aria-expanded', String(!isHidden));
+    iconOpen.classList.toggle('hidden', !isHidden);
+    iconClose.classList.toggle('hidden', isHidden);
+  });
+
+  // Shrink header on scroll
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 60) {
+      header?.classList.add('shadow-md');
+    } else {
+      header?.classList.remove('shadow-md');
+    }
+  }, { passive: true });
+})();
+</script>

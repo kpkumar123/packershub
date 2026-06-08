@@ -1,0 +1,323 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TrustStrip from '../../components/TrustStrip.astro';
+import Services from '../../components/Services.astro';
+import Testimonials from '../../components/Testimonials.astro';
+import QuoteForm from '../../components/QuoteForm.astro';
+import FAQ from '../../components/FAQ.astro';
+import cities from '../../data/cities.json';
+import states from '../../data/states.json';
+
+export async function getStaticPaths() {
+  return cities.map(c => ({
+    params: { state: c.state, city: c.slug },
+    props:  { city: c, state: states.find(s => s.slug === c.state) },
+  }));
+}
+
+const { city, state } = Astro.props;
+
+// Nearby cities (same state, different city)
+const nearbyCities = cities
+  .filter(c => c.state === city.state && c.slug !== city.slug)
+  .slice(0, 8);
+
+// Pricing table based on city size
+const isMetro = ['visakhapatnam','vijayawada','hyderabad','chennai','bangalore','kochi','coimbatore','mysore'].includes(city.slug);
+const basePrice = isMetro ? 4500 : 3500;
+
+const pricing = [
+  { type:'1 BHK',    local: `₹${(basePrice).toLocaleString()}–₹${(basePrice+2000).toLocaleString()}`,   intercity: `₹${(basePrice*2).toLocaleString()}–₹${(basePrice*3).toLocaleString()}` },
+  { type:'2 BHK',    local: `₹${(basePrice+2000).toLocaleString()}–₹${(basePrice+5000).toLocaleString()}`, intercity: `₹${(basePrice*3).toLocaleString()}–₹${(basePrice*5).toLocaleString()}` },
+  { type:'3 BHK',    local: `₹${(basePrice+5000).toLocaleString()}–₹${(basePrice+9000).toLocaleString()}`, intercity: `₹${(basePrice*5).toLocaleString()}–₹${(basePrice*8).toLocaleString()}` },
+  { type:'4 BHK+',   local: `₹${(basePrice+9000).toLocaleString()}+`,                                    intercity: `₹${(basePrice*8).toLocaleString()}+` },
+  { type:'Office',   local: `₹${(basePrice+6000).toLocaleString()}–₹${(basePrice+15000).toLocaleString()}`,intercity: `₹${(basePrice*6).toLocaleString()}+` },
+  { type:'Car/Bike', local: `₹${(isMetro?3500:2500).toLocaleString()}–₹${(isMetro?6000:4500).toLocaleString()}`, intercity: `₹${(isMetro?6000:4500).toLocaleString()}+` },
+];
+
+const citySchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MovingCompany",
+      "@id": `https://www.packershub.in/${city.state}/${city.slug}/#business`,
+      "name": `PackersHub — Packers & Movers in ${city.name}`,
+      "url": `https://www.packershub.in/${city.state}/${city.slug}`,
+      "telephone": "+917731074075",
+      "email": "info@packershub.in",
+      "description": `Top-rated packers and movers in ${city.name}, ${state?.name}. Household shifting, office relocation, vehicle transport. 100% insured, GPS tracked.`,
+      "areaServed": [
+        { "@type": "City",  "name": city.name  },
+        { "@type": "State", "name": state?.name }
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Nellore",
+        "addressRegion":   "Andhra Pradesh",
+        "postalCode":      "524004",
+        "addressCountry":  "IN"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "2847",
+        "bestRating": "5"
+      },
+      "priceRange": "₹₹",
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        "opens": "00:00", "closes": "23:59"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home",          "item": "https://www.packershub.in/" },
+        { "@type": "ListItem", "position": 2, "name": state?.name,     "item": `https://www.packershub.in/${city.state}` },
+        { "@type": "ListItem", "position": 3, "name": `Movers in ${city.name}`, "item": `https://www.packershub.in/${city.state}/${city.slug}` }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": `How much do packers and movers cost in ${city.name}?`,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": `Packers and movers in ${city.name} cost ₹${basePrice.toLocaleString()}–₹${(basePrice+2000).toLocaleString()} for 1 BHK local shift, ₹${(basePrice+2000).toLocaleString()}–₹${(basePrice+5000).toLocaleString()} for 2 BHK, and ₹${(basePrice+5000).toLocaleString()}–₹${(basePrice+9000).toLocaleString()} for 3 BHK. Intercity moves start from ₹${(basePrice*2).toLocaleString()}. All prices include packing, transport, labour, and transit insurance.`
+          }
+        },
+        {
+          "@type": "Question",
+          "name": `Which is the best packers and movers in ${city.name}?`,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": `PackersHub is the highest-rated packers and movers in ${city.name} with 4.9★ Google rating, 2,847+ verified reviews, 100% transit insurance, GPS tracking, and 24×7 support. Call +91 77310 74075 for a free quote.`
+          }
+        },
+        {
+          "@type": "Question",
+          "name": `Does PackersHub offer service in ${city.name}?`,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": `Yes! PackersHub provides full packers and movers services in ${city.name}, ${state?.name}. We handle household shifting, office relocation, vehicle transport, and storage services with professional crew and GPS-tracked trucks.`
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+<BaseLayout
+  title={`Packers & Movers in ${city.name} — PackersHub | ★4.9 Rated | Free Quote`}
+  description={`Best packers and movers in ${city.name}, ${state?.name}. Safe household shifting, office relocation & vehicle transport. 100% insured, GPS tracked, ★4.9 rated. Free quote: +91 77310 74075`}
+  keywords={`packers movers ${city.name}, best movers ${city.name}, household shifting ${city.name}, packers ${city.name} ${state?.abbr}, relocation ${city.name}, office movers ${city.name}, vehicle transport ${city.name}`}
+  canonical={`https://www.packershub.in/${city.state}/${city.slug}`}
+  schema={citySchema}
+  cityName={city.name}
+  stateName={state?.name}
+  geoRegion={`IN-${state?.abbr}`}
+  geoPlace={city.name}
+>
+
+  <!-- HERO -->
+  <section class="relative overflow-hidden hero-bg pt-10 pb-20 lg:pt-16 lg:pb-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Breadcrumb -->
+      <nav aria-label="Breadcrumb" class="mb-6">
+        <ol class="flex flex-wrap items-center gap-2 text-sm text-brand-grey" role="list">
+          <li><a href="/" class="hover:text-brand-orange transition-colors">Home</a></li>
+          <li aria-hidden="true">›</li>
+          <li><a href={`/${city.state}`} class="hover:text-brand-orange transition-colors">{state?.name}</a></li>
+          <li aria-hidden="true">›</li>
+          <li class="text-brand-orange font-semibold" aria-current="page">Movers in {city.name}</li>
+        </ol>
+      </nav>
+
+      <div class="grid lg:grid-cols-5 gap-10 lg:gap-16 items-start">
+
+        <!-- Left: Main Content (3 cols) -->
+        <div class="lg:col-span-3 animate-fade-up">
+
+          <!-- Badge -->
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-card border border-orange-100 mb-6">
+            <span class="text-yellow-400">★★★★★</span>
+            <span class="text-sm font-bold text-brand-dark">4.9 · Highest Rated in {city.name}</span>
+          </div>
+
+          <h1 class="font-display font-extrabold text-4xl sm:text-5xl lg:text-[3.2rem] leading-[1.08] text-brand-dark mb-5">
+            Best Packers &amp; Movers<br/>in <span class="text-gradient">{city.name}</span>
+          </h1>
+
+          <p class="text-lg text-brand-grey mb-6 leading-relaxed">
+            South India's most trusted movers serving {city.name}, {state?.name}.
+            Professional packing, GPS-tracked transport, and guaranteed on-time delivery.
+            Serving <strong>{city.pop} population</strong> — {city.landmark}.
+          </p>
+
+          <!-- USP chips -->
+          <div class="flex flex-wrap gap-2 mb-8">
+            {['✅ 100% Insured','📍 GPS Tracked','💰 No Hidden Costs','⚡ Same-Day Available','🛡️ Zero Damage Guarantee','📞 24×7 Support'].map(chip => (
+              <span class="px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs font-semibold text-brand-dark shadow-sm">{chip}</span>
+            ))}
+          </div>
+
+          <!-- CTA -->
+          <div class="flex flex-col sm:flex-row gap-3 mb-10">
+            <a href="#quote" class="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold text-base shadow-cta hover:shadow-glow hover:scale-[1.02] transition-all btn-shine">
+              🚚 Book Free Quote in {city.name}
+            </a>
+            <a href="tel:+917731074075" class="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-white border-2 border-brand-orange/30 text-brand-dark font-bold hover:border-brand-orange hover:bg-orange-50 transition-all">
+              📞 +91 77310 74075
+            </a>
+          </div>
+
+          <!-- Stats bar -->
+          <div class="grid grid-cols-4 gap-4 p-5 bg-white rounded-2xl shadow-card border border-gray-100">
+            {[['15K+','Moves'],['4.9★','Rating'],['100%','Insured'],['24/7','Support']].map(([n,l]) => (
+              <div class="text-center">
+                <div class="font-display font-black text-xl text-brand-dark">{n}</div>
+                <div class="text-[11px] text-brand-grey font-medium">{l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Right: Quick Quote Sidebar (2 cols) -->
+        <div class="lg:col-span-2 animate-fade-up" style="animation-delay:.12s">
+          <div class="sticky top-24 bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
+            <div class="bg-gradient-to-r from-brand-orange to-brand-gold text-white px-6 py-5">
+              <h2 class="font-display font-bold text-xl">Quick Contact</h2>
+              <p class="text-orange-100 text-sm mt-0.5">Get instant quote from {city.name} team</p>
+            </div>
+            <div class="p-6 space-y-3">
+              <a href="tel:+917731074075" class="flex items-center gap-3 w-full py-3.5 px-5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold shadow-cta hover:scale-[1.02] transition-transform btn-shine">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1v3.5a1 1 0 01-1 1A17 17 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/></svg>
+                Call +91 77310 74075
+              </a>
+              <a href="https://wa.me/917731074075?text=Hi%20PackersHub%2C%20I%20need%20movers%20in%20{city.name}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 w-full py-3.5 px-5 rounded-xl bg-[#25D366] text-white font-bold hover:bg-[#22c55e] transition-colors">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                WhatsApp Us
+              </a>
+              <a href="#quote" class="flex items-center justify-center gap-2 w-full py-3 px-5 rounded-xl border-2 border-brand-orange/30 text-brand-orange font-bold hover:bg-orange-50 transition-colors">
+                📋 Fill Quote Form
+              </a>
+            </div>
+
+            <!-- Pricing preview -->
+            <div class="px-6 pb-6">
+              <h3 class="font-bold text-brand-dark text-sm mb-3">Estimated Prices in {city.name}</h3>
+              <div class="space-y-2 text-xs">
+                {pricing.slice(0,4).map(p => (
+                  <div class="flex items-center justify-between py-1.5 border-b border-gray-100">
+                    <span class="font-medium text-brand-dark">{p.type}</span>
+                    <span class="text-brand-orange font-bold">{p.local}</span>
+                  </div>
+                ))}
+              </div>
+              <p class="text-[10px] text-brand-grey mt-2">*Indicative prices. Exact quote after assessment.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <TrustStrip />
+
+  <!-- DETAILED CONTENT -->
+  <section class="py-20 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="font-display font-extrabold text-3xl text-brand-dark mb-6">
+        Packers &amp; Movers in {city.name} — Complete Guide
+      </h2>
+      <div class="prose prose-lg max-w-none text-brand-grey">
+        <p>
+          Looking for reliable packers and movers in <strong>{city.name}</strong>, {state?.name}?
+          PackersHub is {city.name}'s highest-rated relocation company, trusted by thousands of
+          families and businesses. Whether you're moving within {city.name} or relocating to
+          another city, our professional team handles every aspect of your move with care.
+        </p>
+        <p>
+          {city.name} — known as the <em>{city.landmark}</em> — is a growing city with
+          a population of {city.pop}. As the city expands, demand for professional
+          relocation services has grown significantly. PackersHub has been serving {city.name}
+          residents with top-quality moving services, combining technology with trained manpower.
+        </p>
+        <h3>Our Services in {city.name}</h3>
+        <ul>
+          <li><strong>Household Shifting in {city.name}:</strong> Complete packing, loading, transport, unloading & unpacking for 1BHK to 5BHK+ homes</li>
+          <li><strong>Office Relocation in {city.name}:</strong> Corporate moves with minimal downtime, IT equipment handling included</li>
+          <li><strong>Vehicle Transport from {city.name}:</strong> Enclosed car & bike carriers with GPS tracking</li>
+          <li><strong>Storage Solutions in {city.name}:</strong> Secure, climate-controlled warehousing</li>
+        </ul>
+        <h3>Packers and Movers Charges in {city.name}</h3>
+        <p>
+          Moving costs in {city.name} depend on home size, distance, floor access, and goods volume.
+          Our prices are fully transparent — no surprise charges after delivery.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING TABLE -->
+  <section class="py-16 bg-gray-50" aria-labelledby="pricing-heading">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 id="pricing-heading" class="font-display font-extrabold text-3xl text-brand-dark mb-8 text-center">
+        Packers &amp; Movers Rates in {city.name}
+      </h2>
+      <div class="bg-white rounded-3xl shadow-card border border-gray-100 overflow-hidden">
+        <table class="w-full text-sm" role="table" aria-label={`Moving charges in ${city.name}`}>
+          <thead>
+            <tr class="bg-gradient-to-r from-brand-orange to-brand-gold text-white">
+              <th class="text-left px-6 py-4 font-bold" scope="col">Move Type</th>
+              <th class="text-center px-4 py-4 font-bold" scope="col">Local (Within City)</th>
+              <th class="text-center px-4 py-4 font-bold" scope="col">Intercity Move</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pricing.map((p, i) => (
+              <tr class={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                <td class="px-6 py-4 font-semibold text-brand-dark">{p.type}</td>
+                <td class="px-4 py-4 text-center text-brand-orange font-bold">{p.local}</td>
+                <td class="px-4 py-4 text-center text-brand-grey">{p.intercity}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div class="px-6 py-4 bg-orange-50 border-t border-orange-100">
+          <p class="text-xs text-brand-grey">✅ All prices include packing materials, labour, transport & transit insurance. GST extra. <a href="tel:+917731074075" class="text-brand-orange font-bold hover:underline">Call for exact quote →</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Services />
+  <Testimonials />
+
+  <!-- NEARBY CITIES -->
+  {nearbyCities.length > 0 && (
+    <section class="py-16 bg-white" aria-labelledby="nearby-heading">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 id="nearby-heading" class="font-display font-extrabold text-2xl text-brand-dark mb-8 text-center">
+          Also Serving Nearby Cities in {state?.name}
+        </h2>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {nearbyCities.map(c => (
+            <a href={`/${c.state}/${c.slug}`} class="p-4 rounded-xl bg-gray-50 hover:bg-orange-50 border border-gray-100 hover:border-orange-200 transition-all text-center card-lift">
+              <div class="font-bold text-sm text-brand-dark hover:text-brand-orange">{c.name}</div>
+              <div class="text-[11px] text-brand-grey mt-0.5">{c.stateName}</div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <QuoteForm />
+  <FAQ city={city.name} />
+
+</BaseLayout>
