@@ -2,7 +2,6 @@
 
 # Legacy redirects
 /home                   /                             301
-/index.html             /                             301
 /packers-movers         /services                     301
 /movers                 /services                     301
 /cities                 /                             301

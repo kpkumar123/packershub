@@ -21,7 +21,7 @@ export default defineConfig({
     }),
     mdx(),
   ],
-  build: { inlineStylesheets: 'auto' },
+  build: { format: 'file', inlineStylesheets: 'auto' },
   compressHTML: true,
   prefetch: { prefetchAll: true, defaultStrategy: 'viewport' },
   image: { service: { entrypoint: 'astro/assets/services/sharp' } },
