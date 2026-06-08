@@ -1,8 +1,4 @@
-# PackersHub Redirects — Netlify
-
-# Canonical domain
-http://packershub.in/*  https://www.packershub.in/:splat  301!
-https://packershub.in/* https://www.packershub.in/:splat  301!
+# PackersHub Redirects — Cloudflare Pages
 
 # Legacy redirects
 /home                   /                             301
@@ -10,6 +6,3 @@ https://packershub.in/* https://www.packershub.in/:splat  301!
 /packers-movers         /services                     301
 /movers                 /services                     301
 /cities                 /                             301
-
-# 404 fallback
-/*                      /404                          404
