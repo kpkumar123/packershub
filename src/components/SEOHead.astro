@@ -26,6 +26,15 @@ const pageType = articleDate ? 'article' : 'website';
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
+<!-- ═══ GOOGLE ANALYTICS (gtag.js) ═══ -->
+<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-CTLKHGP5P6"></script>
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CTLKHGP5P6');
+</script>
 <!-- ═══ MODULE 04 — PRIMARY META ═══ -->
 <title>{title}</title>
 <meta name="description" content={description} />
