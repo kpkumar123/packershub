@@ -8,16 +8,34 @@ export default defineConfig({
   integrations: [
     tailwind(),
     sitemap({
-      changefreq: 'weekly',
-      priority: 0.7,
-      lastmod: new Date(),
-      customPages: [
-        'https://www.packershub.in/',
-        'https://www.packershub.in/about',
-        'https://www.packershub.in/services',
-        'https://www.packershub.in/contact',
-        'https://www.packershub.in/blog',
-      ],
+      filter: (page) => 
+        !page.endsWith('/404') && 
+        !page.endsWith('/404/') && 
+        !page.endsWith('/privacy') && 
+        !page.endsWith('/privacy/') && 
+        !page.endsWith('/terms') && 
+        !page.endsWith('/terms/'),
+      serialize(item) {
+        const url = new URL(item.url);
+        const path = url.pathname;
+
+        if (path === '/' || path === '') {
+          item.changefreq = 'daily';
+          item.priority = 1.0;
+        } else if (path.match(/^\/(about|services|contact|blog)\/?$/)) {
+          item.changefreq = 'weekly';
+          item.priority = 0.9;
+        } else if (path.startsWith('/blog/')) {
+          item.changefreq = 'monthly';
+          item.priority = 0.7;
+        } else {
+          // Dynamic city pages and others
+          item.changefreq = 'weekly';
+          item.priority = 0.8;
+        }
+        item.lastmod = new Date().toISOString();
+        return item;
+      },
     }),
     mdx(),
   ],

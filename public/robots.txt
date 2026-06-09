@@ -65,10 +65,5 @@ Allow: /
 
 # Sitemaps — MODULE 02
 Sitemap: https://www.packershub.in/sitemap-index.xml
-Sitemap: https://www.packershub.in/sitemap-main.xml
-Sitemap: https://www.packershub.in/sitemap-cities.xml
-Sitemap: https://www.packershub.in/sitemap-services.xml
-Sitemap: https://www.packershub.in/sitemap-blog.xml
-Sitemap: https://www.packershub.in/sitemap-images.xml
 
 Host: https://www.packershub.in
