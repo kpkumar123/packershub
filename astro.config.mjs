@@ -3,8 +3,11 @@ import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 
+import cloudflare from "@astrojs/cloudflare";
+
 export default defineConfig({
   site: 'https://www.packershub.in',
+
   integrations: [
     tailwind(),
     sitemap({
@@ -39,10 +42,12 @@ export default defineConfig({
     }),
     mdx(),
   ],
+
   build: { format: 'file', inlineStylesheets: 'auto' },
   compressHTML: true,
   prefetch: { prefetchAll: true, defaultStrategy: 'viewport' },
   image: { service: { entrypoint: 'astro/assets/services/sharp' } },
+
   vite: {
     build: {
       cssCodeSplit: true,
@@ -53,4 +58,7 @@ export default defineConfig({
       },
     },
   },
+
+  output: "hybrid",
+  adapter: cloudflare()
 });
