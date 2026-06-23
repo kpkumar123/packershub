@@ -20,6 +20,9 @@
     "@tailwindcss/typography": "^0.5.15",
     "sharp": "^0.33.5"
   },
+  "config": {
+    "npm_config_legacy_peer_deps": "true"
+  },
   "devDependencies": {
     "wrangler": "^3.90.0"
   }
