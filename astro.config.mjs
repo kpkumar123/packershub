@@ -6,9 +6,9 @@ import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
   site: 'https://www.packershub.in',
-  output: 'server',             // ✅ changed from 'static'
+  output: 'static',
   adapter: cloudflare({
-    imageService: 'compile',    // ✅ correct for Workers
+    imageService: 'compile',
     platformProxy: { enabled: true }
   }),
   integrations: [
@@ -30,7 +30,9 @@ export default defineConfig({
     prefetchAll: true,
     defaultStrategy: 'viewport'
   },
-  // ✅ removed sharp — handled by adapter
+  image: {
+    service: { entrypoint: 'astro/assets/services/sharp' }
+  },
   vite: {
     build: {
       cssCodeSplit: true,
