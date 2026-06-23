@@ -1,8 +1,7 @@
 name = "packershub"
-account_id = "159b373543d5f616b5895cbae4899abd"
 compatibility_date = "2026-01-01"
 compatibility_flags = ["nodejs_compat"]
-pages_build_output_dir = "dist"
+#pages_build_output_dir = "dist"
 
 # This switches it from standard Pages to Cloudflare Workers Assets
 [assets]
