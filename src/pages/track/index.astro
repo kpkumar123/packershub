@@ -1,0 +1,158 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const STAGES = [
+  { key: 'Booking Received', label: 'Booking Received', icon: '1' },
+  { key: 'Survey Scheduled', label: 'Survey Scheduled', icon: '2' },
+  { key: 'Packing Crew Assigned', label: 'Packing Crew Assigned', icon: '3' },
+  { key: 'In Transit', label: 'In Transit', icon: '4' },
+  { key: 'Delivered', label: 'Delivered', icon: '5' },
+];
+
+const trackSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Track Your Move — PackersHub",
+  "url": "https://www.packershub.in/track/",
+};
+---
+<BaseLayout
+  title="Track Your Move — PackersHub | Check Your Booking Status"
+  description="Check the live status of your PackersHub booking using your Tracking ID and phone number. Booking Received, Survey Scheduled, Packing, In Transit, Delivered."
+  schema={trackSchema}
+  breadcrumbs={[{ name: 'Home', url: '/' }, { name: 'Track Your Move', url: '/track/' }]}
+>
+  <section class="bg-hero bg-grid py-20">
+    <div class="max-w-2xl mx-auto px-4 text-center">
+      <span class="section-badge mb-4">📦 Order Tracking</span>
+      <h1 class="display-lg text-slate-900 font-display font-black mb-4 mt-3">Track Your Move</h1>
+      <p class="text-slate-600 text-lg">Enter your Tracking ID and the phone number you booked with to see your move's current status.</p>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="max-w-2xl mx-auto px-4">
+
+      <!-- Lookup form -->
+      <div class="glass-card p-8" id="lookup-card">
+        <h2 class="font-bold text-xl text-slate-900 font-display mb-6">Enter Your Details</h2>
+        <form id="track-form" class="space-y-4">
+          <div>
+            <label class="form-label">Tracking ID *</label>
+            <input type="text" id="track-id" class="form-input" placeholder="e.g. PH-7K2M9X" required autocomplete="off" />
+            <p class="form-hint">This was shown on screen and sent on WhatsApp right after you booked.</p>
+          </div>
+          <div>
+            <label class="form-label">Phone Number Used at Booking *</label>
+            <input type="tel" id="track-phone" class="form-input" placeholder="+91 XXXXX XXXXX" required />
+          </div>
+          <button type="submit" class="btn-primary w-full justify-center py-3.5" id="track-submit-btn">
+            Check Status →
+          </button>
+        </form>
+        <p id="track-error" class="form-error" style="display:none; margin-top:1rem;"></p>
+      </div>
+
+      <!-- Result -->
+      <div class="tracker-card mt-8" id="track-result" style="display:none">
+        <div class="flex items-center justify-between flex-wrap gap-3 mb-2">
+          <span class="tracker-id-badge" id="result-id"></span>
+          <span class="text-sm text-slate-500" id="result-route"></span>
+        </div>
+        <p class="text-sm text-slate-500 mb-2" id="result-date"></p>
+
+        <div class="tracker-steps" id="tracker-steps"></div>
+
+        <div class="mt-6 pt-6 border-t border-slate-100 flex flex-wrap gap-3">
+          <a href="tel:+917731074075" class="btn-secondary">📞 Call Us</a>
+          <a href="https://wa.me/917731074075" target="_blank" rel="noopener" class="btn-secondary">💬 WhatsApp</a>
+        </div>
+      </div>
+
+      <p class="text-center text-sm text-slate-500 mt-8">
+        This tracker shows the milestone your move has reached, updated by our team —
+        it's not a live GPS map. For anything urgent, just
+        <a href="tel:+917731074075" class="text-brand-600 font-semibold hover:underline">call +91 77310 74075</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script define:vars={{ STAGES }}>
+const form = document.getElementById('track-form');
+const errorEl = document.getElementById('track-error');
+const resultEl = document.getElementById('track-result');
+const stepsEl = document.getElementById('tracker-steps');
+const submitBtn = document.getElementById('track-submit-btn');
+
+function showError(msg) {
+  errorEl.textContent = msg;
+  errorEl.style.display = 'block';
+  resultEl.style.display = 'none';
+}
+
+function renderTimeline(currentStatus, timeline) {
+  const order = STAGES.map(s => s.key);
+  const currentIdx = order.indexOf(currentStatus);
+
+  stepsEl.innerHTML = '';
+  STAGES.forEach((stage, idx) => {
+    const isDone = currentIdx > idx;
+    const isCurrent = currentIdx === idx;
+    const entry = (timeline || []).slice().reverse().find(t => t.status === stage.key);
+
+    const div = document.createElement('div');
+    div.className = 'tracker-step' + (isDone ? ' done' : '') + (isCurrent ? ' current' : '');
+    div.innerHTML = `
+      <div class="tracker-step-dot">${isDone ? '✓' : stage.icon}</div>
+      <div class="tracker-step-body">
+        <div class="tracker-step-label">${stage.label}</div>
+        ${entry ? `<div class="tracker-step-meta">${new Date(entry.at).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}</div>` : ''}
+        ${entry && entry.note ? `<div class="tracker-step-note">${entry.note}</div>` : ''}
+      </div>
+    `;
+    stepsEl.appendChild(div);
+  });
+}
+
+form?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  errorEl.style.display = 'none';
+  resultEl.style.display = 'none';
+
+  const id = document.getElementById('track-id').value.trim();
+  const phone = document.getElementById('track-phone').value.trim();
+
+  if (!id || !phone) { showError('Please fill in both fields.'); return; }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Checking…';
+
+  try {
+    const res = await fetch(`/api/track?id=${encodeURIComponent(id)}&phone=${encodeURIComponent(phone)}`);
+    const data = await res.json();
+
+    if (!data.ok) {
+      showError(data.error || 'Could not find that booking.');
+      window.phTrack?.('track_lookup_failed', { reason: data.error || 'unknown' });
+      return;
+    }
+
+    document.getElementById('result-id').textContent = data.trackingId;
+    document.getElementById('result-route').textContent =
+      data.fromCity && data.toCity ? `${data.fromCity} → ${data.toCity}` : (data.moveType || '');
+    document.getElementById('result-date').textContent =
+      data.moveDate ? `Preferred move date: ${data.moveDate}` : '';
+
+    renderTimeline(data.status, data.timeline);
+    resultEl.style.display = 'block';
+    resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    window.phTrack?.('track_lookup_success', { status: data.status });
+  } catch {
+    showError('Something went wrong. Please try again or call +91 77310 74075.');
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Check Status →';
+  }
+});
+</script>

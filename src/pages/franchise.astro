@@ -1,0 +1,247 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const whyPartner = [
+  { icon: '🌐', title: 'A Brand & Website Already Built', desc: 'Operate under the PackersHub name with a live, SEO-structured website covering 100 cities — not a startup from zero.' },
+  { icon: '📋', title: 'Operating Playbooks', desc: 'Pricing structure, packing standards, and customer-handling process refined across South India — so you don\u2019t have to figure it out alone.' },
+  { icon: '🤝', title: 'Centralized Support', desc: 'One phone number, one WhatsApp, one booking flow for customers — backed by your local team on the ground.' },
+  { icon: '📈', title: 'Built to Scale With You', desc: 'PackersHub is growing toward becoming South India\u2019s leading moving brand. Early city partners grow alongside that journey.' },
+];
+
+const models = [
+  {
+    title: 'City Partner / Franchise',
+    desc: 'Run PackersHub operations in your city under our brand, pricing standards, and customer support — you bring local manpower, vehicles, and on-ground management.',
+    points: ['Best for: existing local movers or transport operators', 'You manage day-to-day operations in your city', 'Branding, website presence, and process support from PackersHub HQ'],
+  },
+  {
+    title: 'Fleet / Vendor Partner',
+    desc: 'Provide vehicles and manpower for PackersHub bookings in your area without taking on full city-level branding or management.',
+    points: ['Best for: transport fleet owners, loading/packing crews', 'Get job-based bookings routed to you', 'Lower commitment than a full city partnership'],
+  },
+];
+
+const steps = [
+  { n: '1', title: 'Send Your Enquiry', desc: 'Fill the form below with your city and current business background.' },
+  { n: '2', title: 'Discussion Call', desc: 'Our team calls to understand your setup and explain terms in detail.' },
+  { n: '3', title: 'Agreement & Onboarding', desc: 'Once aligned, we finalize terms and onboard you with training and materials.' },
+  { n: '4', title: 'Launch in Your City', desc: 'Start receiving bookings under the PackersHub brand and process.' },
+];
+
+const faqs = [
+  { q: 'How much investment is required?', a: 'It depends on your city, the partnership model, and what vehicles/manpower you already have. We discuss this on a call rather than quoting a fixed number up front — every city and partner setup is different.' },
+  { q: 'Do I need prior experience in packers & movers?', a: 'It helps, but isn\u2019t mandatory. Experience in transport, logistics, or local business operations in your city is also valuable.' },
+  { q: 'Which cities are you prioritizing?', a: 'We\u2019re actively looking for partners across Andhra Pradesh, Telangana, Tamil Nadu, Karnataka, and Kerala — particularly Tier-2 and Tier-3 cities where we don\u2019t yet have an on-ground team.' },
+  { q: 'What support do I get after signing up?', a: 'Brand usage, a dedicated page on packershub.in for your city, pricing and process playbooks, and ongoing coordination with PackersHub HQ. Specifics are confirmed during onboarding.' },
+];
+
+const franchiseSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Franchise & Partnership Opportunities — PackersHub",
+  "url": "https://www.packershub.in/franchise/",
+  "description": "Partner with PackersHub to bring professional packers and movers services to your city across South India.",
+};
+---
+<BaseLayout
+  title="Franchise & Partnership Opportunities — PackersHub | Partner With Us"
+  description="Partner with PackersHub — South India's growing packers and movers brand. City partnerships and fleet/vendor partnerships available across Andhra Pradesh, Telangana, Tamil Nadu, Karnataka, and Kerala."
+  schema={franchiseSchema}
+  breadcrumbs={[{ name: 'Home', url: '/' }, { name: 'Franchise', url: '/franchise/' }]}
+>
+  <!-- Hero -->
+  <section class="bg-hero bg-grid py-20">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+      <span class="section-badge section-badge-orange mb-4">🤝 Partner With Us</span>
+      <h1 class="display-lg text-slate-900 font-display font-black mb-4 mt-3">Build a Moving Business in Your City — Under a Brand Already in Motion</h1>
+      <p class="text-slate-600 text-lg">PackersHub is expanding our city partner and fleet partner network across South India. If you have local know-how, vehicles, or a team — let's talk.</p>
+      <div class="mt-8 flex gap-4 justify-center flex-wrap">
+        <a href="#franchise-form" class="btn-gold">Request Partnership Info ↓</a>
+        <a href="https://wa.me/917731074075?text=Hi%20PackersHub%2C%20I%27m%20interested%20in%20franchise%2Fpartnership%20opportunities." target="_blank" rel="noopener" class="btn-secondary">💬 WhatsApp Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="py-12 bg-white">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="franchise-stat reveal"><div class="franchise-stat-num">100+</div><div class="franchise-stat-label">Cities Covered</div></div>
+        <div class="franchise-stat reveal"><div class="franchise-stat-num">5</div><div class="franchise-stat-label">South Indian States</div></div>
+        <div class="franchise-stat reveal"><div class="franchise-stat-num">24/7</div><div class="franchise-stat-label">Customer Support</div></div>
+        <div class="franchise-stat reveal"><div class="franchise-stat-num">2</div><div class="franchise-stat-label">Partnership Models</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Partner -->
+  <section class="py-16 bg-slate-50">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="text-center mb-12 reveal">
+        <h2 class="section-title">Why Partner With PackersHub</h2>
+        <p class="section-subtitle mx-auto mt-3">You bring local execution. We bring the brand, the booking infrastructure, and the playbooks.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-6">
+        {whyPartner.map((w, i) => (
+          <div class="service-card reveal" style={`transition-delay:${i*0.07}s`}>
+            <div class="text-4xl mb-4">{w.icon}</div>
+            <h3 class="font-bold text-lg text-slate-900 font-display mb-2">{w.title}</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">{w.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Partnership Models -->
+  <section class="py-16 bg-white">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="text-center mb-12 reveal">
+        <h2 class="section-title">Two Ways to Partner</h2>
+        <p class="section-subtitle mx-auto mt-3">Choose the model that fits how much you want to run versus support.</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6">
+        {models.map((m, i) => (
+          <div class="glass-card p-8 reveal" style={`transition-delay:${i*0.1}s`}>
+            <h3 class="font-bold text-xl text-slate-900 font-display mb-3">{m.title}</h3>
+            <p class="text-slate-600 text-sm leading-relaxed mb-4">{m.desc}</p>
+            <ul class="space-y-2">
+              {m.points.map(p => (
+                <li class="flex gap-2 text-sm text-slate-600"><span class="text-olive-600">✓</span><span>{p}</span></li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="py-16 bg-slate-50">
+    <div class="max-w-3xl mx-auto px-4">
+      <div class="text-center mb-12 reveal">
+        <h2 class="section-title">How It Works</h2>
+      </div>
+      <div class="space-y-8">
+        {steps.map((s, i) => (
+          <div class="franchise-step reveal" style={`transition-delay:${i*0.07}s`}>
+            <div class="franchise-step-num">{s.n}</div>
+            <div>
+              <h3 class="font-bold text-slate-900 mb-1">{s.title}</h3>
+              <p class="text-slate-600 text-sm">{s.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-16 bg-white">
+    <div class="max-w-3xl mx-auto px-4">
+      <div class="text-center mb-10 reveal">
+        <h2 class="section-title">Partnership FAQs</h2>
+      </div>
+      <div class="space-y-3" itemscope itemtype="https://schema.org/FAQPage">
+        {faqs.map((f, i) => (
+          <div class="faq-item reveal" style={`transition-delay:${i*0.05}s`} data-faq itemscope itemtype="https://schema.org/Question">
+            <div class="faq-question" data-faq-q aria-expanded="false">
+              <span itemprop="name">{f.q}</span>
+              <span class="faq-icon" aria-hidden="true">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </span>
+            </div>
+            <div class="faq-answer" data-faq-a>
+              <div class="faq-answer-inner" itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
+                <span itemprop="text">{f.a}</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Lead Form -->
+  <section class="py-16 bg-slate-50" id="franchise-form">
+    <div class="max-w-xl mx-auto px-4">
+      <div class="glass-card p-8 reveal">
+        <h2 class="font-bold text-xl text-slate-900 font-display mb-2">Request Partnership Info</h2>
+        <p class="text-slate-500 text-sm mb-6">Tell us a bit about you — our team will call to discuss details.</p>
+        <form id="franchise-form-el" class="space-y-4">
+          <div><label class="form-label">Full Name *</label><input type="text" name="name" class="form-input" required placeholder="Your full name"/></div>
+          <div><label class="form-label">Phone *</label><input type="tel" name="phone" class="form-input" required placeholder="+91 XXXXX XXXXX"/></div>
+          <div><label class="form-label">Email</label><input type="email" name="email" class="form-input" placeholder="your@email.com"/></div>
+          <div><label class="form-label">City You're Interested In *</label><input type="text" name="city" class="form-input" required placeholder="e.g. Kurnool, Madurai, Mysuru..."/></div>
+          <div><label class="form-label">Tell Us About Your Background</label><textarea name="message" class="form-textarea" placeholder="Current business, vehicles/team you have, why you're interested..."></textarea></div>
+          <button type="submit" class="btn-gold w-full justify-center py-3.5" id="franchise-submit-btn">Send Enquiry via WhatsApp →</button>
+          <p class="form-hint" id="franchise-sent-note" style="display:none">Sent! If WhatsApp didn't open, tap <a href="https://wa.me/917731074075" target="_blank" rel="noopener" class="text-brand-600 font-semibold">here</a>.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+function generateTrackingId() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let id = 'PH-';
+  for (let i = 0; i < 6; i++) id += chars[Math.floor(Math.random() * chars.length)];
+  return id;
+}
+
+document.getElementById('franchise-form-el')?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const form = e.target as HTMLFormElement;
+  const name = (form.querySelector('[name=name]') as HTMLInputElement).value;
+  const phone = (form.querySelector('[name=phone]') as HTMLInputElement).value;
+  const email = (form.querySelector('[name=email]') as HTMLInputElement).value;
+  const city = (form.querySelector('[name=city]') as HTMLInputElement).value;
+  const message = (form.querySelector('[name=message]') as HTMLTextAreaElement).value;
+  const trackingId = generateTrackingId();
+
+  const msg = encodeURIComponent(
+    `🤝 *Franchise/Partnership Enquiry — PackersHub*\n\n` +
+    `👤 *Name:* ${name}\n📞 *Phone:* ${phone}${email ? '\n📧 *Email:* ' + email : ''}\n` +
+    `📍 *Interested City:* ${city}\n\n${message ? '📝 *Background:* ' + message + '\n\n' : ''}` +
+    `(Ref: ${trackingId})`
+  );
+  window.open(`https://wa.me/917731074075?text=${msg}`, '_blank');
+  window.phTrack?.('franchise_inquiry_submitted', { city });
+
+  fetch('/api/lead', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type: 'franchise', trackingId, name, phone, email, message, fromCity: city, source: 'franchise_page' }),
+  }).catch(() => { /* backup only — WhatsApp already sent */ });
+
+  document.getElementById('franchise-sent-note')!.style.display = 'block';
+  form.reset();
+});
+
+// FAQ accordion with keyboard support (same pattern as the homepage FAQ)
+document.querySelectorAll('[data-faq]').forEach(item => {
+  const q = item.querySelector('[data-faq-q]');
+  const a = item.querySelector('[data-faq-a]');
+
+  q?.setAttribute('role', 'button');
+  q?.setAttribute('tabindex', '0');
+
+  const toggle = () => {
+    const isOpen = a?.classList.contains('open');
+    document.querySelectorAll('[data-faq-a]').forEach(el => el.classList.remove('open'));
+    document.querySelectorAll('[data-faq]').forEach(el => el.classList.remove('open'));
+    document.querySelectorAll('[data-faq-q]').forEach(el => el.setAttribute('aria-expanded', 'false'));
+    if (!isOpen) {
+      a?.classList.add('open');
+      item.classList.add('open');
+      q?.setAttribute('aria-expanded', 'true');
+    }
+  };
+
+  q?.addEventListener('click', toggle);
+  q?.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+});
+</script>

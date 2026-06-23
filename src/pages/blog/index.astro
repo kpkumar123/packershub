@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { resolveBlogImage } from '../../utils/blogImages';
+const posts = (await getCollection('blog')).sort((a,b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+---
+<BaseLayout
+  title="Blog — Packing Tips, Moving Guides & Relocation Advice | PackersHub"
+  description="Expert moving tips, packing guides, and relocation advice from PackersHub — South India's trusted packers and movers serving 100 cities."
+  breadcrumbs={[{ name: 'Home', url: '/' }, { name: 'Blog', url: '/blog/' }]}
+>
+  <section class="bg-hero bg-grid py-20">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <h1 class="display-lg text-slate-900 font-display font-black mb-4">PackersHub Blog</h1>
+      <p class="text-slate-600 text-lg">Expert tips, guides, and local moving advice from South India's most trusted packers and movers.</p>
+    </div>
+  </section>
+  <section class="py-16 bg-slate-50">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.map((post, i) => (
+          <a href={`/blog/${post.id}/`} class="blog-card reveal" style={`transition-delay:${i*0.07}s`}>
+            {post.data.image && resolveBlogImage(post.data.image) ? (
+              <Image
+                src={resolveBlogImage(post.data.image)!}
+                alt={post.data.title}
+                class="h-36 w-full object-cover"
+                loading="lazy"
+                width={1200}
+                height={630}
+              />
+            ) : (
+              <div class="bg-gradient-to-br from-brand-600 to-brand-800 h-36 flex items-center justify-center">
+                <span class="text-5xl">{['📦','🚚','🏠','🗓️','💡'][i % 5]}</span>
+              </div>
+            )}
+            <div class="p-5">
+              <span class="text-xs font-bold text-brand-600 uppercase tracking-wide">{post.data.category}</span>
+              <h2 class="font-bold text-slate-900 font-display mt-2 mb-2 line-clamp-2">{post.data.title}</h2>
+              <p class="text-slate-600 text-sm line-clamp-3">{post.data.description}</p>
+              <div class="flex items-center justify-between mt-4 pt-4 border-t border-slate-100">
+                <span class="text-slate-400 text-xs">{new Date(post.data.pubDate).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</span>
+                <span class="text-brand-600 text-xs font-bold">{post.data.readTime} min read →</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+      {posts.length === 0 && (
+        <div class="text-center py-20">
+          <p class="text-slate-500 text-lg">Blog posts coming soon. Check back shortly!</p>
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>

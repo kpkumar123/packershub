@@ -1,0 +1,225 @@
+---
+// AI-Powered Customer Support Chatbot
+// Calls Anthropic Claude API via /api/chat endpoint
+---
+<!-- Chat Toggle Button -->
+<button class="chatbot-toggle" id="chatbot-toggle" aria-label="Open customer support chat" aria-expanded="false">
+  <svg class="w-6 h-6" id="chat-open-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 3H3c-1.1 0-2 .9-2 2v14l4-4h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+  </svg>
+  <svg class="w-6 h-6 hidden" id="chat-close-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+  </svg>
+  <!-- Notification dot -->
+  <span class="absolute -top-1 -right-1 w-4 h-4 bg-gold-500 rounded-full text-white text-xs flex items-center justify-center font-bold" id="chat-dot">1</span>
+</button>
+
+<!-- Chat Window -->
+<div class="chatbot-window closed" id="chatbot-window" role="dialog" aria-label="PackersHub Customer Support" aria-modal="false">
+  <!-- Header -->
+  <div class="chatbot-header">
+    <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
+      <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 3H3c-1.1 0-2 .9-2 2v14l4-4h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+      </svg>
+    </div>
+    <div class="flex-1 min-w-0">
+      <p class="font-bold text-sm text-white">PackersHub Support</p>
+      <div class="flex items-center gap-1">
+        <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+        <p class="text-xs text-blue-200">AI Assistant • 24/7 Available</p>
+      </div>
+    </div>
+    <button class="text-white/70 hover:text-white transition-colors" id="chat-close-btn" aria-label="Close chat">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Messages -->
+  <div class="chatbot-messages" id="chat-messages">
+    <div class="msg-bot">
+      👋 Hi! I'm PackersHub's AI assistant. I can help you with quotes, services, city coverage, and booking. How can I help today?
+    </div>
+    <!-- Quick Replies -->
+    <div class="flex flex-wrap gap-1.5 mt-1" id="quick-replies">
+      <button class="quick-reply text-xs bg-white border border-brand-200 text-brand-600 rounded-full px-3 py-1 hover:bg-brand-50 transition-colors cursor-pointer">Get a quote</button>
+      <button class="quick-reply text-xs bg-white border border-brand-200 text-brand-600 rounded-full px-3 py-1 hover:bg-brand-50 transition-colors cursor-pointer">Cities we serve</button>
+      <button class="quick-reply text-xs bg-white border border-brand-200 text-brand-600 rounded-full px-3 py-1 hover:bg-brand-50 transition-colors cursor-pointer">Our services</button>
+      <button class="quick-reply text-xs bg-white border border-brand-200 text-brand-600 rounded-full px-3 py-1 hover:bg-brand-50 transition-colors cursor-pointer">Pricing info</button>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="chatbot-input">
+    <input 
+      type="text" 
+      id="chat-input" 
+      placeholder="Type your question..."
+      autocomplete="off"
+      maxlength="500"
+    />
+    <button id="chat-send" aria-label="Send message">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<script>
+const SYSTEM_PROMPT = `You are the AI customer support assistant for PackersHub, a professional packers and movers company in South India.
+
+KEY FACTS:
+- Company: PackersHub | Website: www.packershub.in
+- Phone/WhatsApp: +91 77310 74075
+- Address: BV Nagar, Nellore, Andhra Pradesh, India - 524004
+- Service Cities: 100 cities across Andhra Pradesh, Telangana, Tamil Nadu, Karnataka, Kerala
+- Services: House Shifting, Office Relocation, Bike Transport, Car Carrier, Warehouse Storage, Intercity Moves
+- Hours: 24/7 service
+- Payment: UPI, NEFT, Credit/Debit Card, Cash accepted
+- Key Feature: All-inclusive transparent pricing, no hidden charges
+- Guarantee: 100% Safe Delivery Guarantee, goods-in-transit insurance included
+
+RESPONSE STYLE:
+- Be warm, helpful, professional, and concise
+- Keep responses under 100 words
+- Always offer to connect them to human support via WhatsApp or call
+- For pricing, always say to call/WhatsApp for a free quote (pricing depends on volume, distance, type of goods)
+- End with a call-to-action when relevant`;
+
+const messages: {role: string, content: string}[] = [];
+let isLoading = false;
+
+const toggle = document.getElementById('chatbot-toggle');
+const window_ = document.getElementById('chatbot-window');
+const openIcon = document.getElementById('chat-open-icon');
+const closeIcon = document.getElementById('chat-close-icon');
+const closeBtnEl = document.getElementById('chat-close-btn');
+const messagesEl = document.getElementById('chat-messages');
+const inputEl = document.getElementById('chat-input') as HTMLInputElement;
+const sendBtn = document.getElementById('chat-send');
+const dot = document.getElementById('chat-dot');
+const quickReplies = document.getElementById('quick-replies');
+
+function openChat() {
+  window_?.classList.replace('closed', 'open');
+  toggle?.setAttribute('aria-expanded', 'true');
+  openIcon?.classList.add('hidden');
+  closeIcon?.classList.remove('hidden');
+  if (dot) dot.style.display = 'none';
+  setTimeout(() => inputEl?.focus(), 300);
+}
+
+function closeChat() {
+  window_?.classList.replace('open', 'closed');
+  toggle?.setAttribute('aria-expanded', 'false');
+  openIcon?.classList.remove('hidden');
+  closeIcon?.classList.add('hidden');
+}
+
+toggle?.addEventListener('click', () => {
+  window_?.classList.contains('open') ? closeChat() : openChat();
+});
+closeBtnEl?.addEventListener('click', closeChat);
+
+function addMessage(role: string, text: string) {
+  const div = document.createElement('div');
+  div.className = role === 'user' ? 'msg-user' : 'msg-bot';
+  div.textContent = text;
+  messagesEl?.appendChild(div);
+  messagesEl!.scrollTop = messagesEl!.scrollHeight;
+  return div;
+}
+
+function addTyping() {
+  const div = document.createElement('div');
+  div.className = 'typing-indicator';
+  div.id = 'typing';
+  div.innerHTML = '<span></span><span></span><span></span>';
+  messagesEl?.appendChild(div);
+  messagesEl!.scrollTop = messagesEl!.scrollHeight;
+}
+
+function removeTyping() {
+  document.getElementById('typing')?.remove();
+}
+
+async function sendMessage(text: string) {
+  if (!text.trim() || isLoading) return;
+  isLoading = true;
+  
+  // Hide quick replies on first message
+  if (messages.length === 0 && quickReplies) {
+    quickReplies.style.display = 'none';
+  }
+  
+  addMessage('user', text);
+  messages.push({ role: 'user', content: text });
+  
+  if (inputEl) inputEl.value = '';
+  addTyping();
+  
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages, system: SYSTEM_PROMPT })
+    });
+    
+    removeTyping();
+    
+    if (response.ok) {
+      const data = await response.json();
+      const reply = data.reply || "I'm having trouble right now. Please call us at +91 77310 74075 or WhatsApp for immediate help!";
+      addMessage('assistant', reply);
+      messages.push({ role: 'assistant', content: reply });
+    } else {
+      addMessage('assistant', "Sorry, I'm having trouble right now. Please call +91 77310 74075 or WhatsApp us for instant help!");
+    }
+  } catch {
+    removeTyping();
+    addMessage('assistant', "Connection issue. Please call +91 77310 74075 or WhatsApp us directly — we're available 24/7!");
+  }
+  
+  isLoading = false;
+}
+
+sendBtn?.addEventListener('click', () => sendMessage(inputEl?.value || ''));
+inputEl?.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage(inputEl.value);
+  }
+});
+
+// Quick replies
+document.querySelectorAll('.quick-reply').forEach(btn => {
+  btn.addEventListener('click', () => sendMessage(btn.textContent || ''));
+});
+
+// Reading progress bar
+const bar = document.createElement('div');
+bar.className = 'reading-progress';
+bar.id = 'reading-progress';
+document.body.prepend(bar);
+
+window.addEventListener('scroll', () => {
+  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+  const progress = (scrollTop / (scrollHeight - clientHeight)) * 100;
+  bar.style.width = `${Math.min(progress, 100)}%`;
+}, { passive: true });
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>

@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import statesData from '../../data/states.json';
+export async function getStaticPaths() {
+  return statesData.map(state => ({
+    params: { state: state.slug },
+    props: { state }
+  }));
+}
+const { state } = Astro.props;
+---
+<BaseLayout
+  title={`Packers and Movers in ${state.name} — PackersHub | ${state.cityCount} Cities`}
+  description={`PackersHub provides professional packers and movers across ${state.cityCount} cities in ${state.name}. All-inclusive pricing, transit insurance, 24/7 support. Call +91 77310 74075.`}
+  city="Nellore"
+  state={state.name}
+  lat={state.lat}
+  lng={state.lng}
+  breadcrumbs={[
+    { name: 'Home', url: '/' },
+    { name: state.name, url: state.url }
+  ]}
+>
+  <!-- Hero -->
+  <section class="bg-hero bg-grid py-20 lg:py-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-4 py-2 mb-6 text-slate-700 text-sm font-semibold">
+        📍 {state.cityCount} Cities · {state.name}
+      </span>
+      <h1 class="display-lg text-slate-900 font-display font-black mb-5">
+        Packers and Movers in<br/>
+        <span class="gold-text">{state.name}</span>
+      </h1>
+      <p class="text-slate-600 text-lg max-w-2xl mx-auto mb-8">{state.description}</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="tel:+917731074075" class="btn-gold py-3.5 px-8">📞 Call: +91 77310 74075</a>
+        <a href="https://wa.me/917731074075" target="_blank" rel="noopener" class="btn-ghost py-3.5 px-8">💬 WhatsApp Quote</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cities Grid -->
+  <section class="py-20 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12 reveal">
+        <span class="section-badge mb-4">{state.name}</span>
+        <h2 class="section-title mb-4">Our {state.cityCount} Service Cities in {state.name}</h2>
+        <p class="section-subtitle mx-auto">Click any city for local expertise, pricing, and route information.</p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        {state.cities.map((city: any, i: number) => (
+          <a href={city.url} class="city-card reveal" style={`transition-delay:${(i%5)*0.07}s`}>
+            <div class="text-xs text-slate-400 font-semibold mb-1">#{city.rank}</div>
+            <div class="font-bold text-slate-900 font-display text-sm">{city.name}</div>
+            <div class="text-brand-600 text-xs mt-1">{city.tagline}</div>
+            <div class="mt-3 text-brand-600 text-xs font-bold">View details →</div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-16 bg-hero">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+      <h2 class="text-slate-900 font-bold text-2xl font-display mb-4">Ready to Move in {state.name}?</h2>
+      <p class="text-slate-600 mb-8">Free quotes · All-inclusive pricing · 100% Safe Delivery Guarantee</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="tel:+917731074075" class="btn-gold">📞 +91 77310 74075</a>
+        <a href="https://wa.me/917731074075" target="_blank" rel="noopener" class="btn-ghost">💬 WhatsApp Us</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

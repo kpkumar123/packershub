@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "stateSlug": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "lat": {
+      "type": "number"
+    },
+    "lng": {
+      "type": "number"
+    },
+    "rank": {
+      "type": "number"
+    },
+    "tagline": {
+      "type": "string"
+    },
+    "phone": {
+      "default": "+91 77310 74075",
+      "type": "string"
+    },
+    "whatsapp": {
+      "default": "917731074075",
+      "type": "string"
+    },
+    "$schema": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "city",
+    "state",
+    "stateSlug",
+    "slug",
+    "description",
+    "lat",
+    "lng",
+    "rank"
+  ]
+}

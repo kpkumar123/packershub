@@ -1,0 +1,116 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const contactSchema = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact PackersHub",
+  "url": "https://www.packershub.in/contact/",
+  "mainEntity": {
+    "@type": "MovingCompany",
+    "name": "PackersHub",
+    "telephone": "+91 77310 74075",
+    "email": "info@packershub.in",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "BV Nagar",
+      "addressLocality": "Nellore",
+      "addressRegion": "Andhra Pradesh",
+      "postalCode": "524004",
+      "addressCountry": "IN"
+    }
+  }
+};
+---
+<BaseLayout
+  title="Contact PackersHub — Call, WhatsApp or Email | +91 77310 74075"
+  description="Contact PackersHub for free quotes, booking, or any moving queries. Call +91 77310 74075, WhatsApp, or email us. We serve 100 cities across South India."
+  schema={contactSchema}
+  breadcrumbs={[{ name: 'Home', url: '/' }, { name: 'Contact', url: '/contact/' }]}
+>
+  <section class="bg-hero bg-grid py-20">
+    <div class="max-w-2xl mx-auto px-4 text-center">
+      <h1 class="display-lg text-slate-900 font-display font-black mb-4">Get in Touch</h1>
+      <p class="text-slate-600 text-lg">Free quotes · 24/7 support · Instant WhatsApp response</p>
+    </div>
+  </section>
+  <section class="py-16 bg-white">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="grid lg:grid-cols-2 gap-12">
+        <!-- Contact Info -->
+        <div>
+          <h2 class="section-title mb-8 reveal">Contact PackersHub</h2>
+          <div class="space-y-6">
+            {[
+              ['📞','Phone / WhatsApp','+91 77310 74075','tel:+917731074075'],
+              ['📧','Email','info@packershub.in','mailto:info@packershub.in'],
+              ['📍','Address','BV Nagar, Nellore, Andhra Pradesh — 524004',null],
+              ['🕐','Hours','24/7 Customer Support — 365 days a year',null],
+            ].map(([icon, label, value, href]) => (
+              <div class="flex gap-4 reveal">
+                <span class="text-2xl">{icon}</span>
+                <div>
+                  <div class="font-bold text-slate-900 mb-1">{label}</div>
+                  {href ? (
+                    <a href={href} class="text-brand-600 hover:underline font-medium">{value}</a>
+                  ) : (
+                    <p class="text-slate-600">{value}</p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div class="mt-8 flex gap-4">
+            <a href="tel:+917731074075" class="btn-primary">📞 Call Now</a>
+            <a href="https://wa.me/917731074075" target="_blank" rel="noopener" class="btn-secondary">💬 WhatsApp</a>
+          </div>
+        </div>
+        <!-- Contact Form -->
+        <div class="glass-card p-8 reveal">
+          <h3 class="font-bold text-xl text-slate-900 font-display mb-6">Send a Message</h3>
+          <form id="contact-form" class="space-y-4">
+            <div><label class="form-label">Name *</label><input type="text" name="name" class="form-input" required placeholder="Your full name"/></div>
+            <div><label class="form-label">Phone *</label><input type="tel" name="phone" class="form-input" required placeholder="+91 XXXXX XXXXX"/></div>
+            <div><label class="form-label">Email</label><input type="email" name="email" class="form-input" placeholder="your@email.com"/></div>
+            <div><label class="form-label">Message *</label><textarea name="message" class="form-textarea" required placeholder="Tell us about your move — from, to, date, any special requirements..."></textarea></div>
+            <button type="submit" class="btn-primary w-full justify-center py-3.5" id="contact-submit-btn">Send via WhatsApp →</button>
+            <p class="form-hint" id="contact-sent-note" style="display:none">Sent! If WhatsApp didn't open, tap <a href="https://wa.me/917731074075" target="_blank" rel="noopener" class="text-brand-600 font-semibold">here</a>.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+<script>
+function generateTrackingId() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let id = 'PH-';
+  for (let i = 0; i < 6; i++) id += chars[Math.floor(Math.random() * chars.length)];
+  return id;
+}
+
+document.getElementById('contact-form')?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const form = e.target as HTMLFormElement;
+  const name = (form.querySelector('[name=name]') as HTMLInputElement).value;
+  const phone = (form.querySelector('[name=phone]') as HTMLInputElement).value;
+  const email = (form.querySelector('[name=email]') as HTMLInputElement).value;
+  const message = (form.querySelector('[name=message]') as HTMLTextAreaElement).value;
+  const trackingId = generateTrackingId();
+
+  const msg = encodeURIComponent(`Hi PackersHub!\n\nName: ${name}\nPhone: ${phone}${email ? '\nEmail: ' + email : ''}\n\nMessage: ${message}\n\n(Ref: ${trackingId})`);
+  window.open(`https://wa.me/917731074075?text=${msg}`, '_blank');
+  window.phTrack?.('contact_form_submitted');
+
+  // Backup lead capture — fired after window.open() so it never delays
+  // or risks the WhatsApp popup being blocked.
+  fetch('/api/lead', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type: 'contact', trackingId, name, phone, email, message, source: 'contact_page' }),
+  }).catch(() => { /* backup only — WhatsApp already sent */ });
+
+  document.getElementById('contact-sent-note')!.style.display = 'block';
+  form.reset();
+});
+</script>

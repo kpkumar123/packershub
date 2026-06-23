@@ -1,0 +1,23 @@
+name = "packershub"
+account_id = "159b373543d5f616b5895cbae4899abd"
+compatibility_date = "2026-01-01"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "dist"
+
+# This switches it from standard Pages to Cloudflare Workers Assets
+[assets]
+directory = "./dist"
+
+[placement]
+mode = "smart"
+
+# ── Order Tracking (v6.5.0) ─────────────────────────────────────
+# Powers /track/ (customer lookup) and /admin/orders/ (staff updates).
+# 1. Create the namespace once:   wrangler kv namespace create TRACKING_KV
+# 2. Paste the returned id below.
+# 3. Re-deploy. Until this is filled in, /track/ and the lead-capture
+#    backup still work fine — they just skip the KV step gracefully.
+# See SETUP_NEW_FEATURES.md for the full walkthrough.
+# [[kv_namespaces]]
+# binding = "TRACKING_KV"
+# id = "REPLACE_WITH_YOUR_NAMESPACE_ID"

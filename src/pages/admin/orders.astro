@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+// Staff-only page — already excluded from search engines via /admin/
+// Disallow in public/robots.txt. Not linked from any public nav menu.
+---
+<BaseLayout
+  title="Staff — Update Order Status"
+  description="Internal tool for PackersHub staff to update booking status."
+  noindex={true}
+>
+  <section class="py-16 bg-slate-50 min-h-screen">
+    <div class="max-w-xl mx-auto px-4">
+      <h1 class="section-title mb-2">Update Booking Status</h1>
+      <p class="text-slate-500 mb-8 text-sm">Internal tool. Enter your staff token once — it's remembered on this device.</p>
+
+      <div class="glass-card p-6 mb-6">
+        <label class="form-label">Staff Token</label>
+        <div class="flex gap-2">
+          <input type="password" id="admin-token" class="form-input" placeholder="Paste staff token" />
+          <button id="save-token" class="btn-secondary" type="button">Save</button>
+        </div>
+        <p class="form-hint" id="token-status"></p>
+      </div>
+
+      <div class="glass-card p-6 mb-6">
+        <label class="form-label">Tracking ID</label>
+        <div class="flex gap-2">
+          <input type="text" id="lookup-id" class="form-input" placeholder="e.g. PH-7K2M9X" />
+          <button id="lookup-btn" class="btn-secondary" type="button">Look Up</button>
+        </div>
+        <p class="form-error" id="lookup-error" style="display:none"></p>
+      </div>
+
+      <div class="glass-card p-6" id="record-card" style="display:none">
+        <h2 class="font-bold text-lg text-slate-900 mb-4" id="record-name"></h2>
+        <div class="text-sm text-slate-600 space-y-1 mb-6" id="record-details"></div>
+
+        <label class="form-label">New Status</label>
+        <select id="status-select" class="form-select mb-3"></select>
+
+        <label class="form-label">Note (optional)</label>
+        <textarea id="status-note" class="form-textarea mb-4" placeholder="e.g. Crew dispatched, ETA 4 PM"></textarea>
+
+        <button id="update-btn" class="btn-primary w-full justify-center py-3" type="button">Update Status</button>
+        <p class="form-hint" id="update-result" style="margin-top:0.75rem"></p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+const tokenInput = document.getElementById('admin-token');
+const tokenStatus = document.getElementById('token-status');
+const STORAGE_KEY = 'ph_admin_token';
+
+function getToken() { return localStorage.getItem(STORAGE_KEY) || ''; }
+
+(function initToken() {
+  const saved = getToken();
+  if (saved) {
+    tokenInput.value = saved;
+    tokenStatus.textContent = 'Token loaded from this device.';
+  }
+})();
+
+document.getElementById('save-token').addEventListener('click', () => {
+  localStorage.setItem(STORAGE_KEY, tokenInput.value.trim());
+  tokenStatus.textContent = 'Saved on this device.';
+});
+
+let currentId = null;
+
+document.getElementById('lookup-btn').addEventListener('click', async () => {
+  const id = document.getElementById('lookup-id').value.trim().toUpperCase();
+  const errorEl = document.getElementById('lookup-error');
+  const card = document.getElementById('record-card');
+  errorEl.style.display = 'none';
+  card.style.display = 'none';
+
+  if (!id) { errorEl.textContent = 'Enter a Tracking ID.'; errorEl.style.display = 'block'; return; }
+
+  try {
+    const res = await fetch(`/api/admin/order?id=${encodeURIComponent(id)}`, {
+      headers: { 'x-admin-token': getToken() },
+    });
+    const data = await res.json();
+    if (!data.ok) {
+      errorEl.textContent = data.error || 'Lookup failed.';
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    currentId = data.record.trackingId;
+    document.getElementById('record-name').textContent =
+      `${data.record.name || 'Unknown'} — ${data.record.trackingId}`;
+    document.getElementById('record-details').innerHTML = [
+      `Phone: ${data.record.phone}`,
+      data.record.email ? `Email: ${data.record.email}` : '',
+      (data.record.fromCity || data.record.toCity) ? `Route: ${data.record.fromCity || '-'} → ${data.record.toCity || '-'}` : '',
+      data.record.moveDate ? `Move date: ${data.record.moveDate}` : '',
+      data.record.message ? `Message: ${data.record.message}` : '',
+      `Current status: <strong>${data.record.status}</strong>`,
+    ].filter(Boolean).map(l => `<div>${l}</div>`).join('');
+
+    const select = document.getElementById('status-select');
+    select.innerHTML = data.stages.map(s =>
+      `<option value="${s}" ${s === data.record.status ? 'selected' : ''}>${s}</option>`
+    ).join('');
+
+    card.style.display = 'block';
+  } catch {
+    errorEl.textContent = 'Network error. Please try again.';
+    errorEl.style.display = 'block';
+  }
+});
+
+document.getElementById('update-btn').addEventListener('click', async () => {
+  if (!currentId) return;
+  const status = document.getElementById('status-select').value;
+  const note = document.getElementById('status-note').value.trim();
+  const resultEl = document.getElementById('update-result');
+
+  try {
+    const res = await fetch('/api/admin/order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-token': getToken() },
+      body: JSON.stringify({ id: currentId, status, note }),
+    });
+    const data = await res.json();
+    resultEl.textContent = data.ok ? `Updated to "${status}".` : (data.error || 'Update failed.');
+  } catch {
+    resultEl.textContent = 'Network error. Please try again.';
+  }
+});
+</script>

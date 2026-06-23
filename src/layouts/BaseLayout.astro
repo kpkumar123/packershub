@@ -1,0 +1,62 @@
+---
+import SEOHead from '../components/SEOHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FloatingCTA from '../components/FloatingCTA.astro';
+import ChatBot from '../components/ChatBot.astro';
+import Analytics from '../components/Analytics.astro';
+import '../styles/global.css';
+export interface Props {
+  title: string; description: string; canonical?: string;
+  ogImage?: string; type?: 'website'|'article';
+  city?: string; state?: string; lat?: number; lng?: number;
+  noindex?: boolean; schema?: object;
+  breadcrumbs?: { name: string; url: string }[];
+  publishDate?: Date; modifiedDate?: Date; author?: string;
+}
+const props = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en-IN" class="scroll-smooth">
+<head>
+  <SEOHead {...props} />
+  <Analytics />
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <Header />
+  <main id="main-content">
+    <slot />
+  </main>
+  <Footer />
+  <FloatingCTA />
+  <ChatBot />
+
+  <script>
+    // Header scroll effect
+    const header = document.getElementById('site-header');
+    const observer = new IntersectionObserver(
+      ([e]) => header?.classList.toggle('scrolled', !e.isIntersecting),
+      { threshold: 0, rootMargin: '-64px 0px 0px 0px' }
+    );
+    const sentinel = document.createElement('div');
+    sentinel.style.height = '1px';
+    document.body.insertAdjacentElement('afterbegin', sentinel);
+    observer.observe(sentinel);
+
+    // Reveal animations
+    const revealEls = document.querySelectorAll('.reveal');
+    if (revealEls.length > 0) {
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+      revealEls.forEach(el => revealObserver.observe(el));
+    }
+  </script>
+</body>
+</html>

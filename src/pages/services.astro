@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const services = [
+  { icon:'🏠', title:'House Shifting', desc:'Complete residential relocation — survey, packing, loading, transport, unloading, and unpacking. Moisture-resistant and fragile-safe materials used throughout.' },
+  { icon:'🏢', title:'Office Relocation', desc:'Zero-downtime commercial moves. IT equipment, workstations, server rooms, archived documents — handled with static-safe packing and off-hours scheduling.' },
+  { icon:'🛵', title:'Bike Transport', desc:'Cradle-frame mounting with scratch protection, fuel-leak prevention, and mechanical stress elimination. City-to-city or interstate.' },
+  { icon:'🚗', title:'Car Carrier Service', desc:'Open and enclosed trailer options for all car types. Full insurance coverage. Available across all 100 cities.' },
+  { icon:'📦', title:'Warehouse Storage', desc:'Secure, climate-controlled short-term and long-term storage. First 48 hours free. Extended options with 24/7 security monitoring.' },
+  { icon:'🚚', title:'Intercity & Interstate Moves', desc:'South India-wide coverage across 100 cities in 5 states. Same transparent pricing for interstate moves as local ones.' },
+];
+
+const servicesSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "itemListElement": services.map((s, i) => ({
+    "@type": "ListItem",
+    "position": i + 1,
+    "item": {
+      "@type": "Service",
+      "name": s.title,
+      "description": s.desc,
+      "provider": { "@type": "MovingCompany", "name": "PackersHub" },
+      "areaServed": { "@type": "State", "name": ["Andhra Pradesh","Telangana","Tamil Nadu","Karnataka","Kerala"] }
+    }
+  }))
+};
+---
+<BaseLayout
+  title="Packers and Movers Services — PackersHub | House Shifting, Office Relocation, Bike Transport"
+  description="Complete relocation services: house shifting, office moves, bike transport, car carrier, warehouse storage. All-inclusive pricing across 100 cities in South India."
+  schema={servicesSchema}
+  breadcrumbs={[{ name: 'Home', url: '/' }, { name: 'Services', url: '/services/' }]}
+>
+  <section class="bg-hero bg-grid py-20"><div class="max-w-3xl mx-auto px-4 text-center"><h1 class="display-lg text-slate-900 font-display font-black mb-4">Our Services</h1><p class="text-slate-600 text-lg">Complete relocation services — transparent pricing, goods-in-transit insurance, 24/7 support.</p></div></section>
+  <section class="py-16 bg-slate-50"><div class="max-w-5xl mx-auto px-4">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {services.map((s,i) => (
+        <div class="service-card reveal" style={`transition-delay:${i*0.07}s`}>
+          <div class="text-4xl mb-4">{s.icon}</div>
+          <h2 class="font-bold text-lg text-slate-900 font-display mb-3">{s.title}</h2>
+          <p class="text-slate-600 text-sm leading-relaxed">{s.desc}</p>
+        </div>
+      ))}
+    </div>
+    <div class="mt-12 text-center reveal">
+      <p class="text-slate-600 mb-6 text-lg">Ready to book or get a free quote?</p>
+      <div class="flex gap-4 justify-center flex-wrap">
+        <a href="tel:+917731074075" class="btn-primary">📞 Call: +91 77310 74075</a>
+        <a href="https://wa.me/917731074075" target="_blank" rel="noopener" class="btn-secondary">💬 WhatsApp</a>
+      </div>
+    </div>
+  </div></section>
+</BaseLayout>

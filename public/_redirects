@@ -1,0 +1,112 @@
+# Home root redirect (existing)
+/home / 301
+
+# Legacy URL structure redirects (old Next.js build used /packers-movers-{city}/
+# new Astro build uses /{state}/{city}/ — added after a stale indexed URL
+# (packers-movers-kozhikode) was found 404ing in Google search results, with
+# an outdated phone number in the cached snippet. These 301s fix that and any
+# other legacy links pointing at the old pattern.
+/packers-movers-visakhapatnam/  /andhra-pradesh/visakhapatnam/  301
+/packers-movers-vijayawada/  /andhra-pradesh/vijayawada/  301
+/packers-movers-guntur/  /andhra-pradesh/guntur/  301
+/packers-movers-nellore/  /andhra-pradesh/nellore/  301
+/packers-movers-kurnool/  /andhra-pradesh/kurnool/  301
+/packers-movers-rajahmundry/  /andhra-pradesh/rajahmundry/  301
+/packers-movers-kakinada/  /andhra-pradesh/kakinada/  301
+/packers-movers-tirupati/  /andhra-pradesh/tirupati/  301
+/packers-movers-eluru/  /andhra-pradesh/eluru/  301
+/packers-movers-ongole/  /andhra-pradesh/ongole/  301
+/packers-movers-vizianagaram/  /andhra-pradesh/vizianagaram/  301
+/packers-movers-srikakulam/  /andhra-pradesh/srikakulam/  301
+/packers-movers-anantapur/  /andhra-pradesh/anantapur/  301
+/packers-movers-chittoor/  /andhra-pradesh/chittoor/  301
+/packers-movers-kadapa/  /andhra-pradesh/kadapa/  301
+/packers-movers-tanuku/  /andhra-pradesh/tanuku/  301
+/packers-movers-narasaraopet/  /andhra-pradesh/narasaraopet/  301
+/packers-movers-machilipatnam/  /andhra-pradesh/machilipatnam/  301
+/packers-movers-palakollu/  /andhra-pradesh/palakollu/  301
+/packers-movers-bhimavaram/  /andhra-pradesh/bhimavaram/  301
+/packers-movers-hyderabad/  /telangana/hyderabad/  301
+/packers-movers-warangal/  /telangana/warangal/  301
+/packers-movers-nizamabad/  /telangana/nizamabad/  301
+/packers-movers-khammam/  /telangana/khammam/  301
+/packers-movers-karimnagar/  /telangana/karimnagar/  301
+/packers-movers-ramagundam/  /telangana/ramagundam/  301
+/packers-movers-mahbubnagar/  /telangana/mahbubnagar/  301
+/packers-movers-nalgonda/  /telangana/nalgonda/  301
+/packers-movers-adilabad/  /telangana/adilabad/  301
+/packers-movers-suryapet/  /telangana/suryapet/  301
+/packers-movers-siddipet/  /telangana/siddipet/  301
+/packers-movers-jagtial/  /telangana/jagtial/  301
+/packers-movers-medchal/  /telangana/medchal/  301
+/packers-movers-sangareddy/  /telangana/sangareddy/  301
+/packers-movers-miryalaguda/  /telangana/miryalaguda/  301
+/packers-movers-jangaon/  /telangana/jangaon/  301
+/packers-movers-narayanpet/  /telangana/narayanpet/  301
+/packers-movers-bhadradri-kothagudem/  /telangana/bhadradri-kothagudem/  301
+/packers-movers-nirmal/  /telangana/nirmal/  301
+/packers-movers-bhuvanagiri/  /telangana/bhuvanagiri/  301
+/packers-movers-chennai/  /tamil-nadu/chennai/  301
+/packers-movers-coimbatore/  /tamil-nadu/coimbatore/  301
+/packers-movers-madurai/  /tamil-nadu/madurai/  301
+/packers-movers-tiruchirappalli/  /tamil-nadu/tiruchirappalli/  301
+/packers-movers-salem/  /tamil-nadu/salem/  301
+/packers-movers-tirunelveli/  /tamil-nadu/tirunelveli/  301
+/packers-movers-tiruppur/  /tamil-nadu/tiruppur/  301
+/packers-movers-vellore/  /tamil-nadu/vellore/  301
+/packers-movers-erode/  /tamil-nadu/erode/  301
+/packers-movers-thoothukudi/  /tamil-nadu/thoothukudi/  301
+/packers-movers-dindigul/  /tamil-nadu/dindigul/  301
+/packers-movers-thanjavur/  /tamil-nadu/thanjavur/  301
+/packers-movers-ranipet/  /tamil-nadu/ranipet/  301
+/packers-movers-kanchipuram/  /tamil-nadu/kanchipuram/  301
+/packers-movers-cuddalore/  /tamil-nadu/cuddalore/  301
+/packers-movers-nagapattinam/  /tamil-nadu/nagapattinam/  301
+/packers-movers-krishnagiri/  /tamil-nadu/krishnagiri/  301
+/packers-movers-virudhunagar/  /tamil-nadu/virudhunagar/  301
+/packers-movers-pudukkottai/  /tamil-nadu/pudukkottai/  301
+/packers-movers-ooty/  /tamil-nadu/ooty/  301
+/packers-movers-bengaluru/  /karnataka/bengaluru/  301
+/packers-movers-mysuru/  /karnataka/mysuru/  301
+/packers-movers-hubballi/  /karnataka/hubballi/  301
+/packers-movers-mangaluru/  /karnataka/mangaluru/  301
+/packers-movers-belagavi/  /karnataka/belagavi/  301
+/packers-movers-kalaburagi/  /karnataka/kalaburagi/  301
+/packers-movers-ballari/  /karnataka/ballari/  301
+/packers-movers-bidar/  /karnataka/bidar/  301
+/packers-movers-davanagere/  /karnataka/davanagere/  301
+/packers-movers-shivamogga/  /karnataka/shivamogga/  301
+/packers-movers-tumakuru/  /karnataka/tumakuru/  301
+/packers-movers-raichur/  /karnataka/raichur/  301
+/packers-movers-vijayapura/  /karnataka/vijayapura/  301
+/packers-movers-hassan/  /karnataka/hassan/  301
+/packers-movers-chitradurga/  /karnataka/chitradurga/  301
+/packers-movers-madikeri/  /karnataka/madikeri/  301
+/packers-movers-udupi/  /karnataka/udupi/  301
+/packers-movers-chikkamagaluru/  /karnataka/chikkamagaluru/  301
+/packers-movers-kolar/  /karnataka/kolar/  301
+/packers-movers-gadag/  /karnataka/gadag/  301
+/packers-movers-thiruvananthapuram/  /kerala/thiruvananthapuram/  301
+/packers-movers-kochi/  /kerala/kochi/  301
+/packers-movers-kozhikode/  /kerala/kozhikode/  301
+/packers-movers-thrissur/  /kerala/thrissur/  301
+/packers-movers-kollam/  /kerala/kollam/  301
+/packers-movers-palakkad/  /kerala/palakkad/  301
+/packers-movers-alappuzha/  /kerala/alappuzha/  301
+/packers-movers-kannur/  /kerala/kannur/  301
+/packers-movers-kottayam/  /kerala/kottayam/  301
+/packers-movers-malappuram/  /kerala/malappuram/  301
+/packers-movers-kasaragod/  /kerala/kasaragod/  301
+/packers-movers-pathanamthitta/  /kerala/pathanamthitta/  301
+/packers-movers-wayanad/  /kerala/wayanad/  301
+/packers-movers-idukki/  /kerala/idukki/  301
+/packers-movers-neyyattinkara/  /kerala/neyyattinkara/  301
+/packers-movers-angamaly/  /kerala/angamaly/  301
+/packers-movers-chalakudy/  /kerala/chalakudy/  301
+/packers-movers-perinthalmanna/  /kerala/perinthalmanna/  301
+/packers-movers-thodupuzha/  /kerala/thodupuzha/  301
+/packers-movers-nilambur/  /kerala/nilambur/  301
+
+# Safety net: any other unmatched legacy /packers-movers-* URL -> homepage
+# (specific rules above take priority since Cloudflare matches top-to-bottom)
+/packers-movers-*  /  301

@@ -1,0 +1,35 @@
+{
+  "name": "PackersHub — Packers and Movers South India",
+  "short_name": "PackersHub",
+  "description": "Trusted packers and movers across 100 cities in South India. All-inclusive pricing, transit insurance, 24/7 support.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#1e3a8a",
+  "orientation": "any",
+  "lang": "en-IN",
+  "icons": [
+    { "src": "/icon-32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Get Free Quote",
+      "short_name": "Quote",
+      "description": "Get an instant moving quote via WhatsApp",
+      "url": "https://wa.me/917731074075?text=Hi%20PackersHub!%20I%20need%20a%20moving%20quote.",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Call Us",
+      "short_name": "Call",
+      "description": "Call PackersHub directly",
+      "url": "tel:+917731074075",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "categories": ["business", "utilities"],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

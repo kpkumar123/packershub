@@ -1,0 +1,39 @@
+---
+// Analytics.astro — GA4 tracking + a tiny site-wide event helper (window.phTrack)
+//
+// Renders NOTHING if PUBLIC_GA_MEASUREMENT_ID is not set, so the site never
+// breaks or shows a broken script tag before you've created a GA4 property.
+//
+// Setup: see SETUP_NEW_FEATURES.md → "1. Analytics" for how to get a
+// Measurement ID and where to put it.
+const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+---
+{gaId && (
+  <>
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+    <script define:vars={{ gaId }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', gaId, { anonymize_ip: true });
+
+      // window.phTrack(eventName, params) — call this anywhere on the site
+      // instead of calling gtag directly. If GA isn't loaded for any reason
+      // (ad-blocker, offline, etc.) this just no-ops instead of throwing.
+      window.phTrack = function (eventName, params) {
+        try {
+          if (typeof window.gtag === 'function') {
+            window.gtag('event', eventName, params || {});
+          }
+        } catch (e) { /* never let analytics break the page */ }
+      };
+    </script>
+  </>
+)}
+{!gaId && (
+  <script>
+    // No GA Measurement ID configured yet — keep phTrack callable so other
+    // components don't need to guard every call site.
+    window.phTrack = function () {};
+  </script>
+)}
