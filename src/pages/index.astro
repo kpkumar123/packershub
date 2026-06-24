@@ -61,31 +61,45 @@ const stateEmojis = ['🌊','💎','🏛️','☕','🌴'];
     <!-- Decorative orbs -->
     <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-brand-500/12 rounded-full blur-3xl animate-pulse pointer-events-none" style="animation-duration:4s"></div>
     <div class="absolute bottom-1/4 left-1/4 w-80 h-80 bg-orange-400/15 rounded-full blur-3xl pointer-events-none" style="animation: float 7s ease-in-out infinite"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-olive-400/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(600px,100vw)] h-[min(600px,100vw)] bg-olive-400/10 rounded-full blur-3xl pointer-events-none">
+</div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28 w-full relative z-10">
       <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
         <!-- Left Content -->
-        <div class="text-center lg:text-left">
+        <div class="text-center lg:text-left min-w-0">
           <!-- Live indicator -->
-          <div class="inline-flex items-center gap-2.5 bg-white/80 border border-slate-200 rounded-full px-4 py-2 mb-8 backdrop-blur-sm shadow-sm">
+          <div class="inline-flex items-center gap-2.5 bg-white/80 border border-slate-200 rounded-full px-4 py-2 mb-8 backdrop-blur-sm shadow-sm max-w-full">
             <span class="relative flex h-2.5 w-2.5">
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
               <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
             </span>
-            <span class="text-slate-700 text-sm font-semibold tracking-wide">Available Now · 100 Cities · 5 States</span>
+            <span class="text-slate-700 text-sm font-semibold tracking-wide truncate">Available Now · 100 Cities · 5 States</span>
           </div>
 
           <h1 class="display-xl font-display font-black text-slate-900 mb-6 leading-[1.05]">
             South India's
             <span class="gold-text block">Most Trusted</span>
-            <span class="text-brand-700">Movers</span>
+            <span class="text-brand-700"> Packers & Movers</span>
           </h1>
 
           <p class="text-slate-600 text-lg leading-relaxed mb-8 max-w-lg mx-auto lg:mx-0">
             Professional packers and movers across Andhra Pradesh, Telangana, Tamil Nadu, Karnataka, and Kerala. All-inclusive pricing, goods-in-transit insurance, and a 100% Safe Delivery Guarantee on every move.
           </p>
+
+          <!-- Mobile hero image — only visible below lg breakpoint -->
+<div class="block lg:hidden w-full mb-8 rounded-2xl overflow-hidden shadow-lg">
+  <img
+    src="/images/MoversImgHome.jpeg"
+    alt="PackersHub professional packers and movers team"
+    width="600"
+    height="400"
+    class="w-full h-auto object-cover"
+    loading="eager"
+    fetchpriority="high"
+  />
+</div>
 
           <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-10">
             <a href="tel:+917731074075" class="btn-gold text-base py-4 px-8 shadow-[0_8px_30px_rgba(245,158,11,0.5)]">
@@ -111,7 +125,7 @@ const stateEmojis = ['🌊','💎','🏛️','☕','🌴'];
         </div>
 
         <!-- Right: Booking Engine -->
-        <div class="w-full">
+        <div class="w-full min-w-0 overflow-hidden">
           <BookingEngine />
         </div>
       </div>
