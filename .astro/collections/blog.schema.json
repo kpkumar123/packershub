@@ -1,54 +1,84 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "title": {
-      "type": "string"
-    },
-    "description": {
-      "type": "string"
-    },
-    "pubDate": {
-      "type": "string",
-      "format": "date-time"
-    },
-    "updatedDate": {
-      "type": "string",
-      "format": "date-time"
-    },
-    "author": {
-      "default": "PackersHub Team",
-      "type": "string"
-    },
-    "category": {
-      "default": "Tips",
-      "type": "string"
-    },
-    "tags": {
-      "default": [],
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "featured": {
-      "default": false,
-      "type": "boolean"
-    },
-    "readTime": {
-      "default": 5,
-      "type": "number"
-    },
-    "image": {
-      "type": "string"
-    },
-    "$schema": {
-      "type": "string"
+  "$ref": "#/definitions/blog",
+  "definitions": {
+    "blog": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "pubDate": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "integer",
+              "format": "unix-time"
+            }
+          ]
+        },
+        "updatedDate": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "integer",
+              "format": "unix-time"
+            }
+          ]
+        },
+        "author": {
+          "type": "string",
+          "default": "PackersHub Team"
+        },
+        "category": {
+          "type": "string",
+          "default": "Tips"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "featured": {
+          "type": "boolean",
+          "default": false
+        },
+        "readTime": {
+          "type": "number",
+          "default": 5
+        },
+        "image": {
+          "type": "string"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "description",
+        "pubDate"
+      ],
+      "additionalProperties": false
     }
   },
-  "required": [
-    "title",
-    "description",
-    "pubDate"
-  ]
+  "$schema": "http://json-schema.org/draft-07/schema#"
 }

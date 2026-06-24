@@ -1,58 +1,64 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "title": {
-      "type": "string"
-    },
-    "city": {
-      "type": "string"
-    },
-    "state": {
-      "type": "string"
-    },
-    "stateSlug": {
-      "type": "string"
-    },
-    "slug": {
-      "type": "string"
-    },
-    "description": {
-      "type": "string"
-    },
-    "lat": {
-      "type": "number"
-    },
-    "lng": {
-      "type": "number"
-    },
-    "rank": {
-      "type": "number"
-    },
-    "tagline": {
-      "type": "string"
-    },
-    "phone": {
-      "default": "+91 77310 74075",
-      "type": "string"
-    },
-    "whatsapp": {
-      "default": "917731074075",
-      "type": "string"
-    },
-    "$schema": {
-      "type": "string"
+  "$ref": "#/definitions/cities",
+  "definitions": {
+    "cities": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "stateSlug": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "lat": {
+          "type": "number"
+        },
+        "lng": {
+          "type": "number"
+        },
+        "rank": {
+          "type": "number"
+        },
+        "tagline": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string",
+          "default": "+91 77310 74075"
+        },
+        "whatsapp": {
+          "type": "string",
+          "default": "917731074075"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "city",
+        "state",
+        "stateSlug",
+        "slug",
+        "description",
+        "lat",
+        "lng",
+        "rank"
+      ],
+      "additionalProperties": false
     }
   },
-  "required": [
-    "title",
-    "city",
-    "state",
-    "stateSlug",
-    "slug",
-    "description",
-    "lat",
-    "lng",
-    "rank"
-  ]
+  "$schema": "http://json-schema.org/draft-07/schema#"
 }
