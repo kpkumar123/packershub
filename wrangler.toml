@@ -1,37 +1,17 @@
-# PackersHub v10.6.6 — Astro 7.0.3 + Tailwind v4 + Cloudflare Pages (wrangler v4 / adapter v13)
 name = "packershub"
 compatibility_date = "2026-06-28"
 compatibility_flags = ["nodejs_compat"]
-pages_build_output_dir = "dist"
 
 [placement]
 mode = "smart"
 
-# ── Order Tracking (Cloudflare KV) ───────────────────────────────
-# Powers /track/ (customer lookup) and /admin/orders/ (staff updates).
-# 1. Create the namespace:  wrangler kv namespace create TRACKING_KV
-# 2. Paste the returned id below and uncomment.
-# 3. Re-deploy.
-# Until this is filled in, /track/ and lead-capture still work —
-# they skip the KV step gracefully.
-# [[kv_namespaces]]
-# binding = "TRACKING_KV"
+[[kv_namespaces]]
+binding = "TRACKING_KV"
 # id = "REPLACE_WITH_YOUR_NAMESPACE_ID"
 
-# ── Non-secret vars ───────────────────────────────────────────────
-# Safe to commit — no API keys or tokens here.
 [vars]
 SITE_URL = "https://packershub.in"
 
-# ── Secrets (DO NOT put these in this file) ───────────────────────
-# See .env.example for the full list and what each one does.
-# Set each one you actually use with:
-#   wrangler pages secret put VAR_NAME --project-name=packershub
-# At minimum, the review-request step needs GOOGLE_REVIEW_URL, and the
-# cron endpoint needs CRON_SECRET if it's exposed to an external caller:
-#   wrangler pages secret put GOOGLE_REVIEW_URL --project-name=packershub
-#   wrangler pages secret put CRON_SECRET --project-name=packershub
-# Every integration no-ops gracefully if its secret is unset, so partial
-# setup is fine — only configure what you're actually using.
 [assets]
+directory = "dist"
 binding = "STATIC_ASSETS"
