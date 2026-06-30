@@ -33,3 +33,5 @@ SITE_URL = "https://packershub.in"
 #   wrangler pages secret put CRON_SECRET --project-name=packershub
 # Every integration no-ops gracefully if its secret is unset, so partial
 # setup is fine — only configure what you're actually using.
+[assets]
+binding = "STATIC_ASSETS"
