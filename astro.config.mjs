@@ -11,7 +11,7 @@ import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
   site: 'https://www.packershub.in',
-  output: 'static',
+  output: 'server',
   adapter: cloudflare({
     imageService: 'passthrough',
     // platformProxy: { enabled: true },
