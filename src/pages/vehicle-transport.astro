@@ -1,0 +1,145 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+
+const vehicleTypes = [
+  { icon: '🚗', title: 'Car Transport', desc: 'Hatchbacks, sedans, and SUVs moved on enclosed or open carriers across South India.' },
+  { icon: '🏍️', title: 'Bike Transport', desc: 'Two-wheelers crated and secured individually — safe for both daily-use and premium bikes.' },
+  { icon: '🚙', title: 'Multi-Vehicle Transport', desc: 'Moving more than one vehicle? We coordinate combined trips with better per-vehicle pricing.' },
+];
+
+const features = [
+  { icon: '🚛', title: 'Enclosed Carrier Trucks', desc: 'Vehicles travel shielded from dust, weather, and road debris on enclosed carriers.' },
+  { icon: '📍', title: 'Status Tracking', desc: 'Milestone updates via WhatsApp at pickup, in-transit, and delivery — checkable anytime at packershub.in/track.' },
+  { icon: '✅', title: 'Zero Scratch Guarantee', desc: 'Pre-transport condition photos and careful loading/unloading protocols to protect your vehicle\'s finish.' },
+  { icon: '🚪', title: 'Door-to-Door Delivery', desc: 'Pickup from your home or office, delivered directly to the destination address.' },
+  { icon: '🛡️', title: 'Insurance Included', desc: 'Every vehicle transport booking includes transit insurance against transport-related damage.' },
+  { icon: '📝', title: 'Condition Report Issued', desc: 'A documented condition report is shared with you before and after transport for full transparency.' },
+];
+
+const faqs = [
+  { q: 'How much does it cost to transport a car or bike in South India?', a: 'Cost depends on the vehicle type, distance, and carrier type (open vs enclosed). We provide a free, written quote after confirming pickup/drop locations — call or WhatsApp +91 77310 74075.' },
+  { q: 'How long does intercity vehicle transport take?', a: 'Most South India routes (e.g. Hyderabad–Chennai, Bangalore–Kochi) are completed in 2-5 days depending on distance and carrier scheduling.' },
+  { q: 'Is my vehicle insured during transport?', a: 'Yes, all vehicle transport bookings include transit insurance covering transport-related damage at no extra cost.' },
+  { q: 'Open carrier or enclosed carrier — what is the difference?', a: 'Open carriers are more economical and suit daily-use vehicles. Enclosed carriers shield the vehicle from weather and road debris entirely and are recommended for premium or new vehicles.' },
+  { q: 'Do I need to remove personal belongings from the car before transport?', a: 'Yes, we recommend removing valuables and loose personal items. A small amount of luggage in the boot is generally acceptable — confirm with your move coordinator at booking.' },
+];
+
+const vehicleSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://www.packershub.in/vehicle-transport#webpage",
+      "url": "https://www.packershub.in/vehicle-transport",
+      "name": "Car & Bike Transport Services South India | PackersHub",
+      "description": "Safe, insured car and bike transport across Andhra Pradesh, Telangana, Tamil Nadu, Karnataka & Kerala. Open and enclosed carriers, door-to-door delivery, status tracked.",
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.packershub.in/" },
+          { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://www.packershub.in/services" },
+          { "@type": "ListItem", "position": 3, "name": "Vehicle Transport", "item": "https://www.packershub.in/vehicle-transport" }
+        ]
+      }
+    },
+    {
+      "@type": "Service",
+      "name": "Car & Bike Transport",
+      "serviceType": "Vehicle Shipping",
+      "provider": { "@id": "https://www.packershub.in/#organization" },
+      "areaServed": ["Andhra Pradesh", "Telangana", "Tamil Nadu", "Karnataka", "Kerala"],
+      "offers": { "@type": "Offer", "price": "2500", "priceCurrency": "INR", "description": "Starting price, varies by distance and carrier type" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(f => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a }
+      }))
+    }
+  ]
+};
+---
+<BaseLayout
+  title="Car & Bike Transport Services South India | PackersHub"
+  description="Safe, insured car and bike transport across South India. Open & enclosed carriers, door-to-door delivery, zero scratch guarantee. Free quote: +91 77310 74075"
+  canonical="https://www.packershub.in/vehicle-transport"
+  keywords="car transport south india, bike transport, vehicle shifting hyderabad bangalore chennai, car carrier services, two wheeler transport"
+  schema={vehicleSchema}
+>
+  <!-- Hero -->
+  <section class="relative pt-32 pb-20 bg-gradient-to-br from-brand-dark via-[#1a1f2e] to-brand-dark text-white overflow-hidden">
+    <div class="absolute inset-0 opacity-10" aria-hidden="true">
+      <div class="absolute top-0 right-0 w-96 h-96 bg-brand-orange rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 left-0 w-96 h-96 bg-brand-gold rounded-full blur-3xl"></div>
+    </div>
+    <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-white/10 text-brand-gold text-sm font-bold mb-5 uppercase tracking-wide">🚗 Car &amp; Bike Transport</span>
+      <h1 class="font-display text-4xl lg:text-6xl font-extrabold mb-5">Vehicle Transport Across South India</h1>
+      <p class="text-lg lg:text-xl text-gray-300 max-w-2xl mx-auto mb-8">
+        Door-to-door car and bike transport with enclosed carriers, full insurance, and a zero scratch guarantee.
+      </p>
+      <a href="#quote" class="inline-block px-8 py-4 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold text-lg btn-shine shadow-glow">
+        Get a Free Vehicle Transport Quote →
+      </a>
+    </div>
+  </section>
+
+  <!-- Vehicle Types -->
+  <section class="py-20 bg-white" aria-labelledby="types-heading">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-14 reveal">
+        <h2 id="types-heading" class="font-display text-3xl lg:text-4xl font-extrabold text-brand-dark mb-3">What We Transport</h2>
+      </div>
+      <div class="grid sm:grid-cols-3 gap-6">
+        {vehicleTypes.map((v, i) => (
+          <div class="p-7 rounded-3xl bg-white shadow-card border border-gray-100 text-center card-lift reveal" style={`animation-delay:${i * 0.08}s`}>
+            <div class="text-4xl mb-4" aria-hidden="true">{v.icon}</div>
+            <h3 class="font-display font-bold text-lg text-brand-dark mb-2">{v.title}</h3>
+            <p class="text-brand-grey text-sm leading-relaxed">{v.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="py-20 bg-gradient-to-b from-orange-50/40 to-white" aria-labelledby="features-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-14 reveal">
+        <h2 id="features-heading" class="font-display text-3xl lg:text-4xl font-extrabold text-brand-dark mb-3">Why Ship With PackersHub</h2>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {features.map((f, i) => (
+          <div class="p-7 rounded-3xl bg-white shadow-card border border-gray-100 card-lift reveal" style={`animation-delay:${i * 0.06}s`}>
+            <div class="text-3xl mb-4" aria-hidden="true">{f.icon}</div>
+            <h3 class="font-display font-bold text-lg text-brand-dark mb-2">{f.title}</h3>
+            <p class="text-brand-grey text-sm leading-relaxed">{f.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-20 bg-white" aria-labelledby="faq-heading">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 id="faq-heading" class="font-display text-3xl lg:text-4xl font-extrabold text-brand-dark mb-10 text-center reveal">Vehicle Transport FAQs</h2>
+      <div class="space-y-4">
+        {faqs.map((f, i) => (
+          <details class="group bg-orange-50/40 rounded-2xl p-5 border border-gray-100 reveal" style={`animation-delay:${i * 0.05}s`}>
+            <summary class="font-display font-bold text-brand-dark cursor-pointer list-none flex justify-between items-center gap-3">
+              {f.q}
+              <span class="text-brand-orange shrink-0 group-open:rotate-45 transition-transform">+</span>
+            </summary>
+            <p class="text-brand-grey text-sm mt-3 leading-relaxed">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <QuoteForm />
+</BaseLayout>

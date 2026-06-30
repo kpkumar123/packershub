@@ -1,0 +1,42 @@
+---
+const steps = [
+  { n:'01', icon:'📋', title:'Free Quote',      desc:'Fill our 2-min form or call. Get instant pricing with zero commitment.' },
+  { n:'02', icon:'🤝', title:'Confirm Booking', desc:'Review the quote, choose your date, confirm with a small advance.' },
+  { n:'03', icon:'📦', title:'Expert Packing',  desc:'Trained crew arrives with premium materials. Every item packed safely.' },
+  { n:'04', icon:'🚚', title:'Tracked Transport',   desc:'Status-tracked fleet. Milestone updates sent to your WhatsApp.' },
+  { n:'05', icon:'🏠', title:'Safe Delivery',   desc:'Unloading, placement, unpacking & furniture assembly at new home.' },
+  { n:'06', icon:'⭐', title:'Satisfaction',    desc:'Post-move check. Rate us. Get insurance certificate. Done!' },
+];
+---
+<section class="py-20 bg-gray-50" aria-labelledby="process-heading">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14 reveal">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-teal-100 text-teal-700 text-sm font-bold mb-4 uppercase tracking-wide">How It Works</span>
+      <h2 id="process-heading" class="font-display text-4xl lg:text-5xl font-extrabold text-brand-dark mb-4">Moving Made Simple</h2>
+      <p class="text-brand-grey text-lg max-w-xl mx-auto">6 easy steps. Zero stress. Professional crew. On-time every time.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {steps.map((s, i) => (
+        <div class="relative p-8 bg-white rounded-3xl border border-gray-100 shadow-card hover:shadow-glass card-lift reveal" style={`animation-delay:${i*.08}s`}>
+          <div class="flex items-start gap-4">
+            <div class="shrink-0">
+              <span class="text-4xl">{s.icon}</span>
+            </div>
+            <div>
+              <div class="font-display font-black text-4xl text-brand-orange/15 leading-none mb-1" aria-hidden="true">{s.n}</div>
+              <h3 class="font-display font-bold text-lg text-brand-dark -mt-3 mb-2">{s.title}</h3>
+              <p class="text-brand-grey text-sm leading-relaxed">{s.desc}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-12 text-center reveal">
+      <a href="#quote" class="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold text-lg shadow-cta hover:shadow-glow hover:scale-105 transition-all duration-200 btn-shine">
+        🚚 Start Your Move — Free Quote
+      </a>
+    </div>
+  </div>
+</section>

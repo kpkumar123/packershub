@@ -1,0 +1,392 @@
+---
+// v10.6 — GPS Live Map added to the tracking page.
+// Uses Leaflet.js (open-source) + OpenStreetMap tiles — zero API key,
+// zero billing. GPS data comes from /api/gps/status which reads KV.
+// Falls back gracefully if no GPS data has been pushed yet.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const STAGES = [
+  { key: 'Booking Received',      label: 'Booking Received',      icon: '1' },
+  { key: 'Advance Paid',          label: 'Advance Paid',          icon: '💳' },
+  { key: 'Survey Scheduled',      label: 'Survey Scheduled',      icon: '2' },
+  { key: 'Packing Crew Assigned', label: 'Packing Crew Assigned', icon: '3' },
+  { key: 'In Transit',            label: 'In Transit',            icon: '4' },
+  { key: 'Delivered',             label: 'Delivered',             icon: '5' },
+];
+
+const trackSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Track Your Move — PackersHub",
+  "url": "https://www.packershub.in/track/",
+};
+---
+<BaseLayout
+  title="Track Your Move — PackersHub | Live GPS + Status"
+  description="Track your PackersHub booking live — GPS map when In Transit, milestone updates every step. Enter your Tracking ID and phone."
+  schema={trackSchema}
+  breadcrumbs={[{ name: 'Home', url: '/' }, { name: 'Track Your Move', url: '/track/' }]}
+>
+
+  <!-- Leaflet CSS — loaded only when GPS map is needed (lazy via JS) -->
+  <link id="leaflet-css" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" media="print" onload="this.media='all'" />
+
+  <section class="bg-gradient-to-br from-orange-50 via-white to-orange-50 py-20">
+    <div class="max-w-2xl mx-auto px-4 text-center">
+      <span class="inline-block bg-white border border-orange-200 rounded-full px-4 py-1.5 text-brand-orange text-xs font-bold uppercase tracking-wide">📦 Order Tracking</span>
+      <h1 class="text-3xl md:text-5xl font-display font-extrabold text-brand-dark mb-4 mt-4">Track Your Move</h1>
+      <p class="text-brand-grey text-lg">Enter your Tracking ID and phone number — see milestones and live GPS when your truck is on the road.</p>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="max-w-2xl mx-auto px-4">
+
+      <!-- Lookup Card -->
+      <div class="bg-white rounded-3xl shadow-glass border border-gray-100 p-8" id="lookup-card">
+        <h2 class="font-bold text-xl text-brand-dark font-display mb-6">Enter Your Details</h2>
+        <form id="track-form" class="space-y-4">
+          <div>
+            <label class="block text-sm font-semibold text-brand-dark mb-1.5">Tracking ID *</label>
+            <input type="text" id="track-id" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-brand-orange focus:ring-2 focus:ring-orange-100 outline-none uppercase" placeholder="e.g. PH-7K2M9X" required autocomplete="off" />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-brand-dark mb-1.5">Phone Number Used at Booking *</label>
+            <input type="tel" id="track-phone" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-brand-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="+91 XXXXX XXXXX" required />
+          </div>
+          <button type="submit" class="w-full py-3.5 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold btn-shine" id="track-submit-btn">
+            Check Status →
+          </button>
+        </form>
+        <p id="track-error" class="text-red-600 text-sm font-medium mt-4" style="display:none;"></p>
+      </div>
+
+      <!-- Result Card -->
+      <div class="bg-white rounded-3xl shadow-glass border border-gray-100 p-8 mt-8" id="track-result" style="display:none">
+        <div class="flex items-center justify-between flex-wrap gap-3 mb-2">
+          <span class="inline-block bg-orange-50 text-brand-orange font-bold px-3 py-1 rounded-full text-sm" id="result-id"></span>
+          <span class="text-sm text-brand-grey" id="result-route"></span>
+        </div>
+        <p class="text-sm text-brand-grey mb-2" id="result-date"></p>
+
+        <!-- Payment status badge (shown if paid — wording differs for full vs advance) -->
+        <div id="payment-badge" class="hidden mb-4 inline-flex items-center gap-2 bg-green-50 border border-green-200 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full">
+          <span id="payment-badge-text">💳 Advance Paid — Booking Confirmed</span>
+        </div>
+
+        <!-- GPS Live Map (shown only when In Transit + GPS data available) -->
+        <div id="gps-map-section" style="display:none" class="mb-6">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"></span>
+            <span class="text-sm font-bold text-green-700">Live GPS Tracking</span>
+            <span class="text-xs text-gray-400" id="gps-updated-at"></span>
+          </div>
+          <!-- GPS info bar -->
+          <div id="gps-info-bar" class="flex flex-wrap gap-3 mb-3 text-xs text-gray-600"></div>
+          <!-- Leaflet map container -->
+          <div id="gps-map" class="w-full rounded-2xl overflow-hidden border border-gray-200" style="height:320px;background:#f3f4f6;"></div>
+          <p class="text-xs text-gray-400 mt-2 text-center">Map auto-refreshes every 60 seconds. Powered by OpenStreetMap.</p>
+        </div>
+
+        <!-- No GPS yet notice (shown when In Transit but no GPS pushed) -->
+        <div id="gps-pending" style="display:none" class="mb-4 bg-blue-50 border border-blue-200 text-blue-700 text-sm rounded-xl px-4 py-3">
+          🚛 Your goods are In Transit. Live GPS map will appear here once tracking activates — typically within 30 minutes of departure.
+        </div>
+
+        <!-- Milestone timeline -->
+        <div class="space-y-4 mt-4" id="tracker-steps"></div>
+
+        <div class="mt-6 pt-6 border-t border-gray-100 flex flex-wrap gap-3">
+          <a href="tel:+917731074075" class="px-5 py-2.5 rounded-full border border-gray-200 font-semibold text-brand-dark hover:border-brand-orange hover:text-brand-orange transition-colors">📞 Call Us</a>
+          <a href="https://wa.me/917731074075" target="_blank" rel="noopener" class="px-5 py-2.5 rounded-full border border-gray-200 font-semibold text-brand-dark hover:border-brand-orange hover:text-brand-orange transition-colors">💬 WhatsApp</a>
+        </div>
+      </div>
+
+      <p class="text-center text-sm text-brand-grey mt-8">
+        GPS tracking is active when your truck is on the road. Milestone updates are made by our team at each stage.
+        Urgent? <a href="tel:+917731074075" class="text-brand-orange font-semibold hover:underline">Call +91 77310 74075</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script define:vars={{ STAGES }}>
+// ── State ────────────────────────────────────────────────────────────────────
+let currentTrackId   = '';
+let currentPhone     = '';
+let gpsRefreshTimer  = null;
+let leafletMap       = null;
+let truckMarker      = null;
+let routeLine        = null;
+let leafletLoaded    = false;
+
+// ── DOM refs ─────────────────────────────────────────────────────────────────
+const form       = document.getElementById('track-form');
+const errorEl    = document.getElementById('track-error');
+const resultEl   = document.getElementById('track-result');
+const stepsEl    = document.getElementById('tracker-steps');
+const submitBtn  = document.getElementById('track-submit-btn');
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function showError(msg) {
+  errorEl.textContent  = msg;
+  errorEl.style.display = 'block';
+  resultEl.style.display = 'none';
+}
+
+function renderTimeline(currentStatus, timeline) {
+  // 'Advance Paid' is set automatically by /api/payment/verify the moment a
+  // customer pays — often right after booking, before any staff milestone
+  // update — and a customer can also skip it entirely while staff still move
+  // milestones forward. So its checkmark is based on real payment evidence
+  // in the timeline, not on its position relative to the current status.
+  const order       = STAGES.map(s => s.key).filter(k => k !== 'Advance Paid');
+  const paid        = (timeline || []).some(t => t.status === 'Advance Paid');
+  const baseStatus  = currentStatus === 'Advance Paid' ? 'Booking Received' : currentStatus;
+  const currentIdx  = order.indexOf(baseStatus);
+  stepsEl.innerHTML = '';
+
+  STAGES.forEach((stage) => {
+    const isPaymentRow = stage.key === 'Advance Paid';
+    const idx       = order.indexOf(stage.key);
+    const isDone    = isPaymentRow ? paid  : currentIdx > idx;
+    const isCurrent = isPaymentRow ? false : currentIdx === idx;
+    const entry     = (timeline || []).slice().reverse().find(t => t.status === stage.key);
+
+    const div = document.createElement('div');
+    div.className = 'flex gap-3 items-start';
+    div.innerHTML = `
+      <div class="w-8 h-8 rounded-full grid place-items-center text-xs font-bold shrink-0 ${
+        isDone ? 'bg-green-500 text-white' : isCurrent ? 'bg-brand-orange text-white' : 'bg-gray-100 text-gray-400'
+      }">${isDone ? '✓' : stage.icon}</div>
+      <div>
+        <div class="font-semibold text-sm text-brand-dark">${stage.label}</div>
+        ${entry ? `<div class="text-xs text-brand-grey mt-0.5">${new Date(entry.at).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}</div>` : ''}
+        ${entry && entry.note ? `<div class="text-xs text-gray-500 mt-0.5">${entry.note}</div>` : ''}
+      </div>
+    `;
+    stepsEl.appendChild(div);
+  });
+}
+
+// ── Leaflet loader ────────────────────────────────────────────────────────────
+async function loadLeaflet() {
+  if (leafletLoaded) return;
+  // CSS already added in <head> above; load JS now
+  await new Promise((resolve, reject) => {
+    const s   = document.createElement('script');
+    s.src     = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    s.onload  = resolve;
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+  leafletLoaded = true;
+}
+
+// ── City name → approx coords (fallback when city lookup missing) ─────────────
+const CITY_COORDS = {
+  // AP
+  'nellore': [14.4426, 79.9865], 'hyderabad': [17.3850, 78.4867],
+  'visakhapatnam': [17.6868, 83.2185], 'vijayawada': [16.5062, 80.6480],
+  'tirupati': [13.6288, 79.4192], 'guntur': [16.3067, 80.4365],
+  'rajahmundry': [16.9891, 81.7800], 'kurnool': [15.8281, 78.0373],
+  // TN
+  'chennai': [13.0827, 80.2707], 'coimbatore': [11.0168, 76.9558],
+  'madurai': [9.9252, 78.1198],
+  // Karnataka
+  'bengaluru': [12.9716, 77.5946], 'bangalore': [12.9716, 77.5946],
+  'mysuru': [12.2958, 76.6394], 'mysore': [12.2958, 76.6394],
+  // Kerala
+  'kochi': [9.9312, 76.2673], 'kozhikode': [11.2588, 75.7804],
+  'thiruvananthapuram': [8.5241, 76.9366],
+};
+
+function cityCoords(name) {
+  if (!name) return null;
+  return CITY_COORDS[name.toLowerCase()] || null;
+}
+
+// ── GPS map renderer ──────────────────────────────────────────────────────────
+async function renderGpsMap(gpsData, fromCity, toCity) {
+  const mapSection = document.getElementById('gps-map-section');
+  const gpsPending = document.getElementById('gps-pending');
+  const updatedEl  = document.getElementById('gps-updated-at');
+  const infoBar    = document.getElementById('gps-info-bar');
+
+  if (!gpsData.gpsLatest) {
+    // No GPS data yet
+    if (gpsData.status === 'In Transit') {
+      gpsPending.style.display = '';
+    } else {
+      gpsPending.style.display = 'none';
+    }
+    mapSection.style.display = 'none';
+    return;
+  }
+
+  gpsPending.style.display = 'none';
+  mapSection.style.display = '';
+
+  // Updated-at label
+  if (gpsData.gpsLatest.at) {
+    updatedEl.textContent = 'Updated ' + new Date(gpsData.gpsLatest.at).toLocaleString('en-IN', {
+      timeStyle: 'short', dateStyle: 'short',
+    });
+  }
+
+  // Info bar: ETA, speed, vehicle
+  const infoParts = [];
+  if (gpsData.gpsLatest.eta)       infoParts.push(`⏱ ETA: ${gpsData.gpsLatest.eta}`);
+  if (gpsData.gpsLatest.speed)     infoParts.push(`🚛 ${gpsData.gpsLatest.speed} km/h`);
+  if (gpsData.gpsLatest.vehicleNo) infoParts.push(`🚗 ${gpsData.gpsLatest.vehicleNo}`);
+  if (gpsData.gpsLatest.note)      infoParts.push(`📍 ${gpsData.gpsLatest.note}`);
+  infoBar.innerHTML = infoParts.map(p => `<span class="bg-gray-100 rounded-full px-3 py-1">${p}</span>`).join('');
+
+  // Load Leaflet
+  await loadLeaflet();
+  const L = window.L;
+
+  // Init or reuse map
+  if (!leafletMap) {
+    leafletMap = L.map('gps-map', { zoomControl: true, scrollWheelZoom: false });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 18,
+    }).addTo(leafletMap);
+  }
+
+  const { lat, lng } = gpsData.gpsLatest;
+
+  // Truck marker (orange)
+  const truckIcon = L.divIcon({
+    className: '',
+    html: `<div style="background:#f97316;color:white;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 2px 8px rgba(0,0,0,0.25);border:3px solid white;">🚛</div>`,
+    iconSize: [36, 36], iconAnchor: [18, 18],
+  });
+
+  if (truckMarker) {
+    truckMarker.setLatLng([lat, lng]);
+  } else {
+    truckMarker = L.marker([lat, lng], { icon: truckIcon })
+      .addTo(leafletMap)
+      .bindPopup(gpsData.gpsLatest.note || 'Your goods are here');
+  }
+
+  // Route breadcrumb polyline (history trail)
+  if (Array.isArray(gpsData.gpsHistory) && gpsData.gpsHistory.length > 1) {
+    const latlngs = gpsData.gpsHistory.map(p => [p.lat, p.lng]);
+    if (routeLine) leafletMap.removeLayer(routeLine);
+    routeLine = L.polyline(latlngs, { color: '#f97316', weight: 3, opacity: 0.6 }).addTo(leafletMap);
+  }
+
+  // Source & destination markers
+  const fromCoords = cityCoords(fromCity);
+  const toCoords   = cityCoords(toCity);
+
+  const dotIcon = (color, label) => L.divIcon({
+    className: '',
+    html: `<div style="background:${color};color:white;border-radius:8px;padding:4px 8px;font-size:11px;font-weight:700;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,0.2);">${label}</div>`,
+    iconAnchor: [0, 0],
+  });
+
+  if (fromCoords) {
+    L.marker(fromCoords, { icon: dotIcon('#6b7280', `📦 ${fromCity || 'Origin'}`) }).addTo(leafletMap);
+  }
+  if (toCoords) {
+    L.marker(toCoords, { icon: dotIcon('#15803d', `🏠 ${toCity || 'Destination'}`) }).addTo(leafletMap);
+  }
+
+  // Fit map to show truck + both cities
+  const allPoints = [[lat, lng]];
+  if (fromCoords) allPoints.push(fromCoords);
+  if (toCoords)   allPoints.push(toCoords);
+  leafletMap.fitBounds(L.latLngBounds(allPoints), { padding: [40, 40] });
+}
+
+// ── GPS refresh ───────────────────────────────────────────────────────────────
+async function refreshGps() {
+  if (!currentTrackId || !currentPhone) return;
+  try {
+    const res  = await fetch(`/api/gps/status?id=${encodeURIComponent(currentTrackId)}&phone=${encodeURIComponent(currentPhone)}`);
+    const data = await res.json();
+    if (data.ok) {
+      await renderGpsMap(data, data.fromCity, data.toCity);
+    }
+  } catch { /* silent — GPS is best-effort */ }
+}
+
+// ── Main lookup ───────────────────────────────────────────────────────────────
+form?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  errorEl.style.display  = 'none';
+  resultEl.style.display = 'none';
+  if (gpsRefreshTimer) { clearInterval(gpsRefreshTimer); gpsRefreshTimer = null; }
+  if (leafletMap)      { leafletMap.remove(); leafletMap = null; truckMarker = null; routeLine = null; }
+
+  const id    = document.getElementById('track-id').value.trim().toUpperCase();
+  const phone = document.getElementById('track-phone').value.trim();
+
+  if (!id || !phone) { showError('Please fill in both fields.'); return; }
+
+  submitBtn.disabled     = true;
+  submitBtn.textContent  = 'Checking…';
+
+  try {
+    // 1. Milestone lookup
+    const res  = await fetch(`/api/track?id=${encodeURIComponent(id)}&phone=${encodeURIComponent(phone)}`);
+    const data = await res.json();
+
+    if (!data.ok) {
+      showError(data.error || 'Could not find that booking.');
+      return;
+    }
+
+    // Store for GPS polling
+    currentTrackId = id;
+    currentPhone   = phone;
+
+    // Populate result card
+    document.getElementById('result-id').textContent = data.trackingId;
+    document.getElementById('result-route').textContent =
+      data.fromCity && data.toCity ? `${data.fromCity} → ${data.toCity}` : (data.moveType || '');
+    document.getElementById('result-date').textContent =
+      data.moveDate ? `Preferred move date: ${data.moveDate}` : '';
+
+    // Payment badge — wording differs for full payment vs advance
+    const payBadge     = document.getElementById('payment-badge');
+    const payBadgeText = document.getElementById('payment-badge-text');
+    const hasPaid = data.status === 'Advance Paid' || (data.timeline || []).some(t => t.status === 'Advance Paid');
+    if (hasPaid) {
+      payBadgeText.textContent = data.paymentType === 'full'
+        ? '✅ Fully Paid — Nothing Due Later'
+        : '💳 Advance Paid — Booking Confirmed';
+      payBadge.classList.remove('hidden');
+    }
+
+    renderTimeline(data.status, data.timeline);
+    resultEl.style.display = 'block';
+    resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // 2. GPS lookup (async, non-blocking)
+    try {
+      const gRes  = await fetch(`/api/gps/status?id=${encodeURIComponent(id)}&phone=${encodeURIComponent(phone)}`);
+      const gData = await gRes.json();
+      if (gData.ok) {
+        await renderGpsMap(gData, data.fromCity, data.toCity);
+        // Auto-refresh every 60 s while In Transit
+        if (data.status === 'In Transit') {
+          gpsRefreshTimer = setInterval(refreshGps, 60_000);
+        }
+      }
+    } catch { /* GPS optional */ }
+
+    window.phTrack?.('track_lookup_success', { status: data.status });
+
+  } catch {
+    showError('Something went wrong. Please try again or call +91 77310 74075.');
+  } finally {
+    submitBtn.disabled    = false;
+    submitBtn.textContent = 'Check Status →';
+  }
+});
+</script>

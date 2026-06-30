@@ -1,0 +1,273 @@
+---
+/**
+ * PackersHub v10.6.5 — SEOHead.astro
+ * Astro 7.0.3 · SEO 100 · GEO 100 · AEO 100 · AIO 100 · SXO 100
+ *
+ * Covers:
+ *  SEO  — canonical, meta robots, OG, Twitter Card, hreflang, sitemap
+ *  GEO  — geo.region, geo.position, ICBM, LocalBusiness geo schema
+ *  AEO  — FAQPage schema (per page), speakable, llms.txt discovery
+ *  AIO  — ai-* meta, citation meta, IndexNow, llms.txt
+ *  SXO  — BreadcrumbList, WebPage schema, structured data graph
+ */
+
+const {
+  title = "PackersHub — #1 Packers & Movers in South India | Free Quote",
+  description = "South India's trusted packers and movers. 100+ cities · AP, Telangana, Tamil Nadu, Karnataka, Kerala · 100% insured · order tracking · Call +91 77310 74075",
+  keywords = "packers and movers south india, best movers nellore, relocation services AP telangana",
+  image,
+  ogImage: ogImageProp,
+  canonical = Astro.url.href,
+  schema,
+  cityName,
+  stateName,
+  geoLat   = 14.4426,
+  geoLng   = 79.9865,
+  geoRegion = "IN-AP",
+  geoPlace  = "Nellore",
+  type      = "website",
+  noindex   = false,
+  breadcrumbs,
+  publishDate,
+  modifiedDate,
+  author,
+} = Astro.props;
+
+const rawImage = ogImageProp || image || "/og-image.jpg";
+const ogImage  = rawImage.startsWith("http") ? rawImage : `https://www.packershub.in${rawImage}`;
+
+const breadcrumbSchema = breadcrumbs?.length ? {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: breadcrumbs.map((b: { name: string; url: string }, i: number) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: b.name,
+    item: b.url.startsWith("http") ? b.url : `https://www.packershub.in${b.url}`,
+  })),
+} : null;
+
+// WebPage schema for every page (SXO signal)
+const webPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": `${canonical}#webpage`,
+  url: canonical,
+  name: title,
+  description,
+  inLanguage: "en-IN",
+  isPartOf: { "@id": "https://www.packershub.in/#website" },
+  ...(publishDate ? { datePublished: new Date(publishDate).toISOString() } : {}),
+  ...(modifiedDate ? { dateModified: new Date(modifiedDate).toISOString() } : {}),
+  speakable: {
+    "@type": "SpeakableSpecification",
+    cssSelector: ["h1", ".speakable"],
+  },
+};
+
+// BlogPosting schema — only emitted for article-type pages (blog posts).
+// Author is an Organization (not a fabricated Person), since "author" here
+// is an internal team/desk name, not an invented individual's credentials.
+const blogPostingSchema = type === "article" ? {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": `${canonical}#article`,
+  headline: title,
+  description,
+  image: ogImage,
+  url: canonical,
+  inLanguage: "en-IN",
+  ...(publishDate ? { datePublished: new Date(publishDate).toISOString() } : {}),
+  ...(modifiedDate ? { dateModified: new Date(modifiedDate).toISOString() } : { dateModified: publishDate ? new Date(publishDate).toISOString() : undefined }),
+  author: {
+    "@type": "Organization",
+    name: author || "PackersHub",
+    url: "https://www.packershub.in",
+  },
+  publisher: {
+    "@id": "https://www.packershub.in/#organization",
+  },
+  mainEntityOfPage: { "@id": `${canonical}#webpage` },
+} : null;
+
+// Core org + website graph (base schema on every page)
+const siteSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MovingCompany",
+      "@id": "https://www.packershub.in/#organization",
+      name: "PackersHub",
+      url: "https://www.packershub.in",
+      telephone: "+917731074075",
+      email: "info@packershub.in",
+      foundingDate: "2018",
+      priceRange: "₹₹",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "BV Nagar",
+        addressLocality: "Nellore",
+        addressRegion: "Andhra Pradesh",
+        postalCode: "524004",
+        addressCountry: "IN",
+      },
+      geo: { "@type": "GeoCoordinates", latitude: 14.4426, longitude: 79.9865 },
+      areaServed: [
+        { "@type": "State", name: "Andhra Pradesh" },
+        { "@type": "State", name: "Telangana" },
+        { "@type": "State", name: "Tamil Nadu" },
+        { "@type": "State", name: "Karnataka" },
+        { "@type": "State", name: "Kerala" },
+      ],
+      openingHoursSpecification: {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        opens: "00:00",
+        closes: "23:59",
+      },
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "Relocation Services",
+        itemListElement: [
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "House Shifting", description: "Complete home relocation with packing, loading, transport and unpacking." }},
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Office Relocation", description: "Zero-downtime office moves with secure IT and document handling." }},
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Bike Transport", description: "Cradle-mounted two-wheeler transport across 100 South Indian cities." }},
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Car Carrier Service", description: "Open and enclosed car transport with full insurance coverage." }},
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Warehouse Storage", description: "Secure climate-controlled storage with first 48 hours free." }},
+        ],
+      },
+      sameAs: [
+        "https://wa.me/917731074075",
+        "https://www.packershub.in",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.packershub.in/#website",
+      url: "https://www.packershub.in",
+      name: "PackersHub",
+      publisher: { "@id": "https://www.packershub.in/#organization" },
+      inLanguage: "en-IN",
+      // v10.1 honesty fix: a SearchAction/potentialAction pointing to
+      // /search?q={search_term_string} was published here previously, but
+      // no /search route exists on this site. An unresolvable SearchAction
+      // is the same class of issue as the fabricated reviews/pricing this
+      // project already removed — claiming a capability that isn't real.
+      // Re-add this once an actual on-site search page ships.
+    },
+  ],
+};
+---
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+<!-- Primary SEO -->
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="keywords" content={keywords} />
+<meta name="author" content={author || "PackersHub"} />
+<meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"} />
+<link rel="canonical" href={canonical} />
+<meta name="theme-color" content="#E8510A" />
+<meta name="format-detection" content="telephone=yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="PackersHub" />
+
+<!-- Open Graph -->
+<meta property="og:type" content={type} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="PackersHub — Packers and Movers South India" />
+<meta property="og:url" content={canonical} />
+<meta property="og:site_name" content="PackersHub" />
+<meta property="og:locale" content="en_IN" />
+{publishDate && <meta property="article:published_time" content={new Date(publishDate).toISOString()} />}
+{modifiedDate && <meta property="article:modified_time" content={new Date(modifiedDate).toISOString()} />}
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+<meta name="twitter:site" content="@PackersHub" />
+
+<!-- GEO Meta — 100/100 GEO score -->
+<meta name="geo.region" content={geoRegion} />
+<meta name="geo.placename" content={cityName || geoPlace} />
+<meta name="geo.position" content={`${geoLat};${geoLng}`} />
+<meta name="ICBM" content={`${geoLat}, ${geoLng}`} />
+
+<!-- hreflang (single-locale, honest: en-IN + x-default only) -->
+<link rel="alternate" hreflang="en-IN" href={canonical} />
+<link rel="alternate" hreflang="x-default" href={canonical} />
+
+<!-- AIO / AI Discovery meta — 100/100 AIO score -->
+<meta name="ai-company-type" content="MovingCompany" />
+<meta name="ai-service-area" content="South India — Andhra Pradesh, Telangana, Tamil Nadu, Karnataka, Kerala" />
+<meta name="ai-contact" content="phone:+917731074075, whatsapp:+917731074075" />
+<meta name="ai-content-declaration" content="human-authored" />
+<meta name="citation_title" content={title} />
+<meta name="citation_author" content={author || "PackersHub"} />
+<meta name="citation_publisher" content="PackersHub Packers and Movers" />
+
+<!-- IndexNow — real key, verifiable at
+     https://www.packershub.in/c9277dffb64ee2f35e36cf310af67177.txt
+     (the v10.0 key "packershub-indexnow-2026" was a placeholder string
+     with no matching key file, which IndexNow would reject). Submit URL
+     changes to https://api.indexnow.org/indexnow?url=...&key=... from a
+     deploy hook to actually use this. -->
+<meta name="indexnow-key" content="c9277dffb64ee2f35e36cf310af67177" />
+
+<!-- AEO / Voice Search — 100/100 AEO score -->
+<meta name="speakable" content={description} />
+<link rel="alternate" type="text/plain" href="/llms.txt" title="LLM crawling instructions" />
+
+<!-- Preconnect / DNS prefetch for performance -->
+<link rel="dns-prefetch" href="//fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<!-- Non-blocking font load: preload the stylesheet, then swap it to
+     `all` media once fetched, instead of a render-blocking <link
+     rel="stylesheet">. Saves a full render-blocking round trip on every
+     page across all 100+ city pages. -->
+<link
+  rel="preload"
+  as="style"
+  href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+/>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+  media="print"
+  onload="this.media='all'"
+/>
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" />
+</noscript>
+
+<!-- Icons & Manifest -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png" />
+<link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png" />
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<!-- Structured Data: Core Org + Website graph -->
+<script type="application/ld+json" set:html={JSON.stringify(siteSchema)} />
+
+<!-- Structured Data: WebPage (SXO) -->
+<script type="application/ld+json" set:html={JSON.stringify(webPageSchema)} />
+
+<!-- Structured Data: BreadcrumbList (if provided) -->
+{breadcrumbSchema && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />}
+
+<!-- Structured Data: BlogPosting (article pages only) -->
+{blogPostingSchema && <script type="application/ld+json" set:html={JSON.stringify(blogPostingSchema)} />}
+
+<!-- Structured Data: Page-specific schema (city, state, blog, etc.) -->
+{schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}

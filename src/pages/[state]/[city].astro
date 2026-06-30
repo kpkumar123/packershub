@@ -1,0 +1,534 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TrustStrip from '../../components/TrustStrip.astro';
+import Services from '../../components/Services.astro';
+import Testimonials from '../../components/Testimonials.astro';
+import QuoteForm from '../../components/QuoteForm.astro';
+import FAQ from '../../components/FAQ.astro';
+import cities from '../../data/cities.json';
+import states from '../../data/states.json';
+import { getNearbyCities } from '../../utils/nearbyCities';
+import { parseFaqText } from '../../utils/parseFaq';
+
+export async function getStaticPaths() {
+  return cities.map(c => ({
+    params: { state: c.state, city: c.slug },
+    props:  { city: c, state: states.find(s => s.slug === c.state) },
+  }));
+}
+
+const { city, state } = Astro.props;
+
+// v10.6.4 — was: cities.filter(c => c.state === city.state...).slice(0, 8),
+// which ignored every city's real lat/lng (added in an earlier release) and
+// just grabbed the first 8 same-state entries regardless of actual distance.
+// getNearbyCities() already existed in src/utils/nearbyCities.ts but was
+// never wired in. Now uses real Haversine distance across all 100 cities —
+// border-area cities (e.g. near the AP/Telangana or Karnataka/TN border)
+// can correctly surface a genuinely closer city in a neighbouring state
+// instead of a farther one in the same state. Falls back to same-state
+// automatically (inside the util) if a city is ever missing coordinates.
+const nearbyCities = getNearbyCities(city, cities, 8, 200);
+
+// v9.1 — removed the fabricated basePrice/multiplier pricing table that
+// used to live here (e.g. basePrice*8 for "4 BHK intercity"). Those numbers
+// weren't sourced from anything real. Per the project's honesty standard,
+// city pages now point to a free assessment instead of inventing rates —
+// matching how the booking engine's own disclaimer is worded.
+const popularRoutes: string[] = city.popular_routes || [];
+const contentIntro: string = city.content_intro || '';
+
+// v10.6.5 — city.faq_text existed in cities.json for all 100 cities but
+// was never read anywhere in the codebase; every city page rendered the
+// exact same templated FAQPage schema below. Parsed here into real
+// {q, a} pairs and passed to <FAQ> so each city gets genuinely unique,
+// visible Q&A content with matching schema — not just a city name
+// swapped into a generic template.
+const localFaqs = parseFaqText(city.faq_text);
+
+const citySchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MovingCompany",
+      "@id": `https://www.packershub.in/${city.state}/${city.slug}/#business`,
+      "name": `PackersHub — Packers & Movers in ${city.name}`,
+      "url": `https://www.packershub.in/${city.state}/${city.slug}`,
+      "telephone": "+917731074075",
+      "email": "info@packershub.in",
+      "description": `Top-rated packers and movers in ${city.name}, ${state?.name}. Household shifting, office relocation, vehicle transport. 100% insured, with order tracking.`,
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": city.name,
+          ...(city.lat && city.lng ? {
+            "geo": { "@type": "GeoCoordinates", "latitude": city.lat, "longitude": city.lng }
+          } : {})
+        },
+        { "@type": "State", "name": state?.name }
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Nellore",
+        "addressRegion":   "Andhra Pradesh",
+        "postalCode":      "524004",
+        "addressCountry":  "IN"
+      },
+      "priceRange": "₹₹",
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        "opens": "00:00", "closes": "23:59"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home",          "item": "https://www.packershub.in/" },
+        { "@type": "ListItem", "position": 2, "name": state?.name,     "item": `https://www.packershub.in/${city.state}` },
+        { "@type": "ListItem", "position": 3, "name": `Movers in ${city.name}`, "item": `https://www.packershub.in/${city.state}/${city.slug}` }
+      ]
+    }
+    // v10.6.5 — the FAQPage block that used to live here (3 generic
+    // questions, just the city name swapped in, identical across all 100
+    // city pages) has been removed. <FAQ> below now emits its own
+    // FAQPage schema built from real, unique per-city content
+    // (city.faq_text via parseFaqText) plus the same site-wide questions
+    // — visible on the page, not just in JSON-LD, and not duplicated
+    // with a second FAQPage schema on the same URL.
+  ]
+};
+---
+<BaseLayout
+  title={`Packers & Movers in ${city.name} — PackersHub | Free Quote, 100% Insured`}
+  description={`Trusted packers and movers in ${city.name}, ${state?.name}. Safe household shifting, office relocation & vehicle transport. 100% insured, with order tracking. Free quote: +91 77310 74075`}
+  keywords={`packers movers ${city.name}, best movers ${city.name}, household shifting ${city.name}, packers ${city.name} ${state?.abbr}, relocation ${city.name}, office movers ${city.name}, vehicle transport ${city.name}`}
+  canonical={`https://www.packershub.in/${city.state}/${city.slug}`}
+  schema={citySchema}
+  cityName={city.name}
+  stateName={state?.name}
+  geoRegion={`IN-${state?.abbr}`}
+  geoPlace={city.name}
+>
+
+  <!-- HERO -->
+  <section class="relative overflow-hidden hero-bg pt-10 pb-20 lg:pt-16 lg:pb-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Breadcrumb -->
+      <nav aria-label="Breadcrumb" class="mb-6">
+        <ol class="flex flex-wrap items-center gap-2 text-sm text-brand-grey" role="list">
+          <li><a href="/" class="hover:text-brand-orange transition-colors">Home</a></li>
+          <li aria-hidden="true">›</li>
+          <li><a href={`/${city.state}`} class="hover:text-brand-orange transition-colors">{state?.name}</a></li>
+          <li aria-hidden="true">›</li>
+          <li class="text-brand-orange font-semibold" aria-current="page">Movers in {city.name}</li>
+        </ol>
+      </nav>
+
+      <div class="grid lg:grid-cols-5 gap-10 lg:gap-16 items-start">
+
+        <!-- Left: Main Content -->
+        <div class="lg:col-span-3 animate-fade-up">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-card border border-orange-100 mb-6">
+            <span class="text-brand-orange">🚚</span>
+            <span class="text-sm font-bold text-brand-dark">Serving {city.name} — 100+ Cities Across South India</span>
+          </div>
+
+          <h1 class="font-display font-extrabold text-4xl sm:text-5xl lg:text-[3.2rem] leading-[1.08] text-brand-dark mb-5">
+            Best Packers &amp; Movers<br/>in <span class="text-gradient">{city.name}</span>
+          </h1>
+
+          <p class="text-lg text-brand-grey mb-6 leading-relaxed">
+            South India's most trusted movers serving {city.name}, {state?.name}.
+            Professional packing, status-tracked transport, and guaranteed on-time delivery.
+            Serving <strong>{city.pop} population</strong> — {city.landmark}.
+          </p>
+
+          <div class="flex flex-wrap gap-2 mb-8">
+            {['✅ 100% Insured','📍 Status Tracked','💰 No Hidden Costs','⚡ Same-Day Available','🛡️ Zero Damage Guarantee','📞 24×7 Support'].map(chip => (
+              <span class="px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs font-semibold text-brand-dark shadow-sm">{chip}</span>
+            ))}
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-3 mb-10">
+            <a href="#quote" class="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold text-base shadow-cta hover:shadow-glow hover:scale-[1.02] transition-all btn-shine">
+              🚚 Book Free Quote in {city.name}
+            </a>
+            <a href="tel:+917731074075" class="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-white border-2 border-brand-orange/30 text-brand-dark font-bold hover:border-brand-orange hover:bg-orange-50 transition-all">
+              📞 +91 77310 74075
+            </a>
+          </div>
+
+          <div class="grid grid-cols-4 gap-4 p-5 bg-white rounded-2xl shadow-card border border-gray-100">
+            {[['100+','Cities Served'],['5','South Indian States'],['100%','Insured'],['24/7','Support']].map(([n,l]) => (
+              <div class="text-center">
+                <div class="font-display font-black text-xl text-brand-dark">{n}</div>
+                <div class="text-[11px] text-brand-grey font-medium">{l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Right: Quick Quote Sidebar -->
+        <div class="lg:col-span-2 animate-fade-up" style="animation-delay:.12s">
+          <div class="sticky top-24 bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
+            <div class="bg-gradient-to-r from-brand-orange to-brand-gold text-white px-6 py-5">
+              <h2 class="font-display font-bold text-xl">Quick Contact</h2>
+              <p class="text-orange-100 text-sm mt-0.5">Get instant quote from {city.name} team</p>
+            </div>
+            <div class="p-6 space-y-3">
+              <a href="tel:+917731074075" class="flex items-center gap-3 w-full py-3.5 px-5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold shadow-cta hover:scale-[1.02] transition-transform btn-shine">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1v3.5a1 1 0 01-1 1A17 17 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/></svg>
+                Call +91 77310 74075
+              </a>
+              <a href={`https://wa.me/917731074075?text=Hi%20PackersHub%2C%20I%20need%20movers%20in%20${encodeURIComponent(city.name)}`} target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 w-full py-3.5 px-5 rounded-xl bg-[#25D366] text-white font-bold hover:bg-[#22c55e] transition-colors">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                WhatsApp Us
+              </a>
+              <a href="#quote" class="flex items-center justify-center gap-2 w-full py-3 px-5 rounded-xl border-2 border-brand-orange/30 text-brand-orange font-bold hover:bg-orange-50 transition-colors">
+                📋 Fill Quote Form
+              </a>
+            </div>
+            <div class="px-6 pb-6">
+              <h3 class="font-bold text-brand-dark text-sm mb-3">Get Your Exact Price</h3>
+              <p class="text-xs text-brand-grey leading-relaxed">
+                Pricing depends on volume, distance, and floor access — so we don't publish flat rates.
+                Call, WhatsApp, or use our <a href="/booking" class="text-brand-orange font-bold hover:underline">online price estimator</a> for a free, no-obligation quote in {city.name}.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <TrustStrip />
+
+  <!-- CITY-SPECIFIC CONTENT -->
+  <section class="py-20 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="font-display font-extrabold text-3xl text-brand-dark mb-6">
+        Packers &amp; Movers in {city.name} — Complete Guide
+      </h2>
+      <div class="prose prose-lg max-w-none text-brand-grey">
+        {contentIntro ? (
+          contentIntro.split('\n\n').map((para: string) => (
+            <p set:html={para.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>')} />
+          ))
+        ) : (
+          <>
+            <p>
+              Looking for reliable packers and movers in <strong>{city.name}</strong>, {state?.name}?
+              PackersHub is a trusted relocation company serving {city.name} and 100+ cities
+              across South India. Whether you're moving within {city.name} or relocating to
+              another city, our professional team handles every aspect of your move with care.
+            </p>
+            <p>
+              {city.name} — known as the <em>{city.landmark}</em> — is a growing city with
+              a population of {city.pop}. PackersHub has been serving {city.name}
+              residents with top-quality moving services, combining technology with trained manpower.
+            </p>
+          </>
+        )}
+
+        <h3>Our Services in {city.name}</h3>
+        <ul>
+          <li><strong>Household Shifting in {city.name}:</strong> Complete packing, loading, transport, unloading &amp; unpacking for 1BHK to 5BHK+ homes</li>
+          <li><strong>Office Relocation in {city.name}:</strong> Corporate moves with minimal downtime, IT equipment handling included</li>
+          <li><strong>Vehicle Transport from {city.name}:</strong> Enclosed car &amp; bike carriers with status tracking</li>
+          <li><strong>Storage Solutions in {city.name}:</strong> Secure, climate-controlled warehousing</li>
+        </ul>
+
+        <h3>Packers and Movers Charges in {city.name}</h3>
+        <p>
+          Moving costs in {city.name} depend on home size, distance, floor access, and goods volume.
+          Our prices are fully transparent — no surprise charges after delivery.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT AFFECTS YOUR PRICE -->
+  <section class="py-16 bg-gray-50" aria-labelledby="pricing-heading">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 id="pricing-heading" class="font-display font-extrabold text-3xl text-brand-dark mb-4 text-center">
+        What Affects Your Moving Cost in {city.name}
+      </h2>
+      <p class="text-brand-grey text-center max-w-2xl mx-auto mb-10">
+        We don't publish flat rate cards because no two moves are the same — here's what actually
+        drives the price, and how to get an exact number.
+      </p>
+      <div class="grid sm:grid-cols-2 gap-4 mb-10">
+        {[
+          { icon:'📦', title:'Volume of Goods', desc:'1 BHK vs 4 BHK+, number of large appliances and furniture pieces.' },
+          { icon:'📏', title:'Distance', desc:'Local move within ' + city.name + ' vs an intercity or interstate relocation.' },
+          { icon:'🏢', title:'Floor & Access', desc:'Ground floor with lift access costs less than a 4th-floor walk-up.' },
+          { icon:'🛡️', title:'Insurance & Packing', desc:'Standard vs premium packing materials for fragile or valuable items.' },
+        ].map(f => (
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex gap-4">
+            <span class="text-3xl">{f.icon}</span>
+            <div>
+              <h3 class="font-bold text-brand-dark text-sm mb-1">{f.title}</h3>
+              <p class="text-xs text-brand-grey leading-relaxed">{f.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div class="bg-white rounded-3xl shadow-card border border-gray-100 p-8 text-center">
+        <p class="text-brand-dark font-semibold mb-1">Want a real number, not a guess?</p>
+        <p class="text-sm text-brand-grey mb-5">Use our instant online estimator or speak to the {city.name} team directly — both are free.</p>
+        <div class="flex flex-wrap gap-3 justify-center">
+          <a href="/booking" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold">⚡ Get Instant Estimate</a>
+          <a href="tel:+917731074075" class="inline-flex items-center gap-2 px-6 py-3 rounded-full border-2 border-brand-orange/30 text-brand-dark font-bold hover:border-brand-orange">📞 Call for Exact Quote</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Services />
+  <Testimonials />
+
+  <!-- ═══════════════════════════════════════════════════════════
+       POPULAR ROUTES — DETAILED SECTION (v10.2.3)
+       ═══════════════════════════════════════════════════════════ -->
+  {(() => {
+    if (!popularRoutes || popularRoutes.length === 0) return null;
+    const stateNameMap: Record<string, string> = {
+      'andhra-pradesh': 'Andhra Pradesh',
+      'telangana': 'Telangana',
+      'tamil-nadu': 'Tamil Nadu',
+      'karnataka': 'Karnataka',
+      'kerala': 'Kerala',
+    };
+    const cityStateLookup: Record<string, string> = {};
+    (cities as any[]).forEach((c: any) => { cityStateLookup[c.name] = c.state; });
+    const withinState = popularRoutes.filter((r: string) => {
+      const dest = r.split(' to ')[1]?.trim();
+      return dest && cityStateLookup[dest] === city.state;
+    });
+    const interstate = popularRoutes.filter((r: string) => {
+      const dest = r.split(' to ')[1]?.trim();
+      return dest && cityStateLookup[dest] && cityStateLookup[dest] !== city.state;
+    });
+    const stateName = stateNameMap[city.state] || city.state;
+    const secId = `routes-${city.slug}`;
+    return (
+    <section class="py-20 bg-white" aria-labelledby={secId}>
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Section Header -->
+        <div class="text-center mb-10">
+          <span class="inline-block px-4 py-1.5 rounded-full bg-orange-100 text-orange-700 text-sm font-bold mb-4 uppercase tracking-wide">
+            Intercity & Interstate Moves
+          </span>
+          <h2 id={secId} class="font-display font-extrabold text-3xl lg:text-4xl text-brand-dark mb-4">
+            Popular Relocation Routes from {city.name}
+          </h2>
+          <p class="text-brand-grey text-lg max-w-2xl mx-auto">
+            PackersHub serves all major cities across South India from {city.name} — same transparent pricing whether you move within {stateName} or across state lines.
+          </p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="flex gap-2 justify-center mb-8 flex-wrap">
+          <button
+            onclick="document.getElementById('panel-within').classList.remove('hidden');document.getElementById('panel-inter').classList.add('hidden');this.className='px-5 py-2.5 rounded-full text-sm font-bold border-2 border-brand-orange bg-brand-orange text-white transition-all';document.getElementById('btn-inter').className='px-5 py-2.5 rounded-full text-sm font-bold border-2 border-gray-200 bg-white text-brand-grey hover:border-brand-orange hover:text-brand-orange transition-all';"
+            class="px-5 py-2.5 rounded-full text-sm font-bold border-2 border-brand-orange bg-brand-orange text-white transition-all"
+          >
+            📍 Within {stateName} ({withinState.length})
+          </button>
+          <button
+            id="btn-inter"
+            onclick="document.getElementById('panel-inter').classList.remove('hidden');document.getElementById('panel-within').classList.add('hidden');this.className='px-5 py-2.5 rounded-full text-sm font-bold border-2 border-blue-500 bg-blue-500 text-white transition-all';document.querySelector('[onclick*=panel-within]').className='px-5 py-2.5 rounded-full text-sm font-bold border-2 border-gray-200 bg-white text-brand-grey hover:border-brand-orange hover:text-brand-orange transition-all';"
+            class="px-5 py-2.5 rounded-full text-sm font-bold border-2 border-gray-200 bg-white text-brand-grey hover:border-brand-orange hover:text-brand-orange transition-all"
+          >
+            🚛 Interstate ({interstate.length})
+          </button>
+        </div>
+
+        <!-- Within State Panel -->
+        <div id="panel-within">
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-8">
+            {withinState.map((route: string) => {
+              const dest = route.split(' to ')[1]?.trim() || '';
+              return (
+                <a href={`https://wa.me/917731074075?text=Hi%20PackersHub%2C%20I%20need%20movers%20from%20${encodeURIComponent(route)}`}
+                   target="_blank" rel="noopener noreferrer"
+                   class="group relative flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-100 shadow-sm hover:border-brand-orange hover:shadow-md transition-all duration-200 overflow-hidden">
+                  <div class="absolute left-0 top-0 w-0.5 h-full bg-gradient-to-b from-brand-orange to-amber-400"></div>
+                  <div class="flex-1 min-w-0 pl-1">
+                    <p class="text-[10px] text-brand-grey mb-0.5 truncate">{city.name}</p>
+                    <div class="text-[9px] text-orange-400 mb-0.5">↓ 🚚</div>
+                    <p class="text-sm font-bold text-brand-dark truncate">{dest}</p>
+                  </div>
+                  <span class="text-brand-orange text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity shrink-0">→</span>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+
+        <!-- Interstate Panel -->
+        <div id="panel-inter" class="hidden">
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-8">
+            {interstate.map((route: string) => {
+              const dest = route.split(' to ')[1]?.trim() || '';
+              const destState = cityStateLookup[dest] || '';
+              const destStateName = stateNameMap[destState] || '';
+              return (
+                <a href={`https://wa.me/917731074075?text=Hi%20PackersHub%2C%20I%20need%20movers%20from%20${encodeURIComponent(route)}`}
+                   target="_blank" rel="noopener noreferrer"
+                   class="group relative flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-100 shadow-sm hover:border-blue-400 hover:shadow-md transition-all duration-200 overflow-hidden">
+                  <div class="absolute left-0 top-0 w-0.5 h-full bg-gradient-to-b from-blue-500 to-indigo-400"></div>
+                  <div class="flex-1 min-w-0 pl-1">
+                    <p class="text-[10px] text-brand-grey mb-0.5 truncate">{city.name}</p>
+                    <div class="text-[9px] text-blue-400 mb-0.5">↓ 🚛</div>
+                    <p class="text-sm font-bold text-brand-dark truncate">{dest}</p>
+                    {destStateName && <p class="text-[10px] text-blue-500 font-medium mt-0.5">{destStateName}</p>}
+                  </div>
+                  <span class="text-blue-500 text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity shrink-0">→</span>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+
+        <!-- Bottom CTA strip -->
+        <div class="bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-100 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <p class="font-bold text-brand-dark mb-1">Don't see your route?</p>
+            <p class="text-sm text-brand-grey">PackersHub moves to any city across South India — call us with your origin and destination for a custom quote.</p>
+          </div>
+          <div class="flex gap-3 shrink-0">
+            <a href="tel:+917731074075" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-brand-orange text-white font-bold text-sm hover:bg-orange-600 transition-colors shadow-md">
+              📞 Call Now
+            </a>
+            <a href={`https://wa.me/917731074075?text=Hi%20PackersHub%2C%20I%20need%20movers%20from%20${encodeURIComponent(city.name)}`}
+               target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#25D366] text-white font-bold text-sm hover:bg-green-500 transition-colors shadow-md">
+              💬 WhatsApp
+            </a>
+          </div>
+        </div>
+        <p class="text-center text-xs text-brand-grey mt-6">
+          All moves include packing, loading, transport, unloading &amp; 100% transit insurance · tracking · GST billing
+        </p>
+      </div>
+    </section>
+    );
+  })()}
+
+<!-- ═══════════════════════════════════════════════════════════
+       100% SAFE DELIVERY GUARANTEE — DETAILED SECTION
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-gray-50" aria-labelledby="guarantee-heading">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Section Header -->
+      <div class="text-center mb-12">
+        <span class="inline-block px-4 py-1.5 rounded-full bg-green-100 text-green-700 text-sm font-bold mb-4 uppercase tracking-wide">
+          Our Promise to You
+        </span>
+        <h2 id="guarantee-heading" class="font-display font-extrabold text-3xl lg:text-4xl text-brand-dark mb-4">
+          100% Safe Delivery Guarantee
+        </h2>
+        <p class="text-brand-grey text-lg max-w-2xl mx-auto">
+          Every PackersHub shipment from {city.name} is backed by our complete Safe Delivery Guarantee — your belongings arrive in the same condition they left in, on the agreed date, with nothing missing or damaged.
+        </p>
+      </div>
+
+      <!-- Main guarantee card -->
+      <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden mb-8">
+
+        <!-- Top bar -->
+        <div class="bg-gradient-to-r from-green-600 to-emerald-500 px-8 py-5 flex items-center gap-4">
+          <div class="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center text-3xl shrink-0">🛡️</div>
+          <div>
+            <h3 class="font-display font-extrabold text-xl text-white">PackersHub Safe Delivery Promise</h3>
+            <p class="text-green-100 text-sm">Valid on every move from {city.name} — local &amp; intercity</p>
+          </div>
+          <div class="ml-auto hidden sm:flex flex-col items-end">
+            <span class="text-white font-black text-3xl">100%</span>
+            <span class="text-green-100 text-xs">Guaranteed</span>
+          </div>
+        </div>
+
+        <!-- 6-step guarantee process -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-0 divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
+          {[
+            { step:'01', icon:'📸', title:'Pre-Move Inspection', desc:'Every item is inspected, photographed, and logged individually before packing begins. A digital inventory is created and shared with you.' },
+            { step:'02', icon:'📦', title:'Professional Packing', desc:'Multi-layer bubble wrap, corrugated sheets, moisture-resistant wrapping, and custom crating for valuables — materials chosen for item type and route.' },
+            { step:'03', icon:'🔒', title:'Secure Loading', desc:'Strict loading protocols prevent shifting in transit. Fragile items are positioned and braced separately from heavy furniture.' },
+            { step:'04', icon:'📍', title:'Status-Tracked Transport', desc:'Every PackersHub vehicle move is status-tracked end to end. You get WhatsApp milestone updates and can call our coordination team at any point.' },
+            { step:'05', icon:'✅', title:'Delivery & Unpacking', desc:'Our crew unpacks and places items exactly as instructed. A joint inventory check is completed before the job is closed.' },
+            { step:'06', icon:'🏦', title:'Insurance & Claims', desc:'Every consignment carries goods-in-transit insurance as standard. If anything is damaged, our claims process ensures fair, prompt compensation — no runaround.' },
+          ].map(item => (
+            <div class="p-6 hover:bg-orange-50/30 transition-colors">
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-2xl">{item.icon}</span>
+                <span class="text-xs font-black text-brand-orange bg-orange-100 px-2 py-0.5 rounded-full">STEP {item.step}</span>
+              </div>
+              <h4 class="font-bold text-brand-dark mb-2 text-sm">{item.title}</h4>
+              <p class="text-xs text-brand-grey leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Guarantee badges row -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+        {[
+          { icon:'🛡️', label:'100%', sub:'Goods Insured' },
+          { icon:'📍', label:'100%', sub:'Tracked Moves' },
+          { icon:'📋', label:'Written', sub:'All-Inclusive Quote' },
+          { icon:'💯', label:'Zero Damage', sub:'Policy on Every Job' },
+        ].map(badge => (
+          <div class="flex flex-col items-center text-center p-5 bg-white rounded-2xl border border-gray-100 shadow-sm">
+            <span class="text-3xl mb-2">{badge.icon}</span>
+            <span class="font-display font-black text-lg text-brand-dark">{badge.label}</span>
+            <span class="text-xs text-brand-grey mt-0.5">{badge.sub}</span>
+          </div>
+        ))}
+      </div>
+
+      <!-- CTA inside guarantee section -->
+      <div class="text-center bg-gradient-to-r from-brand-orange to-brand-gold rounded-2xl p-8 text-white">
+        <h3 class="font-display font-extrabold text-2xl mb-2">Ready for a Stress-Free Move from {city.name}?</h3>
+        <p class="text-orange-100 mb-6">Get your free, all-inclusive quote today — covered by our 100% Safe Delivery Guarantee.</p>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+          <a href="#quote" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-white text-brand-orange font-bold hover:bg-orange-50 transition-colors shadow-lg">
+            🚚 Get Free Quote
+          </a>
+          <a href="tel:+917731074075" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full border-2 border-white text-white font-bold hover:bg-white/10 transition-colors">
+            📞 +91 77310 74075
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- NEARBY CITIES -->
+  {nearbyCities.length > 0 && (
+    <section class="py-16 bg-gray-50" aria-labelledby="nearby-heading">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 id="nearby-heading" class="font-display font-extrabold text-2xl text-brand-dark mb-8 text-center">
+          Also Serving Nearby Cities
+        </h2>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {nearbyCities.map(c => (
+            <a href={`/${c.state}/${c.slug}`} class="p-4 rounded-xl bg-white hover:bg-orange-50 border border-gray-100 hover:border-orange-200 transition-all text-center card-lift">
+              <div class="font-bold text-sm text-brand-dark hover:text-brand-orange">{c.name}</div>
+              <div class="text-[11px] text-brand-grey mt-0.5">{c.stateName}</div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <QuoteForm />
+  <FAQ city={city.name} localFaqs={localFaqs} />
+
+</BaseLayout>

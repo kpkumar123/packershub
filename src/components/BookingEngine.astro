@@ -1,0 +1,1991 @@
+---
+// BookingEngine.astro — Advanced Booking & Price Comparison Engine
+// PackersHub v6 ULTRA — Production Ready
+import citiesData from '../data/cities.json';
+
+const cityNames = citiesData.map(c => c.name);
+---
+
+<section id="booking-engine" class="booking-engine-wrapper">
+  <!-- Step Indicator -->
+  <div class="be-step-bar">
+    <div class="be-step active" data-step="1">
+      <span class="be-step-num">1</span>
+      <span class="be-step-label">Route</span>
+    </div>
+    <div class="be-step-line"></div>
+    <div class="be-step" data-step="2">
+      <span class="be-step-num">2</span>
+      <span class="be-step-label">Move Details</span>
+    </div>
+    <div class="be-step-line"></div>
+    <div class="be-step" data-step="3">
+      <span class="be-step-num">3</span>
+      <span class="be-step-label">Price Estimate</span>
+    </div>
+    <div class="be-step-line"></div>
+    <div class="be-step" data-step="4">
+      <span class="be-step-num">4</span>
+      <span class="be-step-label">Book Now</span>
+    </div>
+  </div>
+
+  <!-- STEP 1: Route Selection -->
+  <div class="be-panel active" id="be-step-1">
+    <div class="be-panel-header">
+      <span class="be-panel-icon">📍</span>
+      <div>
+        <h3 class="be-panel-title">Select Your Route</h3>
+        <p class="be-panel-subtitle">Choose from & to cities across 100+ South Indian cities</p>
+      </div>
+    </div>
+    <div class="be-route-grid">
+      <div class="be-field-group">
+        <label class="be-label">From City</label>
+        <div class="be-autocomplete-wrap">
+          <span class="be-field-icon">🏠</span>
+          <input
+            id="from-city"
+            type="text"
+            class="be-input"
+            placeholder="Type city name..."
+            autocomplete="off"
+          />
+          <div class="be-dropdown" id="from-dropdown"></div>
+        </div>
+      </div>
+      <button class="be-swap-btn" id="swap-btn" title="Swap cities">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
+        </svg>
+      </button>
+      <div class="be-field-group">
+        <label class="be-label">To City</label>
+        <div class="be-autocomplete-wrap">
+          <span class="be-field-icon">📦</span>
+          <input
+            id="to-city"
+            type="text"
+            class="be-input"
+            placeholder="Type city name..."
+            autocomplete="off"
+          />
+          <div class="be-dropdown" id="to-dropdown"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Popular Routes -->
+    <div class="be-quick-routes">
+      <p class="be-quick-label">Popular Routes:</p>
+      <div class="be-quick-chips">
+        {[
+          ['Hyderabad','Bengaluru'],
+          ['Chennai','Hyderabad'],
+          ['Vijayawada','Chennai'],
+          ['Bengaluru','Kochi'],
+          ['Nellore','Hyderabad'],
+        ].map(([f,t]) => (
+          <button class="be-chip" data-from={f} data-to={t}>{f} → {t}</button>
+        ))}
+      </div>
+    </div>
+
+    <!-- Local Move Suggestion (shown when From City is picked but To City isn't yet) -->
+    <div class="be-local-suggest" id="local-suggest" style="display:none">
+      <button class="be-local-suggest-btn" id="local-suggest-btn" type="button"></button>
+    </div>
+
+    <div class="be-distance-info" id="distance-info" style="display:none">
+      <span class="be-dist-icon">🗺️</span>
+      <span id="distance-text"></span>
+      <span class="be-dist-badge" id="route-type-badge"></span>
+    </div>
+
+    <!-- Local Move: Pickup / Drop Locality (shown only when From City = To City) -->
+    <div class="be-local-fields be-two-col" id="local-area-fields" style="display:none">
+      <div class="be-field-group">
+        <label class="be-label">Pickup Area / Locality (optional)</label>
+        <input type="text" class="be-input" id="local-from-area" placeholder="e.g. BV Nagar, Dargamitta..." autocomplete="off" />
+      </div>
+      <div class="be-field-group">
+        <label class="be-label">Drop Area / Locality (optional)</label>
+        <input type="text" class="be-input" id="local-to-area" placeholder="e.g. Stonehousepet, Trunk Road..." autocomplete="off" />
+      </div>
+    </div>
+
+    <button class="be-next-btn" id="step1-next" disabled>
+      Continue to Move Details
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+
+  <!-- STEP 2: Move Details -->
+  <div class="be-panel" id="be-step-2">
+    <div class="be-panel-header">
+      <span class="be-panel-icon">📋</span>
+      <div>
+        <h3 class="be-panel-title">Move Details</h3>
+        <p class="be-panel-subtitle">Tell us about your move for an accurate estimate</p>
+      </div>
+    </div>
+
+    <!-- Move Type -->
+    <div class="be-field-group">
+      <label class="be-label">Move Type</label>
+      <div class="be-type-grid">
+        {[
+          { id:'house', icon:'🏠', label:'House Shifting', sub:'1–5 BHK home moves' },
+          { id:'office', icon:'🏢', label:'Office Relocation', sub:'Commercial & IT moves' },
+          { id:'bike', icon:'🛵', label:'Bike Transport', sub:'2-wheelers, scooters' },
+          { id:'car', icon:'🚗', label:'Car Carrier', sub:'All vehicles, safe enclosed' },
+          { id:'storage', icon:'📦', label:'Warehouse Storage', sub:'Short & long-term' },
+          { id:'partial', icon:'🧳', label:'Partial Shifting', sub:'Select items only' },
+        ].map(t => (
+          <button class="be-type-card" data-type={t.id}>
+            <span class="be-type-icon">{t.icon}</span>
+            <span class="be-type-label">{t.label}</span>
+            <span class="be-type-sub">{t.sub}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <!-- Property Size (shown for house/office) -->
+    <div class="be-field-group" id="size-group">
+      <label class="be-label">Property Size</label>
+      <div class="be-size-grid">
+        {['1 BHK','2 BHK','3 BHK','4 BHK','5+ BHK','Studio','Villa'].map(s => (
+          <button class="be-size-chip" data-size={s}>{s}</button>
+        ))}
+      </div>
+    </div>
+
+    <!-- Floor / Lift -->
+    <div class="be-two-col" id="floor-group">
+      <div class="be-field-group">
+        <label class="be-label">Floor (From)</label>
+        <select class="be-select" id="from-floor">
+          <option value="0">Ground Floor</option>
+          {[1,2,3,4,5,6,7,8,9,10].map(f => <option value={f}>Floor {f}</option>)}
+          <option value="11">11+ Floor</option>
+        </select>
+      </div>
+      <div class="be-field-group">
+        <label class="be-label">Lift Available (From)</label>
+        <div class="be-toggle-row">
+          <button class="be-toggle active" data-val="yes" id="lift-yes">Yes</button>
+          <button class="be-toggle" data-val="no" id="lift-no">No</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Move Date & Time -->
+    <div class="be-two-col">
+      <div class="be-field-group">
+        <label class="be-label">Preferred Move Date</label>
+        <input type="date" class="be-input" id="move-date" />
+      </div>
+      <div class="be-field-group">
+        <label class="be-label">Preferred Time Slot</label>
+        <select class="be-select" id="move-time">
+          <option value="morning">Morning (6 AM – 10 AM) 🌅</option>
+          <option value="mid">Mid-Morning (10 AM – 1 PM)</option>
+          <option value="afternoon">Afternoon (1 PM – 5 PM)</option>
+          <option value="evening">Evening (5 PM – 8 PM) 🌇</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Special Items -->
+    <div class="be-field-group">
+      <label class="be-label">Special Items (select all that apply)</label>
+      <div class="be-special-grid">
+        {[
+          {id:'piano',icon:'🎹',label:'Piano'},
+          {id:'ac',icon:'❄️',label:'AC Units'},
+          {id:'safe',icon:'🔒',label:'Safe/Locker'},
+          {id:'gym',icon:'🏋️',label:'Gym Equipment'},
+          {id:'art',icon:'🖼️',label:'Art/Antiques'},
+          {id:'aquarium',icon:'🐠',label:'Aquarium'},
+          {id:'plants',icon:'🪴',label:'Plants'},
+          {id:'server',icon:'🖥️',label:'Server Rack'},
+        ].map(item => (
+          <label class="be-special-item">
+            <input type="checkbox" class="be-checkbox" data-special={item.id} />
+            <span class="be-special-icon">{item.icon}</span>
+            <span class="be-special-label">{item.label}</span>
+          </label>
+        ))}
+      </div>
+    </div>
+
+    <!-- Add-on Services -->
+    <div class="be-field-group">
+      <label class="be-label">Add-on Services</label>
+      <div class="be-addon-list">
+        {[
+          {id:'packing',icon:'📦',label:'Premium Packing',price:'+₹1,500–₹3,000'},
+          {id:'insurance',icon:'🛡️',label:'Enhanced Insurance Cover',price:'+₹500–₹2,000'},
+          {id:'storage',icon:'🏭',label:'Interim Storage (48hr free)',price:'Free / then ₹300/day'},
+          {id:'assembly',icon:'🔧',label:'Furniture Disassembly & Reassembly',price:'+₹800–₹1,500'},
+          {id:'cleaning',icon:'🧹',label:'Post-Move Cleaning',price:'+₹1,200–₹2,500'},
+          {id:'track',icon:'📡',label:'Move Status Tracking',price:'Included'},
+        ].map(a => (
+          <label class="be-addon-row">
+            <input type="checkbox" class="be-checkbox" data-addon={a.id} />
+            <span class="be-addon-icon">{a.icon}</span>
+            <div class="be-addon-info">
+              <span class="be-addon-name">{a.label}</span>
+              <span class="be-addon-price">{a.price}</span>
+            </div>
+          </label>
+        ))}
+      </div>
+    </div>
+
+    <div class="be-btn-row">
+      <button class="be-back-btn" id="step2-back">← Back</button>
+      <button class="be-next-btn" id="step2-next">
+        Calculate Price
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Price Comparison Engine -->
+  <div class="be-panel" id="be-step-3">
+    <div class="be-panel-header">
+      <span class="be-panel-icon">💰</span>
+      <div>
+        <h3 class="be-panel-title">Your Price Estimate</h3>
+        <p class="be-panel-subtitle">Transparent breakdown — no hidden charges</p>
+      </div>
+    </div>
+
+    <!-- Route Summary Banner -->
+    <div class="be-route-banner" id="route-banner">
+      <div class="be-rb-item">
+        <span class="be-rb-label">FROM</span>
+        <span class="be-rb-val" id="rb-from">—</span>
+      </div>
+      <div class="be-rb-arrow">→</div>
+      <div class="be-rb-item">
+        <span class="be-rb-label">TO</span>
+        <span class="be-rb-val" id="rb-to">—</span>
+      </div>
+      <div class="be-rb-divider"></div>
+      <div class="be-rb-item">
+        <span class="be-rb-label">DISTANCE</span>
+        <span class="be-rb-val" id="rb-dist">—</span>
+      </div>
+      <div class="be-rb-item">
+        <span class="be-rb-label">TYPE</span>
+        <span class="be-rb-val" id="rb-type">—</span>
+      </div>
+    </div>
+
+    <!-- Price Cards: Our Price vs Market -->
+    <div class="be-price-compare">
+      <!-- PackersHub Card -->
+      <div class="be-price-card featured">
+        <div class="be-pc-badge">✅ Best Value · All-Inclusive Quote</div>
+        <div class="be-pc-brand">PackersHub</div>
+        <div class="be-pc-price" id="ph-price">₹—</div>
+        <div class="be-pc-range" id="ph-range">Calculating...</div>
+        <ul class="be-pc-features">
+          <li>✔ Goods-in-Transit Insurance</li>
+          <li>✔ Status-Tracked Vehicles</li>
+          <li>✔ No Hidden Charges</li>
+          <li>✔ Trained Professional Crew</li>
+          <li>✔ 100% Safe Guarantee</li>
+          <li>✔ 24/7 Customer Support</li>
+        </ul>
+        <button class="be-pc-cta" id="book-now-btn">Book This Price →</button>
+      </div>
+
+      <!-- Estimated Market Range Card (NOT a live competitor quote — see footnote) -->
+      <div class="be-price-card market">
+        <div class="be-pc-badge muted">📊 Estimated Typical Range*</div>
+        <div class="be-pc-brand">Other Movers (Industry Estimate)</div>
+        <div class="be-pc-price market-price" id="market-price">₹—</div>
+        <div class="be-pc-range" id="market-range">Calculating...</div>
+        <ul class="be-pc-features muted">
+          <li>⚠ Insurance often extra</li>
+          <li>⚠ Hidden charges common</li>
+          <li>⚠ Unverified crews</li>
+          <li>⚠ Limited tracking</li>
+          <li>⚠ No delivery guarantee</li>
+          <li>⚠ Variable support quality</li>
+        </ul>
+        <div class="be-pc-savings" id="savings-badge">Estimated savings with PackersHub</div>
+      </div>
+    </div>
+    <p class="be-market-disclaimer">
+      *This is an editorial estimate based on commonly-cited industry pricing patterns, not a live quote
+      collected from any specific competitor. Your PackersHub price on the left is the only figure we
+      stand behind as a real, bookable estimate.
+    </p>
+
+    <!-- Price Breakdown -->
+    <div class="be-breakdown">
+      <div class="be-breakdown-title">
+        <span>📊 Detailed Price Breakdown</span>
+        <button class="be-toggle-breakdown" id="toggle-breakdown">Show Details ▼</button>
+      </div>
+      <div class="be-breakdown-body" id="breakdown-body" style="display:none">
+        <div class="be-brow" id="br-base">
+          <span>Base Transport Charge</span><span id="br-base-val">—</span>
+        </div>
+        <div class="be-brow" id="br-packing">
+          <span>Packing Materials & Labor</span><span id="br-packing-val">—</span>
+        </div>
+        <div class="be-brow" id="br-loading">
+          <span>Loading & Unloading</span><span id="br-loading-val">—</span>
+        </div>
+        <div class="be-brow" id="br-insurance">
+          <span>Goods-in-Transit Insurance</span><span id="br-insurance-val">Included ✔</span>
+        </div>
+        <div class="be-brow" id="br-floor">
+          <span>Floor Charges</span><span id="br-floor-val">—</span>
+        </div>
+        <div class="be-brow" id="br-special">
+          <span>Special Items Handling</span><span id="br-special-val">—</span>
+        </div>
+        <div class="be-brow" id="br-addons">
+          <span>Selected Add-ons</span><span id="br-addons-val">—</span>
+        </div>
+        <div class="be-brow total">
+          <span>Total Estimate</span><span id="br-total">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Savings Meter -->
+    <div class="be-savings-bar">
+      <div class="be-savings-label">
+        <span>💸 Estimated savings vs typical range</span>
+        <span class="be-savings-amount" id="savings-amount">₹—</span>
+      </div>
+      <div class="be-savings-track">
+        <div class="be-savings-fill" id="savings-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- Trust Indicators -->
+    <div class="be-trust-row">
+      {['🔒 Transit Insurance Included','📍 Status Tracking','✅ 0% Hidden Charges','⚡ Response in 30 Min'].map(t => (
+        <div class="be-trust-chip">{t}</div>
+      ))}
+    </div>
+
+    <div class="be-btn-row">
+      <button class="be-back-btn" id="step3-back">← Modify Details</button>
+      <button class="be-next-btn" id="step3-next">
+        Book at This Price
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 4: Booking Confirmation -->
+  <div class="be-panel" id="be-step-4">
+    <div class="be-panel-header">
+      <span class="be-panel-icon">✅</span>
+      <div>
+        <h3 class="be-panel-title">Complete Your Booking</h3>
+        <p class="be-panel-subtitle">Enter your details — we'll confirm within 30 minutes</p>
+      </div>
+    </div>
+
+    <!-- Final Price Summary -->
+    <div class="be-final-summary" id="final-summary">
+      <div class="be-fs-route" id="fs-route">Nellore → Hyderabad</div>
+      <div class="be-fs-price" id="fs-price">₹—</div>
+      <div class="be-fs-note">All-inclusive · Insurance Included · No Hidden Charges</div>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="be-contact-form">
+      <div class="be-two-col">
+        <div class="be-field-group">
+          <label class="be-label">Your Name *</label>
+          <input type="text" class="be-input" id="contact-name" placeholder="Full name" />
+        </div>
+        <div class="be-field-group">
+          <label class="be-label">Phone Number *</label>
+          <input type="tel" class="be-input" id="contact-phone" placeholder="+91 XXXXX XXXXX" />
+        </div>
+      </div>
+      <div class="be-field-group">
+        <label class="be-label">Email (optional)</label>
+        <input type="email" class="be-input" id="contact-email" placeholder="you@email.com" />
+      </div>
+      <div class="be-field-group">
+        <label class="be-label">Additional Notes</label>
+        <textarea class="be-textarea" id="contact-notes" rows="3" placeholder="Any special instructions, access restrictions, or questions..."></textarea>
+      </div>
+
+      <!-- Preferred Contact Method -->
+      <div class="be-field-group">
+        <label class="be-label">Preferred Contact Method</label>
+        <div class="be-contact-methods">
+          <label class="be-contact-opt">
+            <input type="radio" name="contact-method" value="whatsapp" checked />
+            <span class="be-copt-icon">💬</span>
+            <span>WhatsApp</span>
+          </label>
+          <label class="be-contact-opt">
+            <input type="radio" name="contact-method" value="call" />
+            <span class="be-copt-icon">📞</span>
+            <span>Phone Call</span>
+          </label>
+          <label class="be-contact-opt">
+            <input type="radio" name="contact-method" value="email" />
+            <span class="be-copt-icon">📧</span>
+            <span>Email</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Terms -->
+    <label class="be-terms">
+      <input type="checkbox" id="terms-check" />
+      <span>I agree to be contacted by PackersHub regarding this move estimate. <a href="/terms/" class="be-terms-link">Terms apply.</a></span>
+    </label>
+
+    <div class="be-btn-row">
+      <button class="be-back-btn" id="step4-back">← Back</button>
+      <button class="be-submit-btn" id="submit-booking">
+        <span id="submit-label">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Send Booking via WhatsApp
+        </span>
+      </button>
+    </div>
+
+    <!-- Razorpay Payment block (shown after WhatsApp step completes) -->
+    <!-- v10.6.3: toggle added between 20% Advance (default, unchanged) and
+         Full Amount. IDs here are the canonical ones — driven by the
+         phInitRazorpay function defined in RazorpayCheckout.astro. -->
+    <div class="rzp-block">
+      <div class="rzp-toggle" role="radiogroup" aria-label="Payment option">
+        <button type="button" id="rzp-opt-advance" class="rzp-toggle-btn rzp-toggle-active" role="radio" aria-checked="true">
+          Pay 20% Advance
+        </button>
+        <button type="button" id="rzp-opt-full" class="rzp-toggle-btn" role="radio" aria-checked="false">
+          Pay Full Amount
+        </button>
+      </div>
+      <div class="rzp-advance-badge">
+        <span class="rzp-badge-icon">🔒</span>
+        <div>
+          <p class="rzp-badge-title" id="rzp-badge-title">Secure Your Booking Instantly</p>
+          <p class="rzp-badge-sub" id="rzp-badge-sub">
+            Pay <strong id="rzp-advance-label">₹—</strong> advance now
+            (<span id="rzp-pct-label">20</span>% of estimate) — balance collected after delivery.
+          </p>
+        </div>
+      </div>
+      <button id="rzp-pay-btn" class="rzp-pay-btn" disabled>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>
+        </svg>
+        <span id="rzp-btn-label">Pay Advance via Razorpay</span>
+      </button>
+      <p class="rzp-methods">UPI · Net Banking · Credit / Debit Card · Wallets</p>
+      <div id="rzp-status" class="rzp-status" style="display:none"></div>
+    </div>
+
+    <!-- Success State -->
+    <div class="be-success" id="be-success" style="display:none">
+      <div class="be-success-icon">🎉</div>
+      <h4 class="be-success-title">Booking Request Sent!</h4>
+      <p class="be-success-sub" id="be-success-sub-text">Our team will confirm your booking within 30 minutes. You'll receive a detailed quote on WhatsApp.</p>
+      <div class="be-success-tracking" id="be-success-tracking" style="display:none">
+        <span>Your Tracking ID:</span>
+        <strong id="be-tracking-id"></strong>
+        <a href="/track/" class="be-tracking-link">Track your move →</a>
+      </div>
+      <!-- Payment success badge (text set dynamically by phPaymentSuccess — differs for full vs advance) -->
+      <div id="be-payment-confirmed" style="display:none" class="be-payment-badge"></div>
+      <div class="be-success-actions">
+        <a href="tel:+917731074075" class="be-success-call">📞 Call Now: +91 77310 74075</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+/* ── WRAPPER ──────────────────────────────────────── */
+.booking-engine-wrapper {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+  position: relative;
+}
+
+/* ── STEP BAR ─────────────────────────────────────── */
+.be-step-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem 1.5rem;
+  background: rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  gap: 0;
+  overflow-x: auto;
+}
+.be-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 64px;
+  opacity: 0.4;
+  transition: opacity 0.3s;
+}
+.be-step.active { opacity: 1; }
+.be-step.done { opacity: 0.75; }
+.be-step-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  border: 2px solid rgba(255,255,255,0.2);
+  transition: all 0.3s;
+}
+.be-step.active .be-step-num {
+  background: #f59e0b;
+  border-color: #f59e0b;
+  color: #000;
+  box-shadow: 0 0 0 4px rgba(245,158,11,0.25);
+}
+.be-step.done .be-step-num {
+  background: #22c55e;
+  border-color: #22c55e;
+}
+.be-step-label {
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.7);
+  white-space: nowrap;
+  font-weight: 600;
+}
+.be-step.active .be-step-label { color: #f59e0b; }
+.be-step-line {
+  flex: 1;
+  height: 2px;
+  background: rgba(255,255,255,0.15);
+  min-width: 20px;
+  max-width: 60px;
+}
+
+/* ── PANELS ───────────────────────────────────────── */
+.be-panel {
+  display: none;
+  padding: 1.75rem;
+  animation: beFadeIn 0.3s ease;
+}
+.be-panel.active { display: block; }
+@keyframes beFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── PANEL HEADER ─────────────────────────────────── */
+.be-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.be-panel-icon {
+  font-size: 1.75rem;
+  width: 52px;
+  height: 52px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.be-panel-title {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 2px;
+}
+.be-panel-subtitle {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+/* ── FORM ELEMENTS ────────────────────────────────── */
+.be-label {
+  display: block;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+.be-input, .be-select, .be-textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.08);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  padding: 0.65rem 0.9rem;
+  color: #fff;
+  font-size: 0.9rem;
+  transition: border-color 0.2s, background 0.2s;
+  outline: none;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+.be-input:focus, .be-select:focus, .be-textarea:focus {
+  border-color: #f59e0b;
+  background: rgba(255,255,255,0.12);
+}
+.be-input::placeholder { color: rgba(255,255,255,0.35); }
+.be-select option { background: #1e3a8a; color: #fff; }
+.be-textarea { resize: vertical; }
+.be-field-group { margin-bottom: 1rem; }
+
+/* ── AUTOCOMPLETE ─────────────────────────────────── */
+.be-autocomplete-wrap { position: relative; }
+.be-field-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  pointer-events: none;
+  z-index: 1;
+}
+.be-autocomplete-wrap .be-input { padding-left: 2.4rem; }
+.be-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0; right: 0;
+  background: #1e3a8a;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 100;
+  display: none;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+}
+.be-dropdown.open { display: block; }
+.be-dropdown-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  color: #fff;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.15s;
+}
+.be-dropdown-item:hover { background: rgba(245,158,11,0.2); }
+.be-dropdown-item .be-dd-state {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.5);
+  margin-left: auto;
+}
+
+/* ── ROUTE GRID ───────────────────────────────────── */
+.be-route-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 1rem;
+  align-items: end;
+  margin-bottom: 1rem;
+}
+.be-swap-btn {
+  background: rgba(245,158,11,0.15);
+  border: 1.5px solid rgba(245,158,11,0.3);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #f59e0b;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  margin-bottom: 0;
+}
+.be-swap-btn:hover {
+  background: rgba(245,158,11,0.3);
+  transform: rotate(180deg);
+}
+
+/* ── QUICK ROUTES ─────────────────────────────────── */
+.be-quick-routes { margin-bottom: 1rem; }
+.be-quick-label {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.be-quick-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.be-chip {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  padding: 5px 12px;
+  color: rgba(255,255,255,0.8);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.be-chip:hover {
+  background: rgba(245,158,11,0.2);
+  border-color: #f59e0b;
+  color: #f59e0b;
+}
+
+/* ── DISTANCE INFO ────────────────────────────────── */
+.be-distance-info {
+  background: rgba(34,197,94,0.1);
+  border: 1px solid rgba(34,197,94,0.25);
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #86efac;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+.be-dist-badge {
+  margin-left: auto;
+  background: rgba(34,197,94,0.2);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* ── LOCAL MOVE SUGGESTION CHIP ──────────────────── */
+.be-local-suggest { margin-bottom: 1rem; }
+.be-local-suggest-btn {
+  width: 100%;
+  background: rgba(245,158,11,0.12);
+  border: 1px dashed rgba(245,158,11,0.5);
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: #fbbf24;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s, border-color 0.2s;
+}
+.be-local-suggest-btn:hover {
+  background: rgba(245,158,11,0.2);
+  border-color: #f59e0b;
+}
+
+/* ── LOCAL AREA / LOCALITY FIELDS ─────────────────── */
+.be-local-fields { margin-bottom: 1rem; }
+
+/* ── BUTTONS ──────────────────────────────────────── */
+.be-next-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #000;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 12px;
+  padding: 0.9rem 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(245,158,11,0.35);
+}
+.be-next-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(245,158,11,0.45);
+}
+.be-next-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+.be-back-btn {
+  background: rgba(255,255,255,0.08);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.75);
+  border-radius: 12px;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+.be-back-btn:hover {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+.be-btn-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 1.25rem;
+}
+.be-btn-row .be-next-btn { flex: 1; }
+
+/* ── MOVE TYPE GRID ───────────────────────────────── */
+.be-type-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.be-type-card {
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 12px 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+  text-align: center;
+}
+.be-type-card:hover {
+  background: rgba(245,158,11,0.1);
+  border-color: rgba(245,158,11,0.4);
+}
+.be-type-card.selected {
+  background: rgba(245,158,11,0.15);
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245,158,11,0.15);
+}
+.be-type-icon { font-size: 1.5rem; }
+.be-type-label { color: #fff; font-size: 0.75rem; font-weight: 600; line-height: 1.2; }
+.be-type-sub { color: rgba(255,255,255,0.45); font-size: 0.62rem; line-height: 1.2; }
+
+/* ── SIZE CHIPS ───────────────────────────────────── */
+.be-size-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.be-size-chip {
+  background: rgba(255,255,255,0.08);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  padding: 8px 16px;
+  color: rgba(255,255,255,0.8);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.be-size-chip:hover {
+  background: rgba(245,158,11,0.15);
+  border-color: #f59e0b;
+  color: #f59e0b;
+}
+.be-size-chip.selected {
+  background: rgba(245,158,11,0.2);
+  border-color: #f59e0b;
+  color: #f59e0b;
+}
+
+/* ── TOGGLE ───────────────────────────────────────── */
+.be-toggle-row { display: flex; gap: 6px; }
+.be-toggle {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 8px;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.be-toggle.active {
+  background: rgba(245,158,11,0.2);
+  border-color: #f59e0b;
+  color: #f59e0b;
+}
+
+/* ── TWO COL ──────────────────────────────────────── */
+.be-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 1rem;
+}
+
+/* ── SPECIAL ITEMS ────────────────────────────────── */
+.be-special-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.be-special-item {
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.be-special-item:has(.be-checkbox:checked) {
+  background: rgba(245,158,11,0.15);
+  border-color: #f59e0b;
+}
+.be-special-item .be-checkbox { display: none; }
+.be-special-icon { font-size: 1.25rem; }
+.be-special-label { font-size: 0.65rem; color: rgba(255,255,255,0.7); text-align: center; font-weight: 600; }
+
+/* ── ADD-ON LIST ──────────────────────────────────── */
+.be-addon-list { display: flex; flex-direction: column; gap: 6px; }
+.be-addon-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.05);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.be-addon-row:has(.be-checkbox:checked) {
+  background: rgba(245,158,11,0.1);
+  border-color: rgba(245,158,11,0.4);
+}
+.be-addon-row .be-checkbox { accent-color: #f59e0b; width: 16px; height: 16px; }
+.be-addon-icon { font-size: 1.1rem; }
+.be-addon-info { flex: 1; }
+.be-addon-name { color: #fff; font-size: 0.825rem; font-weight: 600; display: block; }
+.be-addon-price { color: #f59e0b; font-size: 0.72rem; font-weight: 600; }
+
+/* ── ROUTE BANNER ─────────────────────────────────── */
+.be-route-banner {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+.be-rb-item { display: flex; flex-direction: column; gap: 2px; }
+.be-rb-label { color: rgba(255,255,255,0.45); font-size: 0.62rem; font-weight: 700; text-transform: uppercase; }
+.be-rb-val { color: #fff; font-size: 0.95rem; font-weight: 700; }
+.be-rb-arrow { color: #f59e0b; font-size: 1.25rem; font-weight: 700; }
+.be-rb-divider { width: 1px; height: 36px; background: rgba(255,255,255,0.15); margin: 0 4px; }
+
+/* ── PRICE COMPARE ────────────────────────────────── */
+.be-price-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 1.25rem;
+}
+.be-price-card {
+  border-radius: 16px;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 2px solid transparent;
+}
+.be-price-card.featured {
+  background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(245,158,11,0.05));
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 1px rgba(245,158,11,0.2), 0 8px 32px rgba(245,158,11,0.15);
+}
+.be-price-card.market {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.1);
+}
+.be-pc-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: rgba(245,158,11,0.2);
+  color: #f59e0b;
+  border-radius: 20px;
+  padding: 3px 10px;
+  display: inline-block;
+  width: fit-content;
+}
+.be-pc-badge.muted { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); }
+.be-pc-brand { color: rgba(255,255,255,0.8); font-size: 0.8rem; font-weight: 600; }
+.be-pc-price {
+  color: #f59e0b;
+  font-size: 1.7rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.be-pc-price.market-price { color: rgba(255,255,255,0.5); text-decoration: line-through; font-size: 1.3rem; }
+.be-pc-range { color: rgba(255,255,255,0.5); font-size: 0.72rem; }
+.be-pc-features { list-style: none; padding: 0; margin: 8px 0 0; display: flex; flex-direction: column; gap: 4px; }
+.be-pc-features li { color: rgba(255,255,255,0.8); font-size: 0.75rem; }
+.be-pc-features.muted li { color: rgba(255,255,255,0.4); }
+.be-pc-cta {
+  margin-top: 12px;
+  background: #f59e0b;
+  color: #000;
+  font-weight: 700;
+  font-size: 0.8rem;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.be-pc-cta:hover { background: #fbbf24; }
+.be-pc-savings {
+  margin-top: 12px;
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: 8px;
+  padding: 8px;
+  text-align: center;
+  color: #fca5a5;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.be-market-disclaimer {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.45);
+  text-align: center;
+  margin: 10px auto 0;
+  max-width: 560px;
+  line-height: 1.4;
+}
+
+/* ── BREAKDOWN ────────────────────────────────────── */
+.be-breakdown {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+.be-breakdown-title {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: rgba(255,255,255,0.8);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.be-toggle-breakdown {
+  background: none;
+  border: none;
+  color: #f59e0b;
+  font-size: 0.75rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+.be-breakdown-body { padding: 0 16px 12px; }
+.be-brow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.7);
+  font-size: 0.8rem;
+}
+.be-brow:last-child { border-bottom: none; }
+.be-brow.total { color: #f59e0b; font-weight: 700; font-size: 0.9rem; }
+.be-brow span:last-child { font-weight: 600; color: #fff; }
+.be-brow.total span:last-child { color: #f59e0b; }
+
+/* ── SAVINGS BAR ──────────────────────────────────── */
+.be-savings-bar {
+  background: rgba(34,197,94,0.08);
+  border: 1px solid rgba(34,197,94,0.2);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 1rem;
+}
+.be-savings-label {
+  display: flex;
+  justify-content: space-between;
+  color: #86efac;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.be-savings-amount { color: #4ade80; font-size: 1rem; font-weight: 800; }
+.be-savings-track {
+  height: 8px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.be-savings-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e, #4ade80);
+  border-radius: 99px;
+  transition: width 0.8s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+/* ── TRUST ROW ────────────────────────────────────── */
+.be-trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+.be-trust-chip {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  padding: 5px 12px;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ── FINAL SUMMARY ────────────────────────────────── */
+.be-final-summary {
+  background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(245,158,11,0.05));
+  border: 1.5px solid rgba(245,158,11,0.4);
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.be-fs-route { color: rgba(255,255,255,0.7); font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; }
+.be-fs-price { color: #f59e0b; font-size: 2rem; font-weight: 800; margin-bottom: 4px; }
+.be-fs-note { color: rgba(255,255,255,0.5); font-size: 0.72rem; }
+
+/* ── CONTACT OPTIONS ──────────────────────────────── */
+.be-contact-methods { display: flex; gap: 8px; }
+.be-contact-opt {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  padding: 10px 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.7);
+}
+.be-contact-opt:has(input:checked) {
+  border-color: #f59e0b;
+  background: rgba(245,158,11,0.12);
+  color: #f59e0b;
+}
+.be-contact-opt input { display: none; }
+.be-copt-icon { font-size: 1.25rem; }
+
+/* ── TERMS ────────────────────────────────────────── */
+.be-terms {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: rgba(255,255,255,0.55);
+  font-size: 0.75rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  line-height: 1.4;
+}
+.be-terms input { accent-color: #f59e0b; margin-top: 2px; flex-shrink: 0; }
+.be-terms-link { color: #f59e0b; }
+
+/* ── SUBMIT BTN ───────────────────────────────────── */
+.be-submit-btn {
+  flex: 1;
+  background: linear-gradient(135deg, #25d366, #128c7e);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 12px;
+  padding: 0.9rem 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(37,211,102,0.3);
+}
+.be-submit-btn:hover {
+  background: linear-gradient(135deg, #2ee076, #25d366);
+  transform: translateY(-1px);
+}
+
+/* ── SUCCESS STATE ────────────────────────────────── */
+.be-success {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+.be-success-icon { font-size: 3rem; margin-bottom: 12px; }
+.be-success-title { color: #fff; font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; }
+.be-success-sub { color: rgba(255,255,255,0.65); font-size: 0.85rem; line-height: 1.6; margin-bottom: 1.5rem; }
+.be-success-call {
+  display: inline-block;
+  background: #f59e0b;
+  color: #000;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.be-success-call:hover { background: #fbbf24; }
+
+.be-success-tracking {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 100px;
+  padding: 0.5rem 1.1rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.8125rem;
+  color: rgba(255,255,255,0.75);
+}
+.be-success-tracking strong { color: #fbbf24; font-size: 0.875rem; letter-spacing: 0.02em; }
+.be-tracking-link { color: #93c5fd; font-weight: 600; text-decoration: none; }
+.be-tracking-link:hover { text-decoration: underline; }
+
+/* ── RAZORPAY PAYMENT BLOCK ───────────────────────── */
+.rzp-block {
+  margin-top: 1.25rem;
+  border-top: 1.5px solid rgba(249,115,22,0.4);
+  padding-top: 1.25rem;
+}
+.rzp-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 0.875rem;
+}
+.rzp-toggle-btn {
+  padding: 0.7rem 0.5rem;
+  border-radius: 0.875rem;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.6);
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.rzp-toggle-active {
+  border-color: #f97316;
+  background: rgba(249,115,22,0.15);
+  color: #fdba74;
+}
+.rzp-advance-badge {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(249,115,22,0.35);
+  border-radius: 1rem;
+  padding: 0.875rem 1rem;
+  margin-bottom: 1rem;
+}
+.rzp-badge-icon  { font-size: 1.4rem; flex-shrink: 0; }
+.rzp-badge-title { font-weight: 700; color: #fff; font-size: 0.88rem; margin: 0 0 0.2rem; }
+.rzp-badge-sub   { color: rgba(255,255,255,0.6); font-size: 0.8rem; margin: 0; }
+.rzp-pay-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, #1a73e8 0%, #0d5bbd 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.rzp-pay-btn:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+.rzp-pay-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.rzp-methods {
+  text-align: center;
+  font-size: 0.73rem;
+  color: rgba(255,255,255,0.4);
+  margin: 0.45rem 0 0;
+}
+.rzp-status {
+  margin-top: 0.875rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.rzp-status.success { background: rgba(22,163,74,0.15); border: 1px solid rgba(22,163,74,0.4); color: #86efac; }
+.rzp-status.error   { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; }
+.be-payment-badge {
+  display: inline-block;
+  background: rgba(22,163,74,0.2);
+  border: 1px solid rgba(22,163,74,0.4);
+  color: #86efac;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 9999px;
+  padding: 0.35rem 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+/* ── RESPONSIVE ───────────────────────────────────── */
+@media (max-width: 640px) {
+  .be-route-grid { grid-template-columns: 1fr; }
+  .be-swap-btn { width: 100%; border-radius: 8px; height: 36px; }
+  .be-type-grid { grid-template-columns: repeat(2, 1fr); }
+  .be-special-grid { grid-template-columns: repeat(2, 1fr); }
+  .be-price-compare { grid-template-columns: 1fr; }
+  .be-two-col { grid-template-columns: 1fr; }
+  .be-contact-methods { flex-direction: column; }
+  .be-panel { padding: 1.25rem; }
+}
+</style>
+
+<script define:vars={{ cityNames, citiesData }}>
+// ── CITY DATA ──────────────────────────────────────────────────
+const CITIES = citiesData; // [{name, slug, stateName, stateSlug, lat, lng, ...}]
+
+// ── DISTANCE CALCULATION (Haversine) ──────────────────────────
+function haversineKm(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+// ── PRICE ENGINE ───────────────────────────────────────────────
+function calculatePrice(params) {
+  const { isLocalMove, distKm, moveType, propertySize, fromFloor, liftAvailable, specialItems, addons } = params;
+
+  // Base rate per km — used only for genuine inter-city moves (different cities)
+  const baseRates = {
+    house: 18, office: 22, bike: 8, car: 12, storage: 0, partial: 12
+  };
+
+  // Flat local transport charge — used when From City === To City.
+  // City-level lat/lng coordinates are identical for a same-city move, so a
+  // Haversine distance would always be 0 km, which isn't meaningful for
+  // pricing. Local moves are priced with a flat in-town vehicle/fuel charge
+  // instead of a per-km rate, and scale by move type, not by a fake distance.
+  const localTransportFlat = {
+    house: 1200, office: 1800, bike: 500, car: 800, storage: 600, partial: 800
+  };
+
+  let base;
+  if (isLocalMove) {
+    base = localTransportFlat[moveType] ?? 1000;
+  } else {
+    const rate = baseRates[moveType] || 15;
+    base = distKm < 30 ? distKm * rate * 1.8 : distKm * rate;
+    base = Math.max(base, 2500); // minimum charge for an inter-city move
+  }
+
+  // Property size multiplier (for house/office)
+  const sizeMultipliers = {
+    '1 BHK':1.0,'Studio':0.85,'2 BHK':1.4,'3 BHK':1.85,'4 BHK':2.4,'5+ BHK':3.1,'Villa':3.8
+  };
+  const sizeMul = (moveType === 'house' || moveType === 'office') ?
+    (sizeMultipliers[propertySize] || 1.0) : 1.0;
+
+  base *= sizeMul;
+
+  // Packing estimate
+  const packingBase = {
+    house: { '1 BHK':2500,'2 BHK':4000,'3 BHK':5500,'4 BHK':7000,'5+ BHK':9000,'Villa':11000,'Studio':1800 },
+    office: { '1 BHK':3500,'2 BHK':5500,'3 BHK':7000,'4 BHK':9500,'5+ BHK':13000,'Villa':16000,'Studio':2500 },
+  };
+  const packing = packingBase[moveType]?.[propertySize] ||
+    (moveType === 'bike' ? 800 : moveType === 'car' ? 1200 : 2000);
+
+  // Loading/unloading
+  const loading = moveType === 'bike' ? 600 :
+                  moveType === 'car' ? 900 :
+                  (packing * 0.5);
+
+  // Floor surcharge
+  let floorCharge = 0;
+  if (!liftAvailable && fromFloor > 0) {
+    floorCharge = fromFloor * 400;
+  } else if (liftAvailable && fromFloor > 5) {
+    floorCharge = (fromFloor - 5) * 150;
+  }
+
+  // Special items surcharge
+  const specialRates = {
+    piano:5000, ac:800, safe:2000, gym:2500, art:3000, aquarium:3500, plants:500, server:4000
+  };
+  const specialCharge = specialItems.reduce((sum, s) => sum + (specialRates[s] || 0), 0);
+
+  // Add-on pricing
+  const addonRates = {
+    packing: 2000, insurance: 1000, storage: 0, assembly: 1200, cleaning: 1800, track: 0
+  };
+  const addonCharge = addons.reduce((sum, a) => sum + (addonRates[a] || 0), 0);
+
+  // Insurance (always included)
+  const insurance = 'Included';
+
+  // Total
+  const total = Math.round(base + packing + loading + floorCharge + specialCharge + addonCharge);
+  const rangeLow = Math.round(total * 0.9);
+  const rangeHigh = Math.round(total * 1.12);
+
+  // ⚠️ HONESTY NOTE: this is NOT a live competitor price feed — PackersHub
+  // does not have access to real-time pricing from other movers. This is a
+  // disclosed ESTIMATE, openly labelled as such in the UI ("Estimated
+  // typical range", with a footnote), based on commonly-cited industry rate
+  // patterns. If this is ever shown as a definitive "market price" without
+  // the disclosure footnote, that would be a misleading reference-price claim.
+  // Replace this block with real data (a periodically-updated manual survey
+  // of 3–5 competitor quotes per route tier, or a sourced rate-card) as soon
+  // as that data exists — until then, keep it as an explicit estimate only.
+  const marketLow = Math.round(total * 1.15);   // low end of typical industry range
+  const marketHigh = Math.round(total * 1.35);  // high end of typical industry range
+  const marketTotal = Math.round((marketLow + marketHigh) / 2); // midpoint, shown as "~"
+  const savings = marketTotal - total;
+
+  return {
+    base: Math.round(base), packing, loading: Math.round(loading),
+    floor: floorCharge, special: specialCharge, addons: addonCharge,
+    total, rangeLow, rangeHigh, marketLow, marketHigh, marketTotal, savings,
+    savingsPercent: Math.round((savings / marketTotal) * 100)
+  };
+}
+
+// ── STATE ──────────────────────────────────────────────────────
+let state = {
+  fromCity: null, toCity: null,
+  isLocalMove: false, fromArea: '', toArea: '',
+  moveType: null, propertySize: '2 BHK',
+  fromFloor: 0, liftAvailable: true,
+  moveDate: '', moveTime: 'morning',
+  specialItems: [], addons: [],
+  price: null,
+};
+let currentStep = 1;
+
+// ── STEP NAVIGATION ────────────────────────────────────────────
+function goToStep(step) {
+  document.querySelectorAll('.be-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(`be-step-${step}`)?.classList.add('active');
+
+  document.querySelectorAll('.be-step').forEach(s => {
+    const n = parseInt(s.dataset.step);
+    s.classList.remove('active','done');
+    if (n === step) s.classList.add('active');
+    else if (n < step) s.classList.add('done');
+  });
+  currentStep = step;
+  window.phTrack?.('booking_step_view', { step });
+}
+
+// ── AUTOCOMPLETE ───────────────────────────────────────────────
+function setupAutocomplete(inputId, dropdownId, onSelect) {
+  const input = document.getElementById(inputId);
+  const dropdown = document.getElementById(dropdownId);
+
+  input.addEventListener('input', () => {
+    const val = input.value.toLowerCase().trim();
+    if (!val) { dropdown.classList.remove('open'); return; }
+
+    const matches = CITIES.filter(c =>
+      c.name.toLowerCase().includes(val) || c.stateName.toLowerCase().includes(val)
+    ).slice(0, 8);
+
+    dropdown.innerHTML = matches.map(c => `
+      <div class="be-dropdown-item" data-city="${c.name}">
+        📍 ${c.name}
+        <span class="be-dd-state">${c.stateName}</span>
+      </div>
+    `).join('');
+
+    dropdown.classList.toggle('open', matches.length > 0);
+
+    dropdown.querySelectorAll('.be-dropdown-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const city = CITIES.find(c => c.name === item.dataset.city);
+        input.value = city.name;
+        dropdown.classList.remove('open');
+        onSelect(city);
+      });
+    });
+  });
+
+  document.addEventListener('click', e => {
+    if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+      dropdown.classList.remove('open');
+    }
+  });
+}
+
+function updateLocalSuggestion() {
+  const box = document.getElementById('local-suggest');
+  const btn = document.getElementById('local-suggest-btn');
+  const sameCity = state.fromCity && state.toCity && state.fromCity.slug === state.toCity.slug;
+
+  // Only suggest when From is picked and To is either empty or a different city
+  if (state.fromCity && !sameCity) {
+    btn.textContent = `📍 Moving within ${state.fromCity.name} itself? Tap here for a local shifting quote`;
+    box.style.display = 'block';
+  } else {
+    box.style.display = 'none';
+  }
+}
+
+function updateDistanceInfo() {
+  const info = document.getElementById('distance-info');
+  const localFields = document.getElementById('local-area-fields');
+  updateLocalSuggestion();
+
+  if (!state.fromCity || !state.toCity) {
+    info.style.display = 'none';
+    localFields.style.display = 'none';
+    state.isLocalMove = false;
+    document.getElementById('step1-next').disabled = true;
+    return;
+  }
+
+  state.isLocalMove = state.fromCity.slug === state.toCity.slug;
+
+  if (state.isLocalMove) {
+    // Same city on both ends — city-level lat/lng would give 0 km, which is
+    // meaningless for a real local move. Show a dedicated local-move message
+    // instead of a fake "0 km" distance, and reveal locality fields.
+    document.getElementById('distance-text').textContent =
+      `Local shifting within ${state.fromCity.name} (within-city)`;
+    document.getElementById('route-type-badge').textContent = '🏙️ Local Move';
+    localFields.style.display = 'grid';
+  } else {
+    const dist = haversineKm(state.fromCity.lat, state.fromCity.lng, state.toCity.lat, state.toCity.lng);
+    const roadDist = Math.round(dist * 1.25);
+    document.getElementById('distance-text').textContent =
+      `Approx. ${roadDist} km road distance`;
+    document.getElementById('route-type-badge').textContent =
+      roadDist < 250 ? '🚚 Short Distance' : '🗺️ Interstate';
+    localFields.style.display = 'none';
+  }
+  info.style.display = 'flex';
+  document.getElementById('step1-next').disabled = false;
+}
+
+// ── INIT AUTOCOMPLETE ──────────────────────────────────────────
+setupAutocomplete('from-city', 'from-dropdown', (city) => {
+  state.fromCity = city;
+  updateDistanceInfo();
+});
+setupAutocomplete('to-city', 'to-dropdown', (city) => {
+  state.toCity = city;
+  updateDistanceInfo();
+});
+
+// ── LOCAL MOVE SUGGESTION CHIP ──────────────────────────────────
+document.getElementById('local-suggest-btn').addEventListener('click', () => {
+  if (!state.fromCity) return;
+  state.toCity = state.fromCity;
+  document.getElementById('to-city').value = state.fromCity.name;
+  updateDistanceInfo();
+});
+
+// ── LOCAL AREA / LOCALITY INPUTS ─────────────────────────────────
+document.getElementById('local-from-area').addEventListener('input', e => {
+  state.fromArea = e.target.value.trim();
+});
+document.getElementById('local-to-area').addEventListener('input', e => {
+  state.toArea = e.target.value.trim();
+});
+
+// ── SWAP ───────────────────────────────────────────────────────
+document.getElementById('swap-btn').addEventListener('click', () => {
+  const tmp = state.fromCity;
+  state.fromCity = state.toCity;
+  state.toCity = tmp;
+  document.getElementById('from-city').value = state.fromCity?.name || '';
+  document.getElementById('to-city').value = state.toCity?.name || '';
+  updateDistanceInfo();
+});
+
+// ── QUICK ROUTE CHIPS ──────────────────────────────────────────
+document.querySelectorAll('.be-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const f = chip.dataset.from, t = chip.dataset.to;
+    const fromC = CITIES.find(c => c.name === f);
+    const toC = CITIES.find(c => c.name === t);
+    if (fromC && toC) {
+      state.fromCity = fromC; state.toCity = toC;
+      document.getElementById('from-city').value = f;
+      document.getElementById('to-city').value = t;
+      updateDistanceInfo();
+    }
+  });
+});
+
+// ── STEP 1 NEXT ────────────────────────────────────────────────
+document.getElementById('step1-next').addEventListener('click', () => {
+  if (state.fromCity && state.toCity) {
+    window.phTrack?.('booking_route_selected', {
+      from: state.fromCity.name, to: state.toCity.name, is_local: state.isLocalMove,
+    });
+    goToStep(2);
+  }
+});
+
+// ── MOVE TYPE SELECTION ────────────────────────────────────────
+document.querySelectorAll('.be-type-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.be-type-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    state.moveType = card.dataset.type;
+
+    // Show/hide size & floor groups
+    const showSize = ['house','office','partial'].includes(state.moveType);
+    document.getElementById('size-group').style.display = showSize ? 'block' : 'none';
+    document.getElementById('floor-group').style.display =
+      ['house','office','partial'].includes(state.moveType) ? 'grid' : 'none';
+  });
+});
+
+// ── SIZE SELECTION ─────────────────────────────────────────────
+document.querySelectorAll('.be-size-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.be-size-chip').forEach(c => c.classList.remove('selected'));
+    chip.classList.add('selected');
+    state.propertySize = chip.dataset.size;
+  });
+});
+
+// ── LIFT TOGGLE ────────────────────────────────────────────────
+document.getElementById('lift-yes').addEventListener('click', () => {
+  document.getElementById('lift-yes').classList.add('active');
+  document.getElementById('lift-no').classList.remove('active');
+  state.liftAvailable = true;
+});
+document.getElementById('lift-no').addEventListener('click', () => {
+  document.getElementById('lift-no').classList.add('active');
+  document.getElementById('lift-yes').classList.remove('active');
+  state.liftAvailable = false;
+});
+
+// ── FLOOR SELECTION ────────────────────────────────────────────
+document.getElementById('from-floor').addEventListener('change', e => {
+  state.fromFloor = parseInt(e.target.value);
+});
+
+// ── MOVE DATE/TIME ─────────────────────────────────────────────
+document.getElementById('move-date').addEventListener('change', e => {
+  state.moveDate = e.target.value;
+  // Set minimum date to today
+});
+const today = new Date().toISOString().split('T')[0];
+document.getElementById('move-date').min = today;
+document.getElementById('move-time').addEventListener('change', e => {
+  state.moveTime = e.target.value;
+});
+
+// ── SPECIAL ITEMS ──────────────────────────────────────────────
+document.querySelectorAll('[data-special]').forEach(cb => {
+  cb.addEventListener('change', () => {
+    state.specialItems = [...document.querySelectorAll('[data-special]:checked')].map(c => c.dataset.special);
+  });
+});
+
+// ── ADD-ONS ────────────────────────────────────────────────────
+document.querySelectorAll('[data-addon]').forEach(cb => {
+  cb.addEventListener('change', () => {
+    state.addons = [...document.querySelectorAll('[data-addon]:checked')].map(c => c.dataset.addon);
+  });
+});
+
+// ── FORMAT CURRENCY ────────────────────────────────────────────
+function fmt(n) {
+  return '₹' + n.toLocaleString('en-IN');
+}
+
+// ── STEP 2 NEXT: Calculate Price ──────────────────────────────
+document.getElementById('step2-next').addEventListener('click', () => {
+  if (!state.moveType) {
+    // Default to house if not selected
+    state.moveType = 'house';
+    document.querySelector('[data-type="house"]')?.classList.add('selected');
+  }
+
+  let roadDist = 0;
+  if (!state.isLocalMove) {
+    const dist = haversineKm(state.fromCity.lat, state.fromCity.lng, state.toCity.lat, state.toCity.lng);
+    roadDist = Math.round(dist * 1.25);
+  }
+
+  const priceData = calculatePrice({
+    isLocalMove: state.isLocalMove,
+    distKm: roadDist,
+    moveType: state.moveType,
+    propertySize: state.propertySize,
+    fromFloor: state.fromFloor,
+    liftAvailable: state.liftAvailable,
+    specialItems: state.specialItems,
+    addons: state.addons,
+  });
+  state.price = priceData;
+
+  // Populate route banner
+  document.getElementById('rb-from').textContent =
+    state.fromCity.name + (state.isLocalMove && state.fromArea ? ` (${state.fromArea})` : '');
+  document.getElementById('rb-to').textContent =
+    state.toCity.name + (state.isLocalMove && state.toArea ? ` (${state.toArea})` : '');
+  document.getElementById('rb-dist').textContent =
+    state.isLocalMove ? 'Within City' : `~${roadDist} km`;
+  document.getElementById('rb-type').textContent =
+    state.isLocalMove ? 'Local Move' : state.moveType.charAt(0).toUpperCase() + state.moveType.slice(1);
+
+  // PackersHub price
+  document.getElementById('ph-price').textContent = fmt(priceData.total);
+  document.getElementById('ph-range').textContent =
+    `Estimate range: ${fmt(priceData.rangeLow)} – ${fmt(priceData.rangeHigh)}`;
+
+  // Market price (disclosed estimate — see footnote in markup)
+  document.getElementById('market-price').textContent = '~' + fmt(priceData.marketTotal);
+  document.getElementById('market-range').textContent =
+    `Typical range: ${fmt(priceData.marketLow)} – ${fmt(priceData.marketHigh)} (estimate)`;
+
+  // Savings
+  document.getElementById('savings-amount').textContent = '~' + fmt(priceData.savings);
+  document.getElementById('savings-fill').style.width = priceData.savingsPercent + '%';
+  document.getElementById('savings-badge').textContent =
+    `Estimated savings ~${fmt(priceData.savings)} (~${priceData.savingsPercent}% lower than typical range)`;
+
+  // Breakdown
+  document.getElementById('br-base-val').textContent = fmt(priceData.base);
+  document.getElementById('br-packing-val').textContent = fmt(priceData.packing);
+  document.getElementById('br-loading-val').textContent = fmt(priceData.loading);
+  document.getElementById('br-floor-val').textContent = priceData.floor > 0 ? fmt(priceData.floor) : '—';
+  document.getElementById('br-special-val').textContent = priceData.special > 0 ? fmt(priceData.special) : '—';
+  document.getElementById('br-addons-val').textContent = priceData.addons > 0 ? fmt(priceData.addons) : '—';
+  document.getElementById('br-total').textContent = fmt(priceData.total);
+
+  window.phTrack?.('booking_estimate_shown', {
+    move_type: state.moveType, is_local: state.isLocalMove, estimate: priceData.total,
+  });
+
+  goToStep(3);
+});
+
+// ── BREAKDOWN TOGGLE ───────────────────────────────────────────
+document.getElementById('toggle-breakdown').addEventListener('click', () => {
+  const body = document.getElementById('breakdown-body');
+  const btn = document.getElementById('toggle-breakdown');
+  const isHidden = body.style.display === 'none';
+  body.style.display = isHidden ? 'block' : 'none';
+  btn.textContent = isHidden ? 'Hide Details ▲' : 'Show Details ▼';
+});
+
+// ── STEP 3: Book Now ───────────────────────────────────────────
+function goToBooking() {
+  document.getElementById('fs-route').textContent =
+    `${state.fromCity?.name} → ${state.toCity?.name}`;
+  document.getElementById('fs-price').textContent = fmt(state.price?.total || 0);
+  goToStep(4);
+}
+document.getElementById('step3-next').addEventListener('click', goToBooking);
+document.getElementById('book-now-btn').addEventListener('click', goToBooking);
+
+// ── STEP BACK BUTTONS ──────────────────────────────────────────
+document.getElementById('step2-back').addEventListener('click', () => goToStep(1));
+document.getElementById('step3-back').addEventListener('click', () => goToStep(2));
+document.getElementById('step4-back').addEventListener('click', () => goToStep(3));
+
+// ── TRACKING ID (client-generated so it can be shown instantly,
+//    without waiting on a network round-trip before opening WhatsApp) ──
+function generateTrackingId() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let id = 'PH-';
+  for (let i = 0; i < 6; i++) id += chars[Math.floor(Math.random() * chars.length)];
+  return id;
+}
+
+// ── SUBMIT BOOKING (WhatsApp) ──────────────────────────────────
+document.getElementById('submit-booking').addEventListener('click', () => {
+  const name = document.getElementById('contact-name').value.trim();
+  const phone = document.getElementById('contact-phone').value.trim();
+  const terms = document.getElementById('terms-check').checked;
+
+  if (!name || !phone) {
+    alert('Please enter your name and phone number.');
+    return;
+  }
+  if (!terms) {
+    alert('Please accept the terms to continue.');
+    return;
+  }
+
+  const email = document.getElementById('contact-email').value.trim();
+  const notes = document.getElementById('contact-notes').value.trim();
+  const method = document.querySelector('input[name="contact-method"]:checked')?.value;
+  const trackingId = generateTrackingId();
+
+  const p = state.price;
+  const routeLines = state.isLocalMove
+    ? [
+        `📍 *Route:* Local Shifting within ${state.fromCity?.name}`,
+        state.fromArea ? `🏠 *Pickup Area:* ${state.fromArea}` : '',
+        state.toArea ? `📦 *Drop Area:* ${state.toArea}` : '',
+      ]
+    : [
+        `📍 *From:* ${state.fromCity?.name} (${state.fromCity?.stateName})`,
+        `📦 *To:* ${state.toCity?.name} (${state.toCity?.stateName})`,
+      ];
+  const msg = [
+    `🚚 *New Booking Request — PackersHub*`,
+    ``,
+    `🔖 *Tracking ID:* ${trackingId}`,
+    `👤 *Name:* ${name}`,
+    `📞 *Phone:* ${phone}`,
+    email ? `📧 *Email:* ${email}` : '',
+    ``,
+    ...routeLines,
+    ``,
+    `🏠 *Move Type:* ${state.moveType}`,
+    `📐 *Size:* ${state.propertySize}`,
+    state.moveDate ? `📅 *Date:* ${state.moveDate}` : '',
+    `⏰ *Time Slot:* ${state.moveTime}`,
+    state.specialItems.length ? `⭐ *Special Items:* ${state.specialItems.join(', ')}` : '',
+    state.addons.length ? `➕ *Add-ons:* ${state.addons.join(', ')}` : '',
+    ``,
+    `💰 *Estimated Price:* ${fmt(p?.total || 0)}`,
+    `📊 *Price Range:* ${fmt(p?.rangeLow || 0)} – ${fmt(p?.rangeHigh || 0)}`,
+    ``,
+    notes ? `📝 *Notes:* ${notes}` : '',
+    `📲 *Preferred Contact:* ${method}`,
+    ``,
+    `_Sent from packershub.in booking engine_`,
+  ].filter(Boolean).join('\n');
+
+  const wa = `https://wa.me/917731074075?text=${encodeURIComponent(msg)}`;
+  window.open(wa, '_blank');
+  window.phTrack?.('booking_submitted', {
+    move_type: state.moveType,
+    is_local: state.isLocalMove,
+    estimate: p?.total || 0,
+  });
+
+  // Backup lead capture — fired AFTER window.open() so it never delays or
+  // risks the WhatsApp popup being blocked. Failure here is silent and
+  // never shown to the customer; WhatsApp is already the source of truth.
+  //
+  // We DO wait for this response (but only to gate the Razorpay block —
+  // never to gate WhatsApp, which already opened above) because
+  // /api/payment/create-order requires the booking to already exist in KV.
+  // Calling phInitRazorpay with a trackingId that hasn't been written yet
+  // would fail with "Booking not found" — so we only show the Pay Advance
+  // button once /api/lead confirms the record was actually stored.
+  fetch('/api/lead', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      type: 'booking',
+      trackingId,
+      name, phone, email,
+      message: notes,
+      fromCity: state.fromCity?.name || '',
+      toCity: state.isLocalMove ? state.fromCity?.name || '' : (state.toCity?.name || ''),
+      moveDate: state.moveDate || '',
+      moveType: state.moveType || '',
+      estimate: p?.total || null,
+      source: 'booking_engine',
+    }),
+  })
+    .then(res => res.json())
+    .then(data => {
+      // ── Init Razorpay advance payment (shown below success message) ────────
+      // Only once /api/lead confirms the record is actually in KV — otherwise
+      // the payment block stays hidden (we can't verify without a stored record).
+      const confirmedId = data?.trackingId;
+      if (confirmedId && p?.total && p.total >= 500) {
+        window.phInitRazorpay?.({
+          trackingId: confirmedId,
+          amount:   p.total,
+          name:     document.getElementById('contact-name')?.value?.trim() || '',
+          phone:    document.getElementById('contact-phone')?.value?.trim() || '',
+          email:    document.getElementById('contact-email')?.value?.trim() || '',
+          fromCity: state.fromCity?.name || '',
+          toCity:   state.isLocalMove ? (state.fromCity?.name || '') : (state.toCity?.name || ''),
+        });
+      }
+    })
+    .catch(() => { /* backup only — WhatsApp already sent; payment block stays hidden */ });
+
+  // Show success
+  document.getElementById('contact-name').closest('.be-contact-form').style.display = 'none';
+  document.querySelector('.be-terms').style.display = 'none';
+  document.querySelector('.be-btn-row:last-of-type').style.display = 'none';
+  document.getElementById('final-summary').style.display = 'none';
+  document.getElementById('be-tracking-id').textContent = trackingId;
+  document.getElementById('be-success-tracking').style.display = 'inline-flex';
+  document.getElementById('be-success').style.display = 'block';
+});
+
+// ── Razorpay payment success callback (called by RazorpayCheckout) ─────────
+window.phPaymentSuccess = function({ trackingId: tid, paymentId, amount, isFullPayment }) {
+  const badge = document.getElementById('be-payment-confirmed');
+  const sub   = document.getElementById('be-success-sub-text');
+  if (badge) {
+    badge.style.display = '';
+    badge.textContent = isFullPayment
+      ? '✅ Full payment confirmed — booking secured, nothing due later!'
+      : '💳 Advance payment confirmed — booking secured!';
+  }
+  if (sub) {
+    sub.textContent = isFullPayment
+      ? `Full amount ₹${amount.toLocaleString('en-IN')} paid — your booking is fully confirmed, no balance due! Payment ID: ${paymentId}`
+      : `Advance ₹${amount.toLocaleString('en-IN')} paid — your booking is fully confirmed! Payment ID: ${paymentId}`;
+  }
+  window.phTrack?.('payment_confirmed', { trackingId: tid, paymentId, amount, isFullPayment: !!isFullPayment });
+};
+</script>

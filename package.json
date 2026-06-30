@@ -1,0 +1,31 @@
+{
+  "name": "packershub",
+  "type": "module",
+  "version": "10.6.6",
+  "private": true,
+  "description": "PackersHub v10.6.6 — South India Packers & Movers | 100 city pages | Astro 7.0.3 + Tailwind v4 + Cloudflare | Install Prompt, Driver GPS, Full Payment, Review Automation",
+  "scripts": {
+    "dev": "astro dev --host",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "types": "wrangler types",
+    "deploy": "astro build && wrangler pages deploy dist",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^7.0.3",
+    "@astrojs/sitemap": "^3.7.3",
+    "@astrojs/mdx": "^7.0.0",
+    "@astrojs/cloudflare": "^14.0.1",
+    "@tailwindcss/vite": "^4.3.1",
+    "tailwindcss": "^4.3.1",
+    "@tailwindcss/typography": "^0.5.20",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "wrangler": "^4.105.0",
+    "@astrojs/check": "^0.9.9",
+    "typescript": "^6.0.3"
+  }
+}

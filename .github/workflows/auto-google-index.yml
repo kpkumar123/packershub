@@ -1,0 +1,45 @@
+name: Auto Google Index
+
+# Runs automatically on every push to main — i.e. every time you edit a file
+# from the GitHub mobile app / web editor and it merges into main.
+# Cloudflare Pages is already auto-deploying on the same push (separate,
+# unrelated integration) — this workflow waits for that build to go live,
+# then tells Google "this page changed, please re-crawl it" without you
+# having to open /admin/index-ping/ manually.
+#
+# No setup required to get basic protection working — it just works.
+# Optional hardening: add a repo secret AUTO_INDEX_TOKEN (Settings → Secrets
+# and variables → Actions → New repository secret) and set the same value as
+# a Cloudflare Pages env var (Settings → Environment variables →
+# AUTO_INDEX_TOKEN) to stop randoms from spamming your indexing quota.
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  notify-google:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (with history so we can diff)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Wait for Cloudflare Pages build to go live
+        # Cloudflare Pages build + deploy typically finishes in 60-120s.
+        # We wait before pinging so Google doesn't crawl a stale/mid-deploy page.
+        run: sleep 100
+
+      - name: Detect changed pages & notify Google
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.sha }}
+          AUTO_INDEX_TOKEN: ${{ secrets.AUTO_INDEX_TOKEN }}
+          SITE_URL: https://www.packershub.in
+        run: node scripts/auto-index.mjs

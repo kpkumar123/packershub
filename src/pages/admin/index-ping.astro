@@ -1,0 +1,206 @@
+---
+// src/pages/admin/index-ping.astro
+// Manual Google Indexing API trigger panel.
+// Access: /admin/index-ping/
+// Protected by the same Cloudflare Access or Basic Auth you use for /admin/.
+export const prerender = false;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Google Index Ping — PackersHub Admin</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; background: #f9fafb; color: #111; min-height: 100vh; padding: 24px 16px; }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; max-width: 640px; margin: 0 auto 20px; }
+    h1 { font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; }
+    .sub { color: #6b7280; font-size: 0.875rem; margin-bottom: 20px; }
+    label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 6px; color: #374151; }
+    input, select { width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px 12px; font-size: 0.95rem; margin-bottom: 14px; outline: none; transition: border-color .2s; }
+    input:focus, select:focus { border-color: #f97316; }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+    .row label { display: flex; align-items: center; gap: 6px; font-weight: 500; cursor: pointer; }
+    .row input[type=checkbox] { width: auto; margin: 0; accent-color: #f97316; }
+    button { background: #f97316; color: #fff; border: none; border-radius: 8px; padding: 11px 24px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background .2s; }
+    button:hover { background: #ea6c0e; }
+    button:disabled { background: #fdba74; cursor: not-allowed; }
+    #result { margin-top: 16px; font-size: 0.875rem; }
+    .ok { color: #15803d; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 10px 14px; }
+    .err { color: #b91c1c; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 10px 14px; }
+    pre { white-space: pre-wrap; word-break: break-all; margin-top: 8px; font-size: 0.8rem; }
+    .quick-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .ql { font-size: 0.8rem; padding: 5px 12px; border-radius: 20px; background: #fff7ed; border: 1px solid #fed7aa; color: #c2410c; cursor: pointer; }
+    .ql:hover { background: #ffedd5; }
+    hr { border: none; border-top: 1px solid #f3f4f6; margin: 16px 0; }
+    .note { font-size: 0.8rem; color: #9ca3af; line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h1>🔍 Google Index Ping</h1>
+  <p class="sub">Instantly notify Google to re-crawl any PackersHub URL after publishing/editing.</p>
+
+  <label for="authToken">Auto-Index Token <span style="font-weight:400;color:#9ca3af;">(only if AUTO_INDEX_TOKEN is set in Cloudflare — leave blank otherwise)</span></label>
+  <input type="text" id="authToken" placeholder="leave blank if not using token auth" />
+
+  <hr />
+
+  <label for="url">Page URL</label>
+  <input type="url" id="url" placeholder="https://www.packershub.in/blog/my-post/" value="https://www.packershub.in/" />
+
+  <div class="quick-links" id="quickLinks">
+    <span style="font-size:0.8rem;color:#6b7280;align-self:center;">Quick:</span>
+    <button class="ql" onclick="setUrl('https://www.packershub.in/')">Home</button>
+    <button class="ql" onclick="setUrl('https://www.packershub.in/blog/')">Blog Index</button>
+    <button class="ql" onclick="setUrl('https://www.packershub.in/services/')">Services</button>
+    <button class="ql" onclick="setUrl('https://www.packershub.in/contact/')">Contact</button>
+  </div>
+
+  <hr />
+
+  <label for="type">Notification Type</label>
+  <select id="type">
+    <option value="URL_UPDATED" selected>URL_UPDATED — new or updated content</option>
+    <option value="URL_DELETED">URL_DELETED — page removed / 410 gone</option>
+  </select>
+
+  <div class="row">
+    <label><input type="checkbox" id="pingSitemap" checked /> Also ping sitemap (Google + Bing)</label>
+  </div>
+
+  <button id="btn" onclick="ping()">📤 Send Index Request</button>
+
+  <div id="result"></div>
+
+  <hr />
+  <p class="note">
+    ⚠️ Google Indexing API free quota: <strong>200 URLs/day</strong>. Use for important pages only.<br />
+    Sitemap ping is unlimited and re-submits the full sitemap to both Google and Bing.<br />
+    Make sure <strong>GOOGLE_SA_EMAIL</strong> and <strong>GOOGLE_SA_KEY</strong> are set in Cloudflare Pages env vars.<br />
+    🤖 This now also happens automatically on every push to <code>main</code> via
+    <code>.github/workflows/auto-google-index.yml</code> — this panel is for manual/extra pings only.
+  </p>
+</div>
+
+<div class="card">
+  <h3 style="font-weight:700;margin-bottom:12px;">🚀 Bulk Ping — All Key Pages</h3>
+  <p class="sub">Notify Google about all important pages at once (use sparingly — counts against daily quota).</p>
+  <button id="bulkBtn" onclick="bulkPing()">📦 Ping All Key Pages</button>
+  <div id="bulkResult" style="margin-top:16px;font-size:0.875rem;"></div>
+</div>
+
+<script>
+  const KEY_PAGES = [
+    'https://www.packershub.in/',
+    'https://www.packershub.in/blog/',
+    'https://www.packershub.in/services/',
+    'https://www.packershub.in/contact/',
+    'https://www.packershub.in/about/',
+    'https://www.packershub.in/booking/',
+    'https://www.packershub.in/franchise/',
+  ];
+
+  function setUrl(url) {
+    document.getElementById('url').value = url;
+  }
+
+  // Remember the token across visits (this device only) so you don't
+  // have to retype it every time.
+  const tokenInput = document.getElementById('authToken');
+  tokenInput.value = localStorage.getItem('ph_auto_index_token') || '';
+  tokenInput.addEventListener('input', () => {
+    localStorage.setItem('ph_auto_index_token', tokenInput.value.trim());
+  });
+
+  function authHeaders() {
+    const headers = { 'Content-Type': 'application/json' };
+    const t = tokenInput.value.trim();
+    if (t) headers['X-Auto-Index-Token'] = t;
+    return headers;
+  }
+
+  async function ping() {
+    const url = document.getElementById('url').value.trim();
+    const type = document.getElementById('type').value;
+    const pingSitemap = document.getElementById('pingSitemap').checked;
+    const btn = document.getElementById('btn');
+    const result = document.getElementById('result');
+
+    if (!url) { result.innerHTML = '<div class="err">Please enter a URL.</div>'; return; }
+
+    btn.disabled = true;
+    btn.textContent = '⏳ Sending…';
+    result.innerHTML = '';
+
+    try {
+      const body = { url, type };
+      if (pingSitemap) body.pingType = 'sitemap';
+
+      const res = await fetch('/api/index-notify', {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+
+      if (data.ok) {
+        result.innerHTML = `<div class="ok">✅ Request sent!<pre>${JSON.stringify(data.results, null, 2)}</pre></div>`;
+      } else {
+        result.innerHTML = `<div class="err">❌ Error<pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+      }
+    } catch (e) {
+      result.innerHTML = `<div class="err">❌ Network error: ${e.message}</div>`;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '📤 Send Index Request';
+    }
+  }
+
+  async function bulkPing() {
+    const btn = document.getElementById('bulkBtn');
+    const result = document.getElementById('bulkResult');
+    btn.disabled = true;
+    btn.textContent = '⏳ Pinging…';
+    result.innerHTML = '';
+
+    const outcomes = [];
+
+    for (const url of KEY_PAGES) {
+      try {
+        const res = await fetch('/api/index-notify', {
+          method: 'POST',
+          headers: authHeaders(),
+          body: JSON.stringify({ url, type: 'URL_UPDATED' }),
+        });
+        const data = await res.json();
+        outcomes.push({ url, ok: data.ok, indexing: data.results?.indexing });
+      } catch (e) {
+        outcomes.push({ url, ok: false, error: e.message });
+      }
+      await new Promise(r => setTimeout(r, 200)); // small delay between calls
+    }
+
+    // Also ping sitemap once at the end
+    await fetch('/api/index-notify', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ pingType: 'sitemap' }),
+    });
+
+    const allOk = outcomes.every(o => o.ok);
+    result.innerHTML = `
+      <div class="${allOk ? 'ok' : 'err'}">
+        ${allOk ? '✅' : '⚠️'} Pinged ${outcomes.length} pages + sitemap.
+        <pre>${JSON.stringify(outcomes, null, 2)}</pre>
+      </div>`;
+
+    btn.disabled = false;
+    btn.textContent = '📦 Ping All Key Pages';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+---
+// v9.1 — new file. This route did not exist before, so every blog card
+// on /blog/ pointed nowhere. Built on the same content collection as the
+// index page.
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+// ImageMetadata (not a string) now that image() is wired into the blog
+// schema for astro:assets optimization — SEOHead's og:image meta wants a
+// plain URL string, so unwrap .src here.
+const ogImageSrc = post.data.image?.src;
+---
+<BaseLayout
+  title={`${post.data.title} | PackersHub Blog`}
+  description={post.data.description}
+  type="article"
+  ogImage={ogImageSrc}
+  publishDate={post.data.pubDate}
+  modifiedDate={post.data.updatedDate}
+  author={post.data.author}
+  breadcrumbs={[
+    { name: 'Home', url: '/' },
+    { name: 'Blog', url: '/blog/' },
+    { name: post.data.title, url: `/blog/${post.id}/` }
+  ]}
+>
+  <section class="bg-gradient-to-br from-orange-50 via-white to-orange-50 py-20">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+      <span class="inline-block bg-orange-50 border border-orange-200 rounded-full px-4 py-1.5 text-brand-orange text-xs font-bold uppercase tracking-wide mb-5">{post.data.category}</span>
+      <h1 class="text-3xl md:text-4xl font-display font-extrabold text-brand-dark mb-6">{post.data.title}</h1>
+      <div class="flex items-center justify-center gap-4 text-brand-grey text-sm">
+        <span>{post.data.author}</span>
+        <span>·</span>
+        <span>{new Date(post.data.pubDate).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})}</span>
+        <span>·</span>
+        <span>{post.data.readTime} min read</span>
+      </div>
+    </div>
+  </section>
+  {post.data.image && (
+    <div class="max-w-3xl mx-auto px-4 -mt-10 relative z-10">
+      <Image src={post.data.image} alt={post.data.title} class="w-full rounded-2xl shadow-2xl" width={1200} height={630} loading="eager" />
+    </div>
+  )}
+  <article class="py-16 bg-white">
+    <div class="max-w-3xl mx-auto px-4">
+      <div class="prose prose-lg max-w-none prose-headings:font-display prose-h2:text-brand-dark prose-a:text-brand-orange">
+        <Content />
+      </div>
+      <div class="mt-12 p-6 bg-stone-50 rounded-2xl border border-stone-200 flex gap-4 items-start">
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-brand-orange to-brand-gold flex items-center justify-center text-white font-bold text-lg shrink-0">PH</div>
+        <div>
+          <p class="font-bold text-brand-dark mb-1">{post.data.author}</p>
+          <p class="text-sm text-brand-grey">Written by PackersHub's operations team, who plan and coordinate household and office moves across 100 cities in Andhra Pradesh, Telangana, Tamil Nadu, Karnataka, and Kerala. Guidance here reflects what our crews see on actual bookings, not generic advice.</p>
+        </div>
+      </div>
+      <div class="mt-8 p-8 bg-orange-50 rounded-2xl border border-orange-100 text-center">
+        <h3 class="font-bold text-xl text-brand-dark font-display mb-3">Need Help with Your Move?</h3>
+        <p class="text-brand-grey mb-6">PackersHub serves 100 cities across South India with professional, transparent relocation services.</p>
+        <div class="flex justify-center gap-4 flex-wrap">
+          <a href="tel:+917731074075" class="px-6 py-3 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold">📞 Call: +91 77310 74075</a>
+          <a href="https://wa.me/917731074075" target="_blank" rel="noopener" class="px-6 py-3 rounded-full bg-[#25D366] text-white font-bold">💬 WhatsApp Quote</a>
+        </div>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

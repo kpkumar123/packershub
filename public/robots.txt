@@ -1,0 +1,71 @@
+# PackersHub.in — robots.txt
+# v10.6.6 | Astro 7.0.3 + Tailwind v4 + Cloudflare Pages
+# Updated: 2026-06-30 (v10.6.6)
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /driver/
+Disallow: /_assets/
+Crawl-delay: 1
+
+# Google — no crawl delay
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Googlebot-Image
+Allow: /
+Crawl-delay: 0
+
+User-agent: AdsBot-Google
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Bing
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 0
+
+# AI / LLM Crawlers — explicitly allowed for GEO/AEO/AIO coverage
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Gemini-Bot
+Allow: /
+
+User-agent: Google-CloudVertexBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Sitemap
+Sitemap: https://www.packershub.in/sitemap-index.xml
+
+# LLMs.txt (AI crawler guide)
+# https://www.packershub.in/llms.txt

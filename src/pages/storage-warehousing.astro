@@ -1,0 +1,149 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+
+const features = [
+  { icon: '🌡️', title: 'Climate-Controlled Units', desc: 'Humidity and temperature-managed storage protects wood furniture, electronics, and documents from damage.' },
+  { icon: '📹', title: '24×7 CCTV Monitoring', desc: 'Every facility is under round-the-clock camera surveillance with on-premise security staff.' },
+  { icon: '🛡️', title: 'Goods Stay Insured', desc: 'Your stored items remain covered under transit + storage insurance for the full duration.' },
+  { icon: '📦', title: 'Flexible In/Out Scheduling', desc: 'Move items in or out on your timeline — short-term (weekly) or long-term (monthly/yearly) plans.' },
+  { icon: '🗺️', title: 'Multiple South India Locations', desc: 'Warehousing access across our network in Andhra Pradesh, Telangana, Tamil Nadu, Karnataka, and Kerala.' },
+  { icon: '📋', title: 'Inventory-Tracked Storage', desc: 'Every box and item is logged at intake, so you know exactly what is stored and where.' },
+];
+
+const useCases = [
+  { icon: '🏠', title: 'Between Homes', desc: 'Selling one house, buying another? Store your goods safely for the in-between weeks or months.' },
+  { icon: '✈️', title: 'Relocating Abroad', desc: 'Going overseas for work or studies? Keep belongings stored securely until you return.' },
+  { icon: '🏢', title: 'Office Downsizing', desc: 'Reduce office footprint without discarding furniture, files, or equipment — store it instead.' },
+  { icon: '🏗️', title: 'Home Renovation', desc: 'Clear out furniture during a renovation and move it back in once work is complete.' },
+];
+
+const faqs = [
+  { q: 'How much does storage cost in South India?', a: 'Storage pricing depends on volume (sq. ft. or cubic ft.), duration, and city — so we provide a free assessment and written quote rather than flat online rates. Call or WhatsApp +91 77310 74075 for an exact number.' },
+  { q: 'Is my furniture safe from moisture and pests during storage?', a: 'Yes. Our climate-controlled units manage humidity, and all goods are wrapped, padded, and palletized before storage to prevent moisture and pest damage.' },
+  { q: 'What is the minimum storage duration?', a: 'We offer flexible plans starting from one week, with discounted monthly and long-term rates for storage beyond 3 months.' },
+  { q: 'Can I access my stored items anytime?', a: 'Yes, with advance notice we can schedule retrieval of part or all of your stored goods at your convenience.' },
+  { q: 'Do you provide packing for items going into storage?', a: 'Yes — our team can pack, wrap, and palletize items specifically for long-term storage, which uses different materials than short-distance moving.' },
+];
+
+const storageSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://www.packershub.in/storage-warehousing#webpage",
+      "url": "https://www.packershub.in/storage-warehousing",
+      "name": "Storage & Warehousing Services South India | PackersHub",
+      "description": "Secure, climate-controlled storage and warehousing across Andhra Pradesh, Telangana, Tamil Nadu, Karnataka & Kerala. Short-term and long-term plans, fully insured.",
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.packershub.in/" },
+          { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://www.packershub.in/services" },
+          { "@type": "ListItem", "position": 3, "name": "Storage & Warehousing", "item": "https://www.packershub.in/storage-warehousing" }
+        ]
+      }
+    },
+    {
+      "@type": "Service",
+      "name": "Storage & Warehousing",
+      "serviceType": "Storage Service",
+      "provider": { "@id": "https://www.packershub.in/#organization" },
+      "areaServed": ["Andhra Pradesh", "Telangana", "Tamil Nadu", "Karnataka", "Kerala"],
+      "offers": { "@type": "Offer", "priceCurrency": "INR", "description": "Custom quote based on volume and duration" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(f => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a }
+      }))
+    }
+  ]
+};
+---
+<BaseLayout
+  title="Storage & Warehousing Services South India | Climate-Controlled | PackersHub"
+  description="Secure, climate-controlled storage and warehousing for home and office goods across South India. CCTV monitored, fully insured, flexible short and long-term plans. Free quote: +91 77310 74075"
+  canonical="https://www.packershub.in/storage-warehousing"
+  keywords="storage and warehousing south india, furniture storage, household goods storage, warehouse services hyderabad bangalore chennai, climate controlled storage"
+  schema={storageSchema}
+>
+  <!-- Hero -->
+  <section class="relative pt-32 pb-20 bg-gradient-to-br from-brand-dark via-[#1a1f2e] to-brand-dark text-white overflow-hidden">
+    <div class="absolute inset-0 opacity-10" aria-hidden="true">
+      <div class="absolute top-0 left-0 w-96 h-96 bg-brand-orange rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 right-0 w-96 h-96 bg-brand-gold rounded-full blur-3xl"></div>
+    </div>
+    <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-white/10 text-brand-gold text-sm font-bold mb-5 uppercase tracking-wide">📦 Secure Storage Services</span>
+      <h1 class="font-display text-4xl lg:text-6xl font-extrabold mb-5">Storage &amp; Warehousing Across South India</h1>
+      <p class="text-lg lg:text-xl text-gray-300 max-w-2xl mx-auto mb-8">
+        Climate-controlled, CCTV-monitored, fully insured storage for household and office goods — from a single week to long-term contracts.
+      </p>
+      <a href="#quote" class="inline-block px-8 py-4 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold text-lg btn-shine shadow-glow">
+        Get a Free Storage Quote →
+      </a>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="py-20 bg-white" aria-labelledby="features-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-14 reveal">
+        <h2 id="features-heading" class="font-display text-3xl lg:text-4xl font-extrabold text-brand-dark mb-3">What's Included</h2>
+        <p class="text-brand-grey max-w-xl mx-auto">Every storage booking comes with these protections as standard.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {features.map((f, i) => (
+          <div class="p-7 rounded-3xl bg-white shadow-card border border-gray-100 card-lift reveal" style={`animation-delay:${i * 0.06}s`}>
+            <div class="text-3xl mb-4" aria-hidden="true">{f.icon}</div>
+            <h3 class="font-display font-bold text-lg text-brand-dark mb-2">{f.title}</h3>
+            <p class="text-brand-grey text-sm leading-relaxed">{f.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Use Cases -->
+  <section class="py-20 bg-gradient-to-b from-orange-50/40 to-white" aria-labelledby="usecases-heading">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-14 reveal">
+        <h2 id="usecases-heading" class="font-display text-3xl lg:text-4xl font-extrabold text-brand-dark mb-3">Who Needs Storage?</h2>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-6">
+        {useCases.map((u, i) => (
+          <div class="flex gap-4 p-6 rounded-2xl bg-white shadow-card border border-gray-100 reveal" style={`animation-delay:${i * 0.06}s`}>
+            <div class="text-3xl shrink-0" aria-hidden="true">{u.icon}</div>
+            <div>
+              <h3 class="font-display font-bold text-brand-dark mb-1">{u.title}</h3>
+              <p class="text-brand-grey text-sm leading-relaxed">{u.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-20 bg-white" aria-labelledby="faq-heading">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 id="faq-heading" class="font-display text-3xl lg:text-4xl font-extrabold text-brand-dark mb-10 text-center reveal">Storage FAQs</h2>
+      <div class="space-y-4">
+        {faqs.map((f, i) => (
+          <details class="group bg-orange-50/40 rounded-2xl p-5 border border-gray-100 reveal" style={`animation-delay:${i * 0.05}s`}>
+            <summary class="font-display font-bold text-brand-dark cursor-pointer list-none flex justify-between items-center gap-3">
+              {f.q}
+              <span class="text-brand-orange shrink-0 group-open:rotate-45 transition-transform">+</span>
+            </summary>
+            <p class="text-brand-grey text-sm mt-3 leading-relaxed">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <QuoteForm />
+</BaseLayout>

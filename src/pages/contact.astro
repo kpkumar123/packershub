@@ -1,0 +1,161 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Module 36: Contact Page Schema — ContactPage + LocalBusiness
+const contactSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ContactPage",
+      "@id": "https://www.packershub.in/contact#webpage",
+      "url": "https://www.packershub.in/contact",
+      "name": "Contact PackersHub — Call +91 77310 74075 | Free Moving Quote",
+      "description": "Contact PackersHub for free moving quote. Call, WhatsApp, or email. 24×7 available across South India.",
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home",    "item": "https://www.packershub.in/" },
+          { "@type": "ListItem", "position": 2, "name": "Contact", "item": "https://www.packershub.in/contact" }
+        ]
+      }
+    },
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://www.packershub.in/#organization",
+      "name": "PackersHub",
+      "telephone": "+917731074075",
+      "email": "info@packershub.in",
+      "url": "https://www.packershub.in",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "BV Nagar",
+        "addressLocality": "Nellore",
+        "addressRegion": "Andhra Pradesh",
+        "postalCode": "524004",
+        "addressCountry": "IN"
+      },
+      "geo": { "@type": "GeoCoordinates", "latitude": 14.4426, "longitude": 79.9865 },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        "opens": "00:00",
+        "closes": "23:59"
+      },
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+917731074075",
+          "contactType": "customer service",
+          "availableLanguage": ["Telugu","Tamil","Kannada","Malayalam","Hindi","English"],
+          "areaServed": "IN",
+          "contactOption": "TollFree"
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+917731074075",
+          "contactType": "sales",
+          "availableLanguage": ["Telugu","English"],
+          "areaServed": "IN"
+        }
+      ],
+      "sameAs": [
+        "https://wa.me/917731074075"
+      ]
+    }
+  ]
+};
+---
+<BaseLayout
+  title="Contact PackersHub — Call +91 77310 74075 | Free Moving Quote"
+  description="Contact PackersHub for free moving quote. Call +91 77310 74075, WhatsApp, or email info@packershub.in. BV Nagar, Nellore, AP. 24×7 available."
+  canonical="https://www.packershub.in/contact"
+  keywords="contact packershub, packers movers nellore phone number, packershub email, movers contact south india"
+  schema={contactSchema}
+>
+  <section class="hero-bg pt-16 pb-12">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <nav aria-label="Breadcrumb" class="mb-6">
+        <ol class="flex justify-center items-center gap-2 text-sm text-brand-grey" role="list">
+          <li><a href="/" class="hover:text-brand-orange">Home</a></li>
+          <li aria-hidden="true">›</li>
+          <li class="text-brand-orange font-semibold" aria-current="page">Contact</li>
+        </ol>
+      </nav>
+      <h1 class="font-display font-extrabold text-5xl text-brand-dark mb-4">Contact <span class="text-gradient">PackersHub</span></h1>
+      <p class="text-xl text-brand-grey">We're available 24×7, 365 days — call, WhatsApp, or email us anytime.</p>
+    </div>
+  </section>
+
+  <section class="py-20 bg-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12">
+
+        <!-- Contact info -->
+        <div>
+          <h2 class="font-display font-bold text-3xl text-brand-dark mb-8">Reach Us Instantly</h2>
+          <div class="space-y-5">
+            {[
+              { icon:'📞', label:'Phone / WhatsApp', val:'+91 77310 74075', href:'tel:+917731074075', cta:'Call Now' },
+              { icon:'💬', label:'WhatsApp Chat', val:'wa.me/917731074075', href:'https://wa.me/917731074075?text=Hi%20PackersHub', cta:'Open WhatsApp' },
+              { icon:'✉️', label:'Email', val:'info@packershub.in', href:'mailto:info@packershub.in', cta:'Send Email' },
+              { icon:'📍', label:'Head Office', val:'BV Nagar, Nellore, Andhra Pradesh 524004', href:'https://maps.google.com/?q=Nellore+Andhra+Pradesh', cta:'View Map' },
+            ].map(c => (
+              <div class="flex gap-4 p-5 rounded-2xl bg-gray-50 border border-gray-100 hover:border-brand-orange/30 transition-colors group">
+                <span class="text-3xl">{c.icon}</span>
+                <div class="flex-1">
+                  <div class="font-bold text-brand-dark text-sm mb-0.5">{c.label}</div>
+                  <div class="text-brand-grey text-sm">{c.val}</div>
+                </div>
+                <a href={c.href} class="self-center px-4 py-2 rounded-full bg-brand-orange/10 hover:bg-brand-orange text-brand-orange hover:text-white text-xs font-bold transition-all">
+                  {c.cta}
+                </a>
+              </div>
+            ))}
+          </div>
+
+          <!-- Business hours -->
+          <div class="mt-8 p-6 rounded-2xl bg-gradient-to-br from-brand-dark to-slate-800 text-white">
+            <h3 class="font-bold mb-4 flex items-center gap-2"><span>⏰</span> Business Hours</h3>
+            <div class="space-y-2 text-sm text-gray-300">
+              <div class="flex justify-between"><span>Monday–Friday</span><span class="text-green-400 font-bold">24 Hours</span></div>
+              <div class="flex justify-between"><span>Saturday–Sunday</span><span class="text-green-400 font-bold">24 Hours</span></div>
+              <div class="flex justify-between"><span>Public Holidays</span><span class="text-green-400 font-bold">24 Hours</span></div>
+            </div>
+            <p class="text-xs text-gray-400 mt-4">No extra charge for weekend or holiday moves!</p>
+          </div>
+        </div>
+
+        <!-- Contact form -->
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+          <div class="bg-gradient-to-r from-brand-orange to-brand-gold text-white px-8 py-6">
+            <h2 class="font-display font-bold text-xl">Send Us a Message</h2>
+            <p class="text-orange-100 text-sm mt-1">We reply within 30 minutes during business hours</p>
+          </div>
+          <form class="p-8 space-y-5" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="contact" />
+            <p class="hidden"><input name="bot-field" /></p>
+            <div>
+              <label for="cname" class="block text-sm font-bold text-brand-dark mb-2">Name *</label>
+              <input required type="text" id="cname" name="name" placeholder="Your full name" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-brand-orange outline-none transition-colors" />
+            </div>
+            <div>
+              <label for="cphone" class="block text-sm font-bold text-brand-dark mb-2">Phone *</label>
+              <input required type="tel" id="cphone" name="phone" placeholder="+91 XXXXX XXXXX" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-brand-orange outline-none transition-colors" />
+            </div>
+            <div>
+              <label for="cemail" class="block text-sm font-bold text-brand-dark mb-2">Email</label>
+              <input type="email" id="cemail" name="email" placeholder="your@email.com" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-brand-orange outline-none transition-colors" />
+            </div>
+            <div>
+              <label for="cmsg" class="block text-sm font-bold text-brand-dark mb-2">Message *</label>
+              <textarea required id="cmsg" name="message" rows="4" placeholder="Tell us about your move..." class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-brand-orange outline-none transition-colors resize-none"></textarea>
+            </div>
+            <button type="submit" class="w-full py-4 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold text-base shadow-cta hover:scale-[1.01] transition-transform btn-shine">
+              📨 Send Message
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

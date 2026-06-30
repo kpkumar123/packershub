@@ -1,0 +1,435 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import TrustStrip from '../components/TrustStrip.astro';
+import Services from '../components/Services.astro';
+import Process from '../components/Process.astro';
+import Testimonials from '../components/Testimonials.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import FAQ from '../components/FAQ.astro';
+import CitiesGrid from '../components/CitiesGrid.astro';
+import cities from '../data/cities.json';
+import states from '../data/states.json';
+
+const featuredCities = cities.slice(0, 20);
+
+// Home page popular routes — major South India corridors
+const homeRoutes = [
+  { from: 'Hyderabad', to: 'Bengaluru', desc: 'Most popular IT professional relocation corridor' },
+  { from: 'Chennai', to: 'Bengaluru', desc: 'Major tech & business transfer route' },
+  { from: 'Visakhapatnam', to: 'Hyderabad', desc: 'AP coastal city to Telangana capital' },
+  { from: 'Nellore', to: 'Chennai', desc: 'Our HQ city to Tamil Nadu capital' },
+  { from: 'Kochi', to: 'Bengaluru', desc: 'Kerala IT hub to Karnataka IT capital' },
+  { from: 'Vijayawada', to: 'Hyderabad', desc: 'AP trading hub to Telangana capital' },
+  { from: 'Coimbatore', to: 'Bengaluru', desc: 'TN industrial city to Karnataka capital' },
+  { from: 'Tirupati', to: 'Chennai', desc: 'Pilgrimage city to Tamil Nadu capital' },
+  { from: 'Mysuru', to: 'Bengaluru', desc: 'Heritage city to IT capital corridor' },
+  { from: 'Kozhikode', to: 'Bengaluru', desc: 'Kerala coast to Karnataka via Wayanad' },
+  { from: 'Madurai', to: 'Chennai', desc: 'Temple city to TN capital express route' },
+  { from: 'Warangal', to: 'Hyderabad', desc: 'Telangana heritage city to capital' },
+];
+
+const homeSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.packershub.in/#webpage",
+  "name": "PackersHub — South India's #1 Packers & Movers",
+  "url": "https://www.packershub.in/",
+  "description": "Top-rated packers and movers serving 100+ South Indian cities. Free quote, 100% insurance, status tracking.",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [{ "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.packershub.in/" }]
+  }
+};
+---
+<BaseLayout
+  title="PackersHub — South India's #1 Packers & Movers | 100 Cities | Free Quote"
+  description="South India's packers and movers. Serving 100+ cities across AP, Telangana, Tamil Nadu, Karnataka & Kerala. 100% insured, with order tracking. Call +91 77310 74075 for FREE quote."
+  keywords="packers and movers south india, best movers nellore, relocation services, household shifting AP telangana, office movers, vehicle transport, packers movers hyderabad bangalore chennai"
+  schema={homeSchema}
+  canonical="https://www.packershub.in/"
+>
+
+  <!-- HERO -->
+  <Hero showStats={true} />
+
+  <!-- TRUST STRIP -->
+  <TrustStrip />
+
+  <!-- WELCOME SECTION -->
+  <section class="py-20 bg-white" aria-labelledby="welcome-heading">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10 reveal">
+        <span class="inline-block px-4 py-1.5 rounded-full bg-orange-100 text-orange-700 text-sm font-bold mb-4 uppercase tracking-wide">Welcome to PackersHub</span>
+        <h2 id="welcome-heading" class="font-display text-4xl lg:text-5xl font-extrabold text-brand-dark mb-4">Relocation Without the Stress</h2>
+      </div>
+      <div class="prose prose-lg max-w-none text-brand-grey">
+        <p class="leading-relaxed">
+          Moving house or office is widely recognised as one of life's most stressful events, ranking alongside major life changes for the disruption it brings to daily routines, finances, and peace of mind. At PackersHub, our mission is simple: take that stress off your shoulders entirely. From the first phone call to the final box unpacked, we manage every detail of your relocation with the care of a neighbour and the precision of a professional logistics operation.
+        </p>
+        <p class="leading-relaxed">
+          Headquartered in BV Nagar, Nellore, Andhra Pradesh, PackersHub has grown into one of South India's most trusted names in household and commercial relocation, serving 100 cities across five states — Andhra Pradesh, Telangana, Tamil Nadu, Karnataka, and Kerala. Whether you're a family shifting from a rented flat in Vijayawada to your first owned home in Visakhapatnam, an IT professional relocating from Hyderabad to Bengaluru for a new job, or a business moving its entire office from one commercial district to another, PackersHub brings the same standard of care to every move — regardless of size, distance, or complexity.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <Services />
+
+  <!-- WHAT WE DO -->
+  <section class="py-20 bg-gray-50" aria-labelledby="what-we-do-heading">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10 reveal">
+        <h2 id="what-we-do-heading" class="font-display text-3xl lg:text-4xl font-extrabold text-brand-dark mb-4">What We Do</h2>
+        <p class="text-brand-grey text-lg">Complete relocation services, professionally handled end to end</p>
+      </div>
+      <div class="space-y-8">
+        {[
+          {
+            icon: '🏠',
+            title: 'House Shifting and Home Relocation',
+            body: 'Our core service is residential relocation — and we mean every part of it. From the moment our survey team visits your home, we assess every room, every piece of furniture, and every fragile item to create a moving plan tailored to your specific belongings. Our packing materials include multi-layer bubble wrap for fragile items, corrugated sheets for furniture protection, moisture-resistant wrapping for coastal and monsoon-prone regions, and custom crating for valuables, antiques, and heirloom pieces.'
+          },
+          {
+            icon: '🏢',
+            title: 'Office and Corporate Relocation',
+            body: 'Business relocation requires a different kind of planning — minimal downtime, careful handling of sensitive equipment, and confidential treatment of documents and records. Our office shifting services cover everything from single-employee relocations as part of a company\'s transfer package to full-scale office moves involving server rooms, workstations, conference room furniture, and archived files.'
+          },
+          {
+            icon: '🚗',
+            title: 'Vehicle Transport — Bike and Car Carrier Services',
+            body: 'Many relocations involve moving a vehicle alongside household goods, and PackersHub offers dedicated bike transport and car carrier services across all 100 cities in our network. Two-wheelers are secured using cradle-frame mounting that prevents scratches, fuel leakage, and mechanical stress during transit. For cars, we offer both open and enclosed trailer options depending on the vehicle type, distance, and your preference, with full insurance coverage included.'
+          },
+          {
+            icon: '🏭',
+            title: 'Warehouse and Storage Solutions',
+            body: 'Not every move happens on a perfectly aligned timeline. If your new home or office isn\'t ready when you need to vacate the old one, PackersHub provides secure short-term storage at no extra charge for the first 48 hours, with affordable extended storage options available for longer gaps. Our storage facilities are climate-controlled where needed and equipped with security monitoring.'
+          },
+        ].map(item => (
+          <div class="flex gap-6 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow reveal">
+            <div class="text-4xl shrink-0">{item.icon}</div>
+            <div>
+              <h3 class="font-display font-bold text-xl text-brand-dark mb-2">{item.title}</h3>
+              <p class="text-brand-grey leading-relaxed text-sm">{item.body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <Process />
+
+  <!-- WHY CHOOSE US -->
+  <section class="py-20 bg-white" aria-labelledby="why-heading">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10 reveal">
+        <h2 id="why-heading" class="font-display text-3xl lg:text-4xl font-extrabold text-brand-dark mb-4">Why Families and Businesses Across South India Choose PackersHub</h2>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6">
+        {[
+          {
+            icon: '📍',
+            title: 'Local Knowledge, Not Just a Phone Number',
+            body: 'PackersHub\'s strength comes from genuine local knowledge across every one of our 100 service cities — from coastal humidity considerations in Visakhapatnam and Mangaluru, to the hill-route logistics of Ooty and Madikeri, to the temple-festival traffic patterns of Madurai, Tirupati, and Kanchipuram.'
+          },
+          {
+            icon: '💰',
+            title: 'Transparent, All-Inclusive Pricing',
+            body: 'PackersHub\'s quotes cover packing, labour, loading, transport, unloading, and basic transit insurance in a single number. The amount you agree to is the amount you pay — no last-minute additions for stairs, distance, or packing materials.'
+          },
+          {
+            icon: '👷',
+            title: 'Professional, Trained Crews',
+            body: 'Every PackersHub team member is trained in proper lifting techniques, furniture handling, and packing standards — not just hired labour handed boxes on moving day. Our teams bring multi-layer packing materials and careful handling to every job.'
+          },
+          {
+            icon: '🛡️',
+            title: 'Insurance and Accountability',
+            body: 'Every PackersHub consignment carries goods-in-transit insurance as standard — not as an upsell. While our packing and handling standards are designed to prevent damage in the first place, having insurance coverage means you\'re protected if something goes wrong.'
+          },
+          {
+            icon: '💳',
+            title: 'Payment Flexibility',
+            body: 'We accept UPI, NEFT, and card payments across all our service locations. There\'s no cash-only requirement, and no pressure to pay in advance before a survey and quote.'
+          },
+          {
+            icon: '⚡',
+            title: '24×7 Support in Local Language',
+            body: 'Our coordination team is available around the clock throughout your move. We communicate in Telugu, Tamil, Kannada, Malayalam, and Hindi — whichever is most comfortable for you.'
+          },
+        ].map(item => (
+          <div class="p-6 bg-gray-50 rounded-2xl border border-gray-100 hover:border-orange-200 hover:bg-orange-50 transition-all reveal">
+            <div class="text-3xl mb-3">{item.icon}</div>
+            <h3 class="font-bold text-brand-dark mb-2">{item.title}</h3>
+            <p class="text-sm text-brand-grey leading-relaxed">{item.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- STATES SECTION -->
+  <section class="py-20 bg-gray-50" aria-labelledby="states-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12 reveal">
+        <span class="inline-block px-4 py-1.5 rounded-full bg-orange-100 text-orange-700 text-sm font-bold mb-4 uppercase tracking-wide">Our Coverage</span>
+        <h2 id="states-heading" class="font-display text-4xl lg:text-5xl font-extrabold text-brand-dark mb-4">5 States · 100+ Cities</h2>
+        <p class="text-brand-grey text-lg">Complete South India coverage — professional moving services at your doorstep</p>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-5">
+        {states.map((s, i) => (
+          <a href={`/${s.slug}`} class="group p-6 rounded-3xl bg-gradient-to-br from-gray-50 to-white border border-gray-100 hover:border-brand-orange/40 hover:shadow-xl card-lift reveal text-center" style={`animation-delay:${i*.08}s`}>
+            <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">{s.flag}</div>
+            <div class="font-display font-bold text-lg text-brand-dark mb-1 group-hover:text-brand-orange transition-colors">{s.name}</div>
+            <div class="text-brand-grey text-sm mb-3">{s.abbr} · 20 Cities</div>
+            <div class="text-xs text-brand-orange font-bold opacity-0 group-hover:opacity-100 transition-opacity">Explore →</div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW BOOKING WORKS -->
+  <section class="py-20 bg-white" aria-labelledby="booking-heading">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10 reveal">
+        <h2 id="booking-heading" class="font-display text-3xl lg:text-4xl font-extrabold text-brand-dark mb-4">How Booking Works</h2>
+        <p class="text-brand-grey text-lg">Simple, transparent, stress-free from start to finish</p>
+      </div>
+      <div class="bg-orange-50 border border-orange-100 rounded-3xl p-8 reveal">
+        <p class="text-brand-grey leading-relaxed mb-6">
+          Getting started with PackersHub is straightforward. Call or WhatsApp us at <a href="tel:+917731074075" class="text-brand-orange font-bold">+91 77310 74075</a>, or visit <a href="https://www.packershub.in" class="text-brand-orange font-bold">www.packershub.in</a> to share details about your move — origin, destination, approximate volume of belongings, and preferred dates. Our team will arrange a survey, either in person for local moves or via video call for longer-distance relocations, after which you'll receive a fixed, all-inclusive quote.
+        </p>
+        <p class="text-brand-grey leading-relaxed">
+          Once confirmed, our local crew will handle packing, loading, transport, and unloading on your scheduled date, with our coordination team available throughout for any questions. The amount you agree to is the amount you pay — no surprises.
+        </p>
+        <div class="mt-6 grid sm:grid-cols-4 gap-4">
+          {[['📞','Call or WhatsApp'],['📋','Get Free Survey'],['✅','Confirm Quote'],['🚚','We Handle the Rest']].map(([icon, step]) => (
+            <div class="text-center bg-white rounded-xl p-4 shadow-sm">
+              <div class="text-3xl mb-2">{icon}</div>
+              <div class="text-xs font-bold text-brand-dark">{step}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <Testimonials />
+
+  <!-- TOP CITIES GRID -->
+  <CitiesGrid cities={featuredCities} heading="Top Cities We Serve" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+       POPULAR ROUTES — DETAILED SECTION
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-white" aria-labelledby="home-routes-heading">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Section Header -->
+      <div class="text-center mb-12 reveal">
+        <span class="inline-block px-4 py-1.5 rounded-full bg-orange-100 text-orange-700 text-sm font-bold mb-4 uppercase tracking-wide">
+          Intercity & Interstate Moves
+        </span>
+        <h2 id="home-routes-heading" class="font-display font-extrabold text-3xl lg:text-4xl text-brand-dark mb-4">
+          Popular Relocation Routes Across South India
+        </h2>
+        <p class="text-brand-grey text-lg max-w-3xl mx-auto">
+          PackersHub handles thousands of intercity and interstate moves every year across all five South Indian states — with the same transparent, all-inclusive pricing as a local move.
+        </p>
+      </div>
+
+      <!-- Routes grid — 3 columns -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+        {homeRoutes.map(route => (
+          <div class="group flex flex-col gap-3 p-5 bg-white rounded-2xl border border-gray-100 shadow-sm hover:border-brand-orange/40 hover:shadow-lg transition-all duration-300 relative overflow-hidden reveal">
+            <!-- Accent bar -->
+            <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-brand-orange to-brand-gold rounded-l-2xl"></div>
+            <div class="pl-2">
+              <!-- From -->
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center text-xs font-black text-brand-orange shrink-0">A</span>
+                <span class="text-xs text-brand-grey font-medium">From</span>
+                <span class="text-sm font-bold text-brand-dark">{route.from}</span>
+              </div>
+              <!-- Dotted connector -->
+              <div class="ml-3 flex items-center gap-1 mb-2">
+                <div class="w-px h-4 border-l-2 border-dashed border-orange-300 ml-0"></div>
+                <span class="text-[10px] text-brand-orange font-bold ml-2">🚚 PackersHub</span>
+              </div>
+              <!-- To -->
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-xs font-black text-green-600 shrink-0">B</span>
+                <span class="text-xs text-brand-grey font-medium">To</span>
+                <span class="text-sm font-bold text-brand-dark">{route.to}</span>
+              </div>
+              <p class="text-xs text-brand-grey leading-relaxed mt-2">{route.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Bottom CTA strip -->
+      <div class="bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-100 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 reveal">
+        <div>
+          <p class="font-bold text-brand-dark mb-1">Don't see your route?</p>
+          <p class="text-sm text-brand-grey">PackersHub moves to any city across South India — call us with your origin and destination for a custom quote.</p>
+        </div>
+        <div class="flex gap-3 shrink-0">
+          <a href="tel:+917731074075" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-brand-orange text-white font-bold text-sm hover:bg-orange-600 transition-colors shadow-md">
+            📞 Call Now
+          </a>
+          <a href="https://wa.me/917731074075" target="_blank" rel="noopener noreferrer"
+             class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#25D366] text-white font-bold text-sm hover:bg-green-500 transition-colors shadow-md">
+            💬 WhatsApp
+          </a>
+        </div>
+      </div>
+      <p class="text-center text-xs text-brand-grey mt-4">
+        All intercity moves include packing · loading · transport · unloading · 100% transit insurance · status tracking · GST-compliant billing
+      </p>
+    </div>
+  </section>
+
+  <!-- QUOTE FORM -->
+  <QuoteForm />
+
+  <!-- FAQ -->
+  <FAQ />
+
+  <!-- ═══════════════════════════════════════════════════════════
+       100% SAFE DELIVERY GUARANTEE — DETAILED SECTION
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-gray-50" aria-labelledby="home-guarantee-heading">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Section Header -->
+      <div class="text-center mb-12 reveal">
+        <span class="inline-block px-4 py-1.5 rounded-full bg-green-100 text-green-700 text-sm font-bold mb-4 uppercase tracking-wide">
+          Our Promise to You
+        </span>
+        <h2 id="home-guarantee-heading" class="font-display font-extrabold text-3xl lg:text-4xl text-brand-dark mb-4">
+          100% Safe Delivery Guarantee
+        </h2>
+        <p class="text-brand-grey text-lg max-w-2xl mx-auto">
+          Every PackersHub shipment — anywhere across our 100-city South India network — is backed by our complete Safe Delivery Guarantee. Your belongings arrive in the same condition they left in, on the agreed date, with nothing missing or damaged.
+        </p>
+      </div>
+
+      <!-- Main guarantee card -->
+      <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden mb-8 reveal">
+
+        <!-- Green header bar -->
+        <div class="bg-gradient-to-r from-green-600 to-emerald-500 px-8 py-6 flex items-center gap-4">
+          <div class="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center text-4xl shrink-0">🛡️</div>
+          <div>
+            <h3 class="font-display font-extrabold text-2xl text-white">PackersHub Safe Delivery Promise</h3>
+            <p class="text-green-100 text-sm mt-1">Valid on every move across all 100 cities — local &amp; intercity, household &amp; corporate</p>
+          </div>
+          <div class="ml-auto hidden sm:flex flex-col items-center bg-white/20 rounded-2xl px-6 py-3">
+            <span class="text-white font-black text-4xl leading-none">100%</span>
+            <span class="text-green-100 text-xs font-bold">GUARANTEED</span>
+          </div>
+        </div>
+
+        <!-- 6-step guarantee process -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-0 divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
+          {[
+            { step:'01', icon:'📸', title:'Pre-Move Inspection & Logging', desc:'Every item is inspected, photographed, and logged individually before packing begins. A complete digital inventory is created and shared with you — so both sides know exactly what left the door.' },
+            { step:'02', icon:'📦', title:'Professional-Grade Packing', desc:'Multi-layer bubble wrap for fragile items, corrugated sheets for furniture, moisture-resistant wrapping for coastal cities, and custom crating for valuables, antiques, and heirloom pieces.' },
+            { step:'03', icon:'🔒', title:'Secure, Protocol-Based Loading', desc:'Every item is loaded following strict protocols that prevent shifting in transit. Fragile items are positioned and braced separately from heavy furniture — not stacked randomly.' },
+            { step:'04', icon:'📍', title:'Move Status Tracking', desc:'Every PackersHub vehicle move is status-tracked from your doorstep to your destination. You receive milestone updates throughout, and our 24×7 coordination team is reachable at every point in the journey.' },
+            { step:'05', icon:'✅', title:'Supervised Delivery & Unpacking', desc:'On arrival, our crew unpacks and places every item exactly where you want it. A joint inventory check is completed before the job is closed — nothing is left unverified.' },
+            { step:'06', icon:'🏦', title:'Insurance & Fast Claims', desc:'Goods-in-transit insurance is included on every consignment — not as an upsell. In the rare event of damage despite our precautions, our claims process ensures fair, prompt compensation with no runaround.' },
+          ].map(item => (
+            <div class="p-6 hover:bg-green-50/30 transition-colors">
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-2xl">{item.icon}</span>
+                <span class="text-xs font-black text-green-700 bg-green-100 px-2 py-0.5 rounded-full">STEP {item.step}</span>
+              </div>
+              <h4 class="font-bold text-brand-dark mb-2">{item.title}</h4>
+              <p class="text-sm text-brand-grey leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- What's included strip -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-8 reveal">
+        <h3 class="font-bold text-brand-dark text-center mb-5">What's Included in Every PackersHub Move</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          {[
+            { icon:'🧰', label:'Packing Materials' },
+            { icon:'👷', label:'Trained Labour' },
+            { icon:'🚚', label:'Transport' },
+            { icon:'📤', label:'Loading' },
+            { icon:'📥', label:'Unloading' },
+            { icon:'🛡️', label:'Transit Insurance' },
+          ].map(item => (
+            <div class="flex flex-col items-center text-center gap-2 p-3 rounded-xl bg-gray-50 border border-gray-100">
+              <span class="text-2xl">{item.icon}</span>
+              <span class="text-xs font-bold text-brand-dark">{item.label}</span>
+            </div>
+          ))}
+        </div>
+        <p class="text-center text-xs text-brand-grey mt-4">All included in one transparent, fixed quote · No hidden charges · GST-compliant billing</p>
+      </div>
+
+      <!-- Stats row -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 reveal">
+        {[
+          { icon:'🛡️', label:'100%', sub:'Goods Insured' },
+          { icon:'📍', label:'100%', sub:'Tracked Moves' },
+          { icon:'📋', label:'Written', sub:'All-Inclusive Quote' },
+          { icon:'🏙️', label:'100 Cities', sub:'5 States Covered' },
+        ].map(badge => (
+          <div class="flex flex-col items-center text-center p-5 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+            <span class="text-3xl mb-2">{badge.icon}</span>
+            <span class="font-display font-black text-xl text-brand-dark">{badge.label}</span>
+            <span class="text-xs text-brand-grey mt-0.5">{badge.sub}</span>
+          </div>
+        ))}
+      </div>
+
+      <!-- Final CTA inside guarantee -->
+      <div class="text-center bg-gradient-to-r from-brand-orange to-brand-gold rounded-2xl p-10 text-white reveal">
+        <h3 class="font-display font-extrabold text-3xl mb-3">Ready for a Move You Can Trust?</h3>
+        <p class="text-orange-100 text-lg mb-8 max-w-xl mx-auto">Serving families and businesses across South India — backed by our 100% Safe Delivery Guarantee.</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="#quote" class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white text-brand-orange font-bold text-lg hover:bg-orange-50 transition-colors shadow-xl">
+            🚚 Get Free Quote
+          </a>
+          <a href="tel:+917731074075" class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border-2 border-white text-white font-bold text-lg hover:bg-white/10 transition-colors">
+            📞 +91 77310 74075
+          </a>
+        </div>
+        <p class="mt-6 text-orange-200 text-sm">
+          PackersHub · BV Nagar, Nellore, Andhra Pradesh 524004 · www.packershub.in
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA BANNER -->
+  <section class="py-16 bg-gradient-to-r from-brand-orange via-brand-gold to-brand-orange bg-[length:200%] animate-shine" aria-label="Call to action">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+      <h2 class="font-display font-black text-4xl lg:text-5xl mb-4">Ready to Move?</h2>
+      <p class="text-orange-100 text-xl mb-8">100+ cities across South India — get your free, no-obligation quote today</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#quote" class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white text-brand-orange font-bold text-lg hover:bg-orange-50 transition-colors shadow-xl">
+          🚚 Get Free Quote
+        </a>
+        <a href="tel:+917731074075" class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border-2 border-white text-white font-bold text-lg hover:bg-white/10 transition-colors">
+          📞 +91 77310 74075
+        </a>
+      </div>
+      <p class="mt-6 text-orange-100 text-sm">
+        PackersHub · BV Nagar, Nellore, Andhra Pradesh 524004 · www.packershub.in
+      </p>
+    </div>
+  </section>
+</BaseLayout>

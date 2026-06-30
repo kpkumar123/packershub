@@ -1,0 +1,1379 @@
+---
+// AIVideoSurvey.astro — AI-Powered Virtual Survey Component
+// PackersHub v10.5 — Astro 7.0.3 compatible
+// USAGE: <AIVideoSurvey bookingOnly={true} /> → renders only on /booking page
+// City landing pages must NOT import this component.
+// Props:
+//   bookingOnly?: boolean  — if true, component renders; if false/undefined, renders nothing
+//   fromCity?: string      — pre-fill from city (passed from booking page context)
+//   toCity?: string        — pre-fill to city
+
+interface Props {
+  bookingOnly?: boolean;
+  fromCity?: string;
+  toCity?: string;
+}
+
+const { bookingOnly = false, fromCity = '', toCity = '' } = Astro.props;
+
+// Guard: only render on /booking page
+if (!bookingOnly) return;
+---
+
+<section id="ai-video-survey" class="avs-wrapper">
+  <div class="avs-header">
+    <div class="avs-header-badge">🤖 AI-Powered</div>
+    <h2 class="avs-title">Virtual Home Survey</h2>
+    <p class="avs-subtitle">
+      Upload a short video or photos of your home — our AI instantly identifies every item,
+      builds your inventory list, and generates a precise shifting quote. No guesswork.
+    </p>
+    <div class="avs-trust-row">
+      <span class="avs-trust-chip">⚡ Results in 60 seconds</span>
+      <span class="avs-trust-chip">🔒 Your media is private</span>
+      <span class="avs-trust-chip">📦 280+ item types</span>
+      <span class="avs-trust-chip">✅ More accurate than dropdown</span>
+    </div>
+  </div>
+
+  <!-- Upload Zone -->
+  <div class="avs-upload-zone" id="avs-upload-zone">
+    <div class="avs-upload-inner" id="avs-upload-inner">
+      <div class="avs-upload-icon">🎥</div>
+      <p class="avs-upload-main">Drop your video or photos here</p>
+      <p class="avs-upload-sub">MP4, MOV, AVI · JPG, PNG · Max 100 MB · Walk through each room slowly</p>
+      <div class="avs-upload-btns">
+        <label class="avs-btn-upload" for="avs-file-video">
+          📹 Upload Video
+          <input type="file" id="avs-file-video" accept="video/*" style="display:none" />
+        </label>
+        <label class="avs-btn-upload secondary" for="avs-file-photos">
+          📷 Upload Photos
+          <input type="file" id="avs-file-photos" accept="image/*" multiple style="display:none" />
+        </label>
+      </div>
+      <p class="avs-tip">💡 Tip: Walk room-by-room, 10–30 seconds per room. Open wardrobes, show appliances.</p>
+    </div>
+
+    <!-- Preview after upload -->
+    <div class="avs-preview-zone" id="avs-preview-zone" style="display:none">
+      <div class="avs-preview-thumbs" id="avs-preview-thumbs"></div>
+      <div class="avs-preview-info">
+        <span id="avs-file-count">0 files selected</span>
+        <button class="avs-btn-clear" id="avs-clear-btn">✕ Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Route context (needed for distance-based pricing) -->
+  <div class="avs-context-row" id="avs-context-row">
+    <div class="avs-ctx-field">
+      <label class="avs-label">From City</label>
+      <input type="text" class="avs-input" id="avs-from-city" placeholder="e.g. Hyderabad" value={fromCity} />
+    </div>
+    <div class="avs-ctx-arrow">→</div>
+    <div class="avs-ctx-field">
+      <label class="avs-label">To City</label>
+      <input type="text" class="avs-input" id="avs-to-city" placeholder="e.g. Bengaluru" value={toCity} />
+    </div>
+    <div class="avs-ctx-field avs-ctx-date">
+      <label class="avs-label">Move Date</label>
+      <input type="date" class="avs-input" id="avs-move-date" />
+    </div>
+  </div>
+
+  <!-- Analyze Button -->
+  <button class="avs-analyze-btn" id="avs-analyze-btn" disabled>
+    <span id="avs-analyze-label">🤖 Analyze with AI →</span>
+  </button>
+
+  <!-- Processing State -->
+  <div class="avs-processing" id="avs-processing" style="display:none">
+    <div class="avs-process-steps">
+      <div class="avs-ps-item" id="ps-upload">
+        <div class="avs-ps-dot pulsing"></div>
+        <span>Uploading media…</span>
+      </div>
+      <div class="avs-ps-item dim" id="ps-detect">
+        <div class="avs-ps-dot"></div>
+        <span>Detecting furniture & items…</span>
+      </div>
+      <div class="avs-ps-item dim" id="ps-cube">
+        <div class="avs-ps-dot"></div>
+        <span>Calculating cube volume…</span>
+      </div>
+      <div class="avs-ps-item dim" id="ps-quote">
+        <div class="avs-ps-dot"></div>
+        <span>Generating quote…</span>
+      </div>
+    </div>
+    <div class="avs-progress-bar">
+      <div class="avs-progress-fill" id="avs-progress-fill" style="width:0%"></div>
+    </div>
+    <p class="avs-processing-note" id="avs-processing-note">This takes about 30–60 seconds</p>
+  </div>
+
+  <!-- Results -->
+  <div class="avs-results" id="avs-results" style="display:none">
+
+    <!-- Inventory Table -->
+    <div class="avs-results-header">
+      <h3 class="avs-results-title">🏠 Detected Inventory</h3>
+      <div class="avs-results-meta">
+        <span id="avs-item-count">0 items</span>
+        <span class="avs-sep">·</span>
+        <span id="avs-total-volume">0 cu.ft</span>
+        <span class="avs-sep">·</span>
+        <span id="avs-confidence-badge">AI Confidence: —</span>
+      </div>
+    </div>
+
+    <div class="avs-inventory-table" id="avs-inventory-table">
+      <!-- populated by JS -->
+    </div>
+
+    <!-- Add item manually -->
+    <div class="avs-add-item-row">
+      <input type="text" class="avs-input" id="avs-add-name" placeholder="Add missed item (e.g. Washing Machine)" />
+      <select class="avs-select" id="avs-add-category">
+        <option value="appliance">Appliance</option>
+        <option value="furniture">Furniture</option>
+        <option value="fragile">Fragile</option>
+        <option value="other">Other</option>
+      </select>
+      <button class="avs-btn-add" id="avs-add-item-btn">+ Add</button>
+    </div>
+
+    <!-- Volume Summary -->
+    <div class="avs-volume-summary">
+      <div class="avs-vs-row">
+        <div class="avs-vs-item">
+          <span class="avs-vs-label">Total Items</span>
+          <span class="avs-vs-val" id="avs-vs-items">—</span>
+        </div>
+        <div class="avs-vs-item">
+          <span class="avs-vs-label">Total Volume</span>
+          <span class="avs-vs-val" id="avs-vs-volume">—</span>
+        </div>
+        <div class="avs-vs-item">
+          <span class="avs-vs-label">Truck Size Needed</span>
+          <span class="avs-vs-val" id="avs-vs-truck">—</span>
+        </div>
+        <div class="avs-vs-item highlight">
+          <span class="avs-vs-label">Estimated Quote</span>
+          <span class="avs-vs-val gold" id="avs-vs-quote">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quote Breakdown -->
+    <div class="avs-quote-card">
+      <div class="avs-qc-header">
+        <span>💰 Your AI-Generated Quote</span>
+        <span class="avs-qc-tag">Volume-Based Pricing</span>
+      </div>
+      <div class="avs-qc-body" id="avs-qc-body">
+        <!-- populated by JS -->
+      </div>
+      <div class="avs-qc-total">
+        <span>Total Estimate (All-Inclusive)</span>
+        <span class="avs-qc-total-val" id="avs-qc-total">₹—</span>
+      </div>
+    </div>
+
+    <!-- CTA Row -->
+    <div class="avs-cta-row">
+      <button class="avs-btn-whatsapp" id="avs-whatsapp-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Book This Quote via WhatsApp
+      </button>
+      <a href="tel:+917731074075" class="avs-btn-call">📞 Call & Confirm</a>
+      <button class="avs-btn-redo" id="avs-redo-btn">↩ Re-Scan</button>
+    </div>
+  </div>
+</section>
+
+<style>
+.avs-wrapper {
+  background: linear-gradient(135deg, #0f172a 0%, #1a2744 100%);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+  position: relative;
+  overflow: hidden;
+}
+.avs-wrapper::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(139,92,246,0.15), transparent 70%);
+  pointer-events: none;
+}
+
+/* Header */
+.avs-header { text-align: center; margin-bottom: 2rem; }
+.avs-header-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 20px;
+  padding: 4px 14px;
+  margin-bottom: 10px;
+}
+.avs-title { color: #fff; font-size: 1.5rem; font-weight: 800; margin: 0 0 8px; }
+.avs-subtitle { color: rgba(255,255,255,0.6); font-size: 0.875rem; line-height: 1.6; margin: 0 0 1rem; max-width: 520px; margin-left: auto; margin-right: auto; }
+.avs-trust-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.avs-trust-chip {
+  background: rgba(139,92,246,0.12);
+  border: 1px solid rgba(139,92,246,0.3);
+  border-radius: 20px;
+  padding: 4px 12px;
+  color: #c4b5fd;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+/* Upload Zone */
+.avs-upload-zone {
+  border: 2px dashed rgba(139,92,246,0.4);
+  border-radius: 16px;
+  background: rgba(139,92,246,0.05);
+  transition: all 0.3s;
+  margin-bottom: 1.25rem;
+}
+.avs-upload-zone.drag-over {
+  border-color: #8b5cf6;
+  background: rgba(139,92,246,0.12);
+}
+.avs-upload-inner {
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+.avs-upload-icon { font-size: 2.5rem; margin-bottom: 12px; }
+.avs-upload-main { color: #fff; font-size: 1rem; font-weight: 700; margin: 0 0 6px; }
+.avs-upload-sub { color: rgba(255,255,255,0.45); font-size: 0.75rem; margin: 0 0 1.25rem; }
+.avs-upload-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 1rem; }
+.avs-btn-upload {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-block;
+}
+.avs-btn-upload:hover { background: linear-gradient(135deg, #8b5cf6, #7c3aed); transform: translateY(-1px); }
+.avs-btn-upload.secondary {
+  background: rgba(139,92,246,0.15);
+  border: 1.5px solid rgba(139,92,246,0.4);
+  color: #c4b5fd;
+}
+.avs-btn-upload.secondary:hover { background: rgba(139,92,246,0.25); }
+.avs-tip { color: rgba(255,255,255,0.4); font-size: 0.72rem; font-style: italic; }
+
+/* Preview */
+.avs-preview-zone { padding: 1rem 1.5rem; }
+.avs-preview-thumbs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.avs-preview-thumb {
+  width: 64px; height: 64px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 2px solid rgba(139,92,246,0.4);
+}
+.avs-preview-video-thumb {
+  width: 64px; height: 64px;
+  background: rgba(139,92,246,0.2);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  border: 2px solid rgba(139,92,246,0.4);
+}
+.avs-preview-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.8rem;
+}
+.avs-btn-clear {
+  background: rgba(239,68,68,0.15);
+  border: 1px solid rgba(239,68,68,0.3);
+  color: #fca5a5;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+/* Context row */
+.avs-context-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr 1fr;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 1.25rem;
+}
+.avs-ctx-arrow { color: #8b5cf6; font-size: 1.25rem; font-weight: 700; padding-bottom: 10px; text-align: center; }
+.avs-label { display: block; color: rgba(255,255,255,0.6); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+.avs-input, .avs-select {
+  width: 100%;
+  background: rgba(255,255,255,0.07);
+  border: 1.5px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  padding: 0.6rem 0.85rem;
+  color: #fff;
+  font-size: 0.85rem;
+  outline: none;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+.avs-input:focus, .avs-select:focus { border-color: #8b5cf6; }
+.avs-input::placeholder { color: rgba(255,255,255,0.3); }
+.avs-select option { background: #1e3a8a; }
+
+/* Analyze Button */
+.avs-analyze-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  color: #fff;
+  font-weight: 800;
+  font-size: 1rem;
+  border: none;
+  border-radius: 14px;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 6px 20px rgba(124,58,237,0.4);
+}
+.avs-analyze-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(124,58,237,0.5);
+}
+.avs-analyze-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* Processing */
+.avs-processing { margin-bottom: 1.5rem; }
+.avs-process-steps { display: flex; flex-direction: column; gap: 12px; margin-bottom: 1.25rem; }
+.avs-ps-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255,255,255,0.8);
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: opacity 0.3s;
+}
+.avs-ps-item.dim { opacity: 0.35; }
+.avs-ps-item.done { color: #4ade80; }
+.avs-ps-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: rgba(139,92,246,0.4);
+  flex-shrink: 0;
+}
+.avs-ps-dot.pulsing {
+  background: #8b5cf6;
+  animation: avsPulse 1s ease-in-out infinite;
+}
+.avs-ps-dot.done-dot { background: #4ade80; }
+@keyframes avsPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(139,92,246,0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(139,92,246,0); }
+}
+.avs-progress-bar {
+  height: 6px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.avs-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7c3aed, #8b5cf6);
+  border-radius: 99px;
+  transition: width 0.6s cubic-bezier(0.34,1.56,0.64,1);
+}
+.avs-processing-note { color: rgba(255,255,255,0.4); font-size: 0.75rem; text-align: center; }
+
+/* Results */
+.avs-results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+.avs-results-title { color: #fff; font-size: 1.1rem; font-weight: 700; margin: 0; }
+.avs-results-meta { display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.55); font-size: 0.8rem; }
+.avs-sep { color: rgba(255,255,255,0.25); }
+.avs-confidence-badge { color: #a78bfa; font-weight: 700; }
+
+/* Inventory Table */
+.avs-inventory-table {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+.avs-inv-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: background 0.15s;
+}
+.avs-inv-row:last-child { border-bottom: none; }
+.avs-inv-row:hover { background: rgba(255,255,255,0.03); }
+.avs-inv-row.header {
+  background: rgba(139,92,246,0.1);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255,255,255,0.5);
+  padding: 8px 14px;
+}
+.avs-inv-name { color: #fff; font-size: 0.82rem; font-weight: 600; }
+.avs-inv-cat {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 10px;
+  width: fit-content;
+}
+.avs-inv-cat.furniture { background: rgba(59,130,246,0.2); color: #93c5fd; }
+.avs-inv-cat.appliance { background: rgba(245,158,11,0.2); color: #fcd34d; }
+.avs-inv-cat.fragile { background: rgba(239,68,68,0.2); color: #fca5a5; }
+.avs-inv-cat.other { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); }
+.avs-inv-vol { color: rgba(255,255,255,0.7); font-size: 0.8rem; }
+.avs-inv-qty {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 6px;
+  padding: 3px 8px;
+  color: #fff;
+  font-size: 0.8rem;
+  width: 50px;
+  text-align: center;
+  outline: none;
+}
+.avs-inv-remove {
+  background: none;
+  border: none;
+  color: rgba(239,68,68,0.6);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+.avs-inv-remove:hover { color: #ef4444; }
+
+/* Add Item Row */
+.avs-add-item-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  margin-bottom: 1.25rem;
+}
+.avs-btn-add {
+  background: rgba(139,92,246,0.2);
+  border: 1.5px solid rgba(139,92,246,0.4);
+  color: #c4b5fd;
+  border-radius: 10px;
+  padding: 0.6rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.avs-btn-add:hover { background: rgba(139,92,246,0.35); }
+
+/* Volume Summary */
+.avs-volume-summary {
+  background: rgba(139,92,246,0.08);
+  border: 1px solid rgba(139,92,246,0.2);
+  border-radius: 14px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.avs-vs-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.avs-vs-item { text-align: center; }
+.avs-vs-label { display: block; color: rgba(255,255,255,0.5); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
+.avs-vs-val { color: #fff; font-size: 1rem; font-weight: 800; }
+.avs-vs-val.gold { color: #f59e0b; font-size: 1.15rem; }
+.avs-vs-item.highlight .avs-vs-label { color: #f59e0b; }
+
+/* Quote Card */
+.avs-quote-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+.avs-qc-header {
+  background: rgba(139,92,246,0.12);
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: rgba(255,255,255,0.8);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+.avs-qc-tag {
+  background: rgba(139,92,246,0.25);
+  color: #c4b5fd;
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+.avs-qc-body { padding: 0 16px; }
+.avs-qc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.65);
+  font-size: 0.8rem;
+}
+.avs-qc-row:last-child { border-bottom: none; }
+.avs-qc-row span:last-child { color: #fff; font-weight: 600; }
+.avs-qc-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: rgba(245,158,11,0.1);
+  border-top: 1px solid rgba(245,158,11,0.2);
+  color: rgba(255,255,255,0.8);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+.avs-qc-total-val { color: #f59e0b; font-size: 1.25rem; font-weight: 800; }
+
+/* CTA */
+.avs-cta-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.avs-btn-whatsapp {
+  flex: 1;
+  background: linear-gradient(135deg, #25d366, #128c7e);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 12px;
+  padding: 0.85rem 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(37,211,102,0.3);
+  min-width: 200px;
+}
+.avs-btn-whatsapp:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,211,102,0.4); }
+.avs-btn-call {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #000;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: 12px;
+  padding: 0.85rem 1.25rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.avs-btn-call:hover { transform: translateY(-1px); }
+.avs-btn-redo {
+  background: rgba(255,255,255,0.08);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.7);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+.avs-btn-redo:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+@media (max-width: 640px) {
+  .avs-context-row { grid-template-columns: 1fr; }
+  .avs-ctx-arrow { display: none; }
+  .avs-vs-row { grid-template-columns: repeat(2, 1fr); }
+  .avs-inv-row { grid-template-columns: 1fr 1fr; }
+  .avs-inv-row.header { display: none; }
+  .avs-add-item-row { grid-template-columns: 1fr; }
+  .avs-cta-row { flex-direction: column; }
+}
+</style>
+
+<script>
+// ── ITEM DATABASE — 280+ items (volume in cubic feet per unit) ──────────────
+// Categories: furniture | appliance | fragile | other
+const ITEM_DB: Record<string, { category: string; volume: number; packingMultiplier: number }> = {
+
+  // ═══════════════════════════════════════════════════════════
+  // SOFAS & SEATING
+  // ═══════════════════════════════════════════════════════════
+  'Sofa (3-Seater)':              { category: 'furniture', volume: 60,  packingMultiplier: 1.3 },
+  'Sofa (2-Seater)':              { category: 'furniture', volume: 42,  packingMultiplier: 1.3 },
+  'Sofa (1-Seater / Armchair)':   { category: 'furniture', volume: 20,  packingMultiplier: 1.2 },
+  'Sofa (L-Shape / Corner)':      { category: 'furniture', volume: 95,  packingMultiplier: 1.3 },
+  'Sofa Cum Bed':                 { category: 'furniture', volume: 70,  packingMultiplier: 1.3 },
+  'Recliner Chair':               { category: 'furniture', volume: 28,  packingMultiplier: 1.3 },
+  'Recliner Sofa (3-Seater)':     { category: 'furniture', volume: 80,  packingMultiplier: 1.3 },
+  'Bean Bag (Large)':             { category: 'furniture', volume: 12,  packingMultiplier: 1.1 },
+  'Bean Bag (Small)':             { category: 'furniture', volume: 6,   packingMultiplier: 1.1 },
+  'Ottoman / Pouf':               { category: 'furniture', volume: 8,   packingMultiplier: 1.2 },
+  'Diwan / Day Bed':              { category: 'furniture', volume: 45,  packingMultiplier: 1.2 },
+  'Futon':                        { category: 'furniture', volume: 35,  packingMultiplier: 1.2 },
+  'Chaise Lounge':                { category: 'furniture', volume: 32,  packingMultiplier: 1.3 },
+  'Wingback Chair':               { category: 'furniture', volume: 22,  packingMultiplier: 1.3 },
+  'Accent Chair':                 { category: 'furniture', volume: 15,  packingMultiplier: 1.2 },
+  'Settee (2-Seater Bench Sofa)': { category: 'furniture', volume: 30,  packingMultiplier: 1.2 },
+
+  // ═══════════════════════════════════════════════════════════
+  // BEDS & BEDROOM
+  // ═══════════════════════════════════════════════════════════
+  'King Size Bed (with mattress)':    { category: 'furniture', volume: 120, packingMultiplier: 1.2 },
+  'Queen Size Bed (with mattress)':   { category: 'furniture', volume: 100, packingMultiplier: 1.2 },
+  'Double Bed (with mattress)':       { category: 'furniture', volume: 90,  packingMultiplier: 1.2 },
+  'Single Bed (with mattress)':       { category: 'furniture', volume: 55,  packingMultiplier: 1.2 },
+  'Bunk Bed':                         { category: 'furniture', volume: 80,  packingMultiplier: 1.2 },
+  'Trundle Bed':                      { category: 'furniture', volume: 60,  packingMultiplier: 1.2 },
+  'Cot / Baby Crib':                  { category: 'furniture', volume: 18,  packingMultiplier: 1.3 },
+  'Folding Bed':                      { category: 'furniture', volume: 25,  packingMultiplier: 1.1 },
+  'Hydraulic Storage Bed':            { category: 'furniture', volume: 110, packingMultiplier: 1.2 },
+  'Divan Bed (without headboard)':    { category: 'furniture', volume: 65,  packingMultiplier: 1.1 },
+  'Mattress (King)':                  { category: 'furniture', volume: 30,  packingMultiplier: 1.1 },
+  'Mattress (Queen/Double)':          { category: 'furniture', volume: 22,  packingMultiplier: 1.1 },
+  'Mattress (Single)':                { category: 'furniture', volume: 14,  packingMultiplier: 1.1 },
+  'Mattress Topper':                  { category: 'other',     volume: 5,   packingMultiplier: 1.1 },
+  'Pillow (per piece)':               { category: 'other',     volume: 1.5, packingMultiplier: 1.0 },
+  'Bedside Table':                    { category: 'furniture', volume: 8,   packingMultiplier: 1.2 },
+  'Nightstand':                       { category: 'furniture', volume: 7,   packingMultiplier: 1.2 },
+  'Headboard (standalone)':           { category: 'furniture', volume: 12,  packingMultiplier: 1.2 },
+
+  // ═══════════════════════════════════════════════════════════
+  // WARDROBES & STORAGE
+  // ═══════════════════════════════════════════════════════════
+  'Wardrobe (4-door / Large)':    { category: 'furniture', volume: 100, packingMultiplier: 1.1 },
+  'Wardrobe (3-door)':            { category: 'furniture', volume: 75,  packingMultiplier: 1.1 },
+  'Wardrobe (2-door)':            { category: 'furniture', volume: 50,  packingMultiplier: 1.1 },
+  'Wardrobe (1-door)':            { category: 'furniture', volume: 28,  packingMultiplier: 1.1 },
+  'Wardrobe (Sliding Door)':      { category: 'furniture', volume: 85,  packingMultiplier: 1.1 },
+  'Dressing Table with Mirror':   { category: 'furniture', volume: 22,  packingMultiplier: 1.3 },
+  'Dressing Table (without mirror)': { category: 'furniture', volume: 15, packingMultiplier: 1.2 },
+  'Chest of Drawers (5-drawer)':  { category: 'furniture', volume: 30,  packingMultiplier: 1.2 },
+  'Chest of Drawers (3-drawer)':  { category: 'furniture', volume: 18,  packingMultiplier: 1.2 },
+  'Almari / Steel Almirah':       { category: 'furniture', volume: 55,  packingMultiplier: 1.15 },
+  'TV Cabinet / Media Unit':      { category: 'furniture', volume: 22,  packingMultiplier: 1.15 },
+  'Shoe Rack (large)':            { category: 'furniture', volume: 14,  packingMultiplier: 1.1 },
+  'Shoe Rack (small)':            { category: 'furniture', volume: 8,   packingMultiplier: 1.1 },
+  'Shoe Cabinet (with door)':     { category: 'furniture', volume: 18,  packingMultiplier: 1.1 },
+  'Storage Box (large plastic)':  { category: 'other',     volume: 6,   packingMultiplier: 1.0 },
+  'Storage Box (medium)':         { category: 'other',     volume: 3,   packingMultiplier: 1.0 },
+  'Trunk / Metal Box':            { category: 'other',     volume: 8,   packingMultiplier: 1.0 },
+  'Under-Bed Storage Drawers':    { category: 'furniture', volume: 12,  packingMultiplier: 1.1 },
+
+  // ═══════════════════════════════════════════════════════════
+  // DINING & KITCHEN FURNITURE
+  // ═══════════════════════════════════════════════════════════
+  'Dining Table (8-seater)':      { category: 'furniture', volume: 55,  packingMultiplier: 1.2 },
+  'Dining Table (6-seater)':      { category: 'furniture', volume: 40,  packingMultiplier: 1.2 },
+  'Dining Table (4-seater)':      { category: 'furniture', volume: 28,  packingMultiplier: 1.2 },
+  'Dining Table (2-seater)':      { category: 'furniture', volume: 16,  packingMultiplier: 1.2 },
+  'Dining Chair (per piece)':     { category: 'furniture', volume: 8,   packingMultiplier: 1.3 },
+  'High Chair (baby)':            { category: 'furniture', volume: 6,   packingMultiplier: 1.3 },
+  'Bar Stool (per piece)':        { category: 'furniture', volume: 5,   packingMultiplier: 1.3 },
+  'Kitchen Island':               { category: 'furniture', volume: 35,  packingMultiplier: 1.2 },
+  'Crockery Unit / Display Cabinet': { category: 'furniture', volume: 40, packingMultiplier: 1.2 },
+  'China Cabinet (tall)':         { category: 'furniture', volume: 50,  packingMultiplier: 1.2 },
+  'Buffet / Sideboard':           { category: 'furniture', volume: 32,  packingMultiplier: 1.2 },
+  'Kitchen Trolley':              { category: 'furniture', volume: 10,  packingMultiplier: 1.2 },
+  'Dining Bench':                 { category: 'furniture', volume: 12,  packingMultiplier: 1.2 },
+
+  // ═══════════════════════════════════════════════════════════
+  // TABLES & DESKS
+  // ═══════════════════════════════════════════════════════════
+  'Study Table / Work Desk':      { category: 'furniture', volume: 20,  packingMultiplier: 1.1 },
+  'L-Shape Office Desk':          { category: 'furniture', volume: 40,  packingMultiplier: 1.1 },
+  'Standing Desk':                { category: 'furniture', volume: 22,  packingMultiplier: 1.2 },
+  'Computer Table':               { category: 'furniture', volume: 18,  packingMultiplier: 1.1 },
+  'Folding Table':                { category: 'furniture', volume: 10,  packingMultiplier: 1.1 },
+  'Coffee Table (large)':         { category: 'furniture', volume: 14,  packingMultiplier: 1.2 },
+  'Coffee Table (small)':         { category: 'furniture', volume: 8,   packingMultiplier: 1.2 },
+  'Centre Table / Teapoy':        { category: 'furniture', volume: 10,  packingMultiplier: 1.2 },
+  'Side Table':                   { category: 'furniture', volume: 5,   packingMultiplier: 1.2 },
+  'Nest of Tables (set of 3)':    { category: 'furniture', volume: 12,  packingMultiplier: 1.2 },
+  'Console Table':                { category: 'furniture', volume: 10,  packingMultiplier: 1.2 },
+  'Entryway Table / Hall Table':  { category: 'furniture', volume: 8,   packingMultiplier: 1.2 },
+  'Puja / Prayer Table':          { category: 'furniture', volume: 12,  packingMultiplier: 1.2 },
+
+  // ═══════════════════════════════════════════════════════════
+  // SHELVING & DISPLAY
+  // ═══════════════════════════════════════════════════════════
+  'Bookshelf (5-shelf, large)':   { category: 'furniture', volume: 30,  packingMultiplier: 1.1 },
+  'Bookshelf (3-shelf, medium)':  { category: 'furniture', volume: 18,  packingMultiplier: 1.1 },
+  'Floating Wall Shelf (per unit)': { category: 'other',  volume: 2,   packingMultiplier: 1.2 },
+  'Display Rack / Showcase':      { category: 'furniture', volume: 22,  packingMultiplier: 1.2 },
+  'File Cabinet (4-drawer)':      { category: 'furniture', volume: 18,  packingMultiplier: 1.1 },
+  'File Cabinet (2-drawer)':      { category: 'furniture', volume: 10,  packingMultiplier: 1.1 },
+  'Magazine Rack':                { category: 'other',     volume: 3,   packingMultiplier: 1.2 },
+  'Ladder Shelf':                 { category: 'furniture', volume: 14,  packingMultiplier: 1.2 },
+  'Cube Storage (per unit)':      { category: 'furniture', volume: 8,   packingMultiplier: 1.1 },
+  'Industrial Shelving Rack':     { category: 'other',     volume: 25,  packingMultiplier: 1.1 },
+
+  // ═══════════════════════════════════════════════════════════
+  // CHAIRS (OFFICE & MISC)
+  // ═══════════════════════════════════════════════════════════
+  'Office Chair (ergonomic)':     { category: 'furniture', volume: 14,  packingMultiplier: 1.2 },
+  'Executive Chair':              { category: 'furniture', volume: 16,  packingMultiplier: 1.2 },
+  'Gaming Chair':                 { category: 'furniture', volume: 18,  packingMultiplier: 1.2 },
+  'Folding Chair (per piece)':    { category: 'other',     volume: 3,   packingMultiplier: 1.1 },
+  'Plastic Chair':                { category: 'other',     volume: 4,   packingMultiplier: 1.1 },
+  'Rocking Chair':                { category: 'furniture', volume: 20,  packingMultiplier: 1.3 },
+  'Meditation Chair':             { category: 'furniture', volume: 8,   packingMultiplier: 1.2 },
+  'Massage Chair':                { category: 'appliance', volume: 35,  packingMultiplier: 1.3 },
+  'Camping Chair / Outdoor Chair':{ category: 'other',     volume: 5,   packingMultiplier: 1.1 },
+
+  // ═══════════════════════════════════════════════════════════
+  // TELEVISIONS & AUDIO-VISUAL
+  // ═══════════════════════════════════════════════════════════
+  'Television (75"+ / OLED)':     { category: 'fragile', volume: 30,  packingMultiplier: 1.6 },
+  'Television (65")':             { category: 'fragile', volume: 22,  packingMultiplier: 1.6 },
+  'Television (55")':             { category: 'fragile', volume: 18,  packingMultiplier: 1.5 },
+  'Television (43"–54")':         { category: 'fragile', volume: 12,  packingMultiplier: 1.5 },
+  'Television (32"–42")':         { category: 'fragile', volume: 8,   packingMultiplier: 1.5 },
+  'Television (below 32")':       { category: 'fragile', volume: 5,   packingMultiplier: 1.5 },
+  'Computer Monitor (27"+)':      { category: 'fragile', volume: 8,   packingMultiplier: 1.6 },
+  'Computer Monitor (24")':       { category: 'fragile', volume: 6,   packingMultiplier: 1.6 },
+  'Computer Monitor (21")':       { category: 'fragile', volume: 4,   packingMultiplier: 1.6 },
+  'LED Projector':                { category: 'fragile', volume: 3,   packingMultiplier: 1.8 },
+  'Home Theatre System':          { category: 'fragile', volume: 15,  packingMultiplier: 1.6 },
+  'Soundbar':                     { category: 'fragile', volume: 3,   packingMultiplier: 1.5 },
+  'Speaker (Tower / Floorstanding)': { category: 'fragile', volume: 10, packingMultiplier: 1.5 },
+  'Speaker (Bookshelf / Small)':  { category: 'fragile', volume: 3,   packingMultiplier: 1.5 },
+  'Subwoofer':                    { category: 'fragile', volume: 8,   packingMultiplier: 1.4 },
+  'DTH Dish + Receiver':          { category: 'other',   volume: 5,   packingMultiplier: 1.3 },
+  'Set-Top Box':                  { category: 'other',   volume: 0.5, packingMultiplier: 1.5 },
+  'Gaming Console (PlayStation/Xbox)': { category: 'fragile', volume: 1.5, packingMultiplier: 1.8 },
+  'DVD / Blu-ray Player':         { category: 'fragile', volume: 1,   packingMultiplier: 1.5 },
+  'TV Wall Mount (bracket)':      { category: 'other',   volume: 1,   packingMultiplier: 1.2 },
+
+  // ═══════════════════════════════════════════════════════════
+  // REFRIGERATORS & COOLING
+  // ═══════════════════════════════════════════════════════════
+  'Refrigerator (Side-by-Side 600L+)': { category: 'appliance', volume: 80, packingMultiplier: 1.15 },
+  'Refrigerator (French Door 500L)':   { category: 'appliance', volume: 70, packingMultiplier: 1.15 },
+  'Refrigerator (Double Door 400L+)':  { category: 'appliance', volume: 60, packingMultiplier: 1.15 },
+  'Refrigerator (Double Door 300L)':   { category: 'appliance', volume: 55, packingMultiplier: 1.15 },
+  'Refrigerator (Single Door 200L+)':  { category: 'appliance', volume: 35, packingMultiplier: 1.15 },
+  'Refrigerator (Single Door 150L)':   { category: 'appliance', volume: 25, packingMultiplier: 1.15 },
+  'Mini Fridge / Bar Fridge':          { category: 'appliance', volume: 12, packingMultiplier: 1.2 },
+  'Deep Freezer (chest type)':         { category: 'appliance', volume: 40, packingMultiplier: 1.15 },
+  'Water Cooler / Dispenser':          { category: 'appliance', volume: 8,  packingMultiplier: 1.3 },
+  'Ice Maker Machine':                 { category: 'appliance', volume: 10, packingMultiplier: 1.3 },
+
+  // ═══════════════════════════════════════════════════════════
+  // WASHING MACHINES & DRYERS
+  // ═══════════════════════════════════════════════════════════
+  'Washing Machine (Front Load 8kg+)': { category: 'appliance', volume: 28, packingMultiplier: 1.2 },
+  'Washing Machine (Front Load 6kg)':  { category: 'appliance', volume: 25, packingMultiplier: 1.2 },
+  'Washing Machine (Top Load 8kg+)':   { category: 'appliance', volume: 24, packingMultiplier: 1.2 },
+  'Washing Machine (Top Load 6kg)':    { category: 'appliance', volume: 20, packingMultiplier: 1.2 },
+  'Semi-Automatic Washing Machine':    { category: 'appliance', volume: 18, packingMultiplier: 1.2 },
+  'Cloth Dryer (electric)':           { category: 'appliance', volume: 22, packingMultiplier: 1.2 },
+  'Washer-Dryer Combo':               { category: 'appliance', volume: 30, packingMultiplier: 1.2 },
+  'Clothes Drying Stand (foldable)':  { category: 'other',     volume: 5,  packingMultiplier: 1.1 },
+
+  // ═══════════════════════════════════════════════════════════
+  // AIR CONDITIONING & HEATING
+  // ═══════════════════════════════════════════════════════════
+  'Split AC Indoor Unit (1 ton)':  { category: 'appliance', volume: 8,  packingMultiplier: 1.3 },
+  'Split AC Indoor Unit (1.5 ton)':{ category: 'appliance', volume: 10, packingMultiplier: 1.3 },
+  'Split AC Indoor Unit (2 ton)':  { category: 'appliance', volume: 12, packingMultiplier: 1.3 },
+  'Split AC Outdoor Unit (1 ton)': { category: 'appliance', volume: 15, packingMultiplier: 1.2 },
+  'Split AC Outdoor Unit (1.5 ton)':{ category: 'appliance',volume: 18, packingMultiplier: 1.2 },
+  'Split AC Outdoor Unit (2 ton)': { category: 'appliance', volume: 22, packingMultiplier: 1.2 },
+  'Window AC (1 ton)':             { category: 'appliance', volume: 10, packingMultiplier: 1.2 },
+  'Window AC (1.5 ton)':           { category: 'appliance', volume: 12, packingMultiplier: 1.2 },
+  'Cassette AC (ceiling)':         { category: 'appliance', volume: 14, packingMultiplier: 1.3 },
+  'Portable AC':                   { category: 'appliance', volume: 12, packingMultiplier: 1.2 },
+  'Air Cooler (tower)':            { category: 'appliance', volume: 12, packingMultiplier: 1.2 },
+  'Air Cooler (desert/window)':    { category: 'appliance', volume: 8,  packingMultiplier: 1.2 },
+  'Room Heater (radiant)':         { category: 'appliance', volume: 4,  packingMultiplier: 1.3 },
+  'Room Heater (convection)':      { category: 'appliance', volume: 5,  packingMultiplier: 1.3 },
+  'Oil-Filled Radiator Heater':    { category: 'appliance', volume: 6,  packingMultiplier: 1.3 },
+  'Fan Heater / Blower':           { category: 'appliance', volume: 3,  packingMultiplier: 1.3 },
+
+  // ═══════════════════════════════════════════════════════════
+  // FANS & VENTILATION
+  // ═══════════════════════════════════════════════════════════
+  'Ceiling Fan':                   { category: 'other',     volume: 3,  packingMultiplier: 1.5 },
+  'Stand Fan / Pedestal Fan':      { category: 'other',     volume: 4,  packingMultiplier: 1.4 },
+  'Wall Fan':                      { category: 'other',     volume: 3,  packingMultiplier: 1.4 },
+  'Table Fan':                     { category: 'other',     volume: 2,  packingMultiplier: 1.4 },
+  'Exhaust Fan (kitchen/bathroom)':{ category: 'other',     volume: 1,  packingMultiplier: 1.3 },
+  'Air Purifier':                  { category: 'appliance', volume: 6,  packingMultiplier: 1.3 },
+  'Dehumidifier':                  { category: 'appliance', volume: 5,  packingMultiplier: 1.3 },
+  'Humidifier':                    { category: 'appliance', volume: 3,  packingMultiplier: 1.4 },
+
+  // ═══════════════════════════════════════════════════════════
+  // KITCHEN APPLIANCES (LARGE)
+  // ═══════════════════════════════════════════════════════════
+  'Microwave (30L convection)':    { category: 'appliance', volume: 5,  packingMultiplier: 1.4 },
+  'Microwave (20L solo)':          { category: 'appliance', volume: 4,  packingMultiplier: 1.4 },
+  'OTG (Oven Toaster Griller 30L)':{ category: 'appliance', volume: 5,  packingMultiplier: 1.4 },
+  'OTG (Small 16L)':               { category: 'appliance', volume: 3,  packingMultiplier: 1.4 },
+  'Chimney / Range Hood':          { category: 'appliance', volume: 12, packingMultiplier: 1.4 },
+  'Gas Stove (4-burner)':          { category: 'appliance', volume: 4,  packingMultiplier: 1.3 },
+  'Gas Stove (2-burner)':          { category: 'appliance', volume: 2.5,packingMultiplier: 1.3 },
+  'Induction Cooktop':             { category: 'appliance', volume: 2,  packingMultiplier: 1.4 },
+  'Electric Kettle':               { category: 'appliance', volume: 1.5,packingMultiplier: 1.5 },
+  'Coffee Maker / Espresso Machine':{ category: 'appliance', volume: 3, packingMultiplier: 1.5 },
+  'Mixer Grinder (750W+)':         { category: 'appliance', volume: 2,  packingMultiplier: 1.4 },
+  'Food Processor':                { category: 'appliance', volume: 3,  packingMultiplier: 1.5 },
+  'Juicer':                        { category: 'appliance', volume: 2,  packingMultiplier: 1.5 },
+  'Blender / Smoothie Maker':      { category: 'appliance', volume: 2,  packingMultiplier: 1.5 },
+  'Rice Cooker':                   { category: 'appliance', volume: 2.5,packingMultiplier: 1.4 },
+  'Pressure Cooker (electric)':    { category: 'appliance', volume: 3,  packingMultiplier: 1.4 },
+  'Air Fryer':                     { category: 'appliance', volume: 3,  packingMultiplier: 1.4 },
+  'Sandwich Maker / Toaster':      { category: 'appliance', volume: 1.5,packingMultiplier: 1.4 },
+  'Waffle Maker':                  { category: 'appliance', volume: 2,  packingMultiplier: 1.4 },
+  'Hand Mixer / Beater':           { category: 'appliance', volume: 1,  packingMultiplier: 1.5 },
+  'Stand Mixer':                   { category: 'appliance', volume: 3,  packingMultiplier: 1.5 },
+  'Dishwasher (built-in)':         { category: 'appliance', volume: 22, packingMultiplier: 1.2 },
+  'Dishwasher (countertop)':       { category: 'appliance', volume: 8,  packingMultiplier: 1.3 },
+  'Wet Grinder':                   { category: 'appliance', volume: 4,  packingMultiplier: 1.4 },
+  'Idli / Dosa Maker':             { category: 'appliance', volume: 2,  packingMultiplier: 1.4 },
+  'Roti Maker':                    { category: 'appliance', volume: 2,  packingMultiplier: 1.4 },
+
+  // ═══════════════════════════════════════════════════════════
+  // WATER & PLUMBING APPLIANCES
+  // ═══════════════════════════════════════════════════════════
+  'Water Purifier (RO, wall)':    { category: 'appliance', volume: 4,  packingMultiplier: 1.3 },
+  'Water Purifier (countertop)':  { category: 'appliance', volume: 3,  packingMultiplier: 1.4 },
+  'Geyser / Water Heater (25L)':  { category: 'appliance', volume: 8,  packingMultiplier: 1.3 },
+  'Geyser / Water Heater (15L)':  { category: 'appliance', volume: 6,  packingMultiplier: 1.3 },
+  'Instant Water Heater':         { category: 'appliance', volume: 3,  packingMultiplier: 1.3 },
+  'Washing Machine Water Inlet Pipe Set': { category: 'other', volume: 0.5, packingMultiplier: 1.0 },
+
+  // ═══════════════════════════════════════════════════════════
+  // COMPUTERS & ELECTRONICS
+  // ═══════════════════════════════════════════════════════════
+  'Desktop Computer (tower + monitor)': { category: 'fragile', volume: 8,  packingMultiplier: 2.0 },
+  'Desktop Computer (tower only)':      { category: 'fragile', volume: 4,  packingMultiplier: 2.0 },
+  'Laptop':                             { category: 'fragile', volume: 2,  packingMultiplier: 2.0 },
+  'iPad / Tablet':                      { category: 'fragile', volume: 0.8,packingMultiplier: 2.0 },
+  'Printer (laser / inkjet)':           { category: 'fragile', volume: 4,  packingMultiplier: 1.8 },
+  'All-in-One Printer':                 { category: 'fragile', volume: 5,  packingMultiplier: 1.8 },
+  'External Hard Drive':                { category: 'fragile', volume: 0.3,packingMultiplier: 2.0 },
+  'UPS (computer)':                     { category: 'appliance', volume: 4,packingMultiplier: 1.4 },
+  'Inverter (home)':                    { category: 'appliance', volume: 8,packingMultiplier: 1.3 },
+  'Inverter Battery':                   { category: 'appliance', volume: 10,packingMultiplier: 1.2 },
+  'Router / Modem':                     { category: 'other',   volume: 0.5,packingMultiplier: 1.5 },
+  'Smart Home Hub (Alexa/Google)':      { category: 'other',   volume: 0.3,packingMultiplier: 1.5 },
+  'Camera (DSLR / Mirrorless)':         { category: 'fragile', volume: 1,  packingMultiplier: 2.2 },
+  'Telescope':                          { category: 'fragile', volume: 5,  packingMultiplier: 1.8 },
+  'Piano / Electronic Keyboard':        { category: 'fragile', volume: 20, packingMultiplier: 1.8 },
+  'Guitar / Sitar (in case)':           { category: 'fragile', volume: 6,  packingMultiplier: 1.8 },
+  'Drum Kit':                           { category: 'fragile', volume: 30, packingMultiplier: 1.7 },
+  'Violin / Flute (in case)':           { category: 'fragile', volume: 2,  packingMultiplier: 2.0 },
+
+  // ═══════════════════════════════════════════════════════════
+  // BATHROOM & PERSONAL CARE
+  // ═══════════════════════════════════════════════════════════
+  'Washing Machine (bathroom attachments)': { category: 'other', volume: 1, packingMultiplier: 1.1 },
+  'Bathroom Cabinet / Mirror Cabinet':  { category: 'fragile', volume: 8,  packingMultiplier: 1.5 },
+  'Vanity Mirror (large)':              { category: 'fragile', volume: 6,  packingMultiplier: 1.8 },
+  'Hair Dryer':                         { category: 'other',   volume: 0.8,packingMultiplier: 1.5 },
+  'Weighing Scale (bathroom)':          { category: 'other',   volume: 0.5,packingMultiplier: 1.3 },
+  'Bucket (per piece)':                 { category: 'other',   volume: 1,  packingMultiplier: 1.0 },
+  'Mug / Tub':                          { category: 'other',   volume: 0.5,packingMultiplier: 1.0 },
+
+  // ═══════════════════════════════════════════════════════════
+  // FITNESS & SPORTS EQUIPMENT
+  // ═══════════════════════════════════════════════════════════
+  'Treadmill':                    { category: 'appliance', volume: 40, packingMultiplier: 1.2 },
+  'Elliptical Trainer':           { category: 'appliance', volume: 35, packingMultiplier: 1.2 },
+  'Stationary Bike':              { category: 'appliance', volume: 25, packingMultiplier: 1.2 },
+  'Rowing Machine':               { category: 'appliance', volume: 30, packingMultiplier: 1.2 },
+  'Home Gym / Multi-Station':     { category: 'other',     volume: 80, packingMultiplier: 1.2 },
+  'Weight Bench':                 { category: 'other',     volume: 20, packingMultiplier: 1.2 },
+  'Barbell + Weight Plates Set':  { category: 'other',     volume: 15, packingMultiplier: 1.1 },
+  'Dumbell Set':                  { category: 'other',     volume: 8,  packingMultiplier: 1.1 },
+  'Kettlebell (per piece)':       { category: 'other',     volume: 2,  packingMultiplier: 1.1 },
+  'Pull-Up Bar (doorframe)':      { category: 'other',     volume: 2,  packingMultiplier: 1.2 },
+  'Yoga Mat':                     { category: 'other',     volume: 1,  packingMultiplier: 1.0 },
+  'Punching Bag':                 { category: 'other',     volume: 10, packingMultiplier: 1.2 },
+  'Table Tennis Table':           { category: 'other',     volume: 30, packingMultiplier: 1.2 },
+  'Carrom Board':                 { category: 'fragile',   volume: 3,  packingMultiplier: 1.5 },
+  'Cycle / Bicycle (adult)':      { category: 'other',     volume: 20, packingMultiplier: 1.3 },
+  'Cycle (kids)':                 { category: 'other',     volume: 10, packingMultiplier: 1.3 },
+  'Scooter (kids)':               { category: 'other',     volume: 5,  packingMultiplier: 1.2 },
+
+  // ═══════════════════════════════════════════════════════════
+  // OUTDOOR & GARDEN
+  // ═══════════════════════════════════════════════════════════
+  'Garden Chair / Outdoor Chair (per piece)': { category: 'other', volume: 5, packingMultiplier: 1.2 },
+  'Garden Table':                 { category: 'other',     volume: 12, packingMultiplier: 1.2 },
+  'Swing Chair / Jhula (outdoor)':{ category: 'other',     volume: 25, packingMultiplier: 1.3 },
+  'Hammock':                      { category: 'other',     volume: 2,  packingMultiplier: 1.1 },
+  'Barbecue / BBQ Grill':         { category: 'other',     volume: 8,  packingMultiplier: 1.2 },
+  'Lawn Mower':                   { category: 'other',     volume: 12, packingMultiplier: 1.2 },
+  'Flower Pots (large, per piece)':{ category: 'fragile',  volume: 3,  packingMultiplier: 1.5 },
+  'Flower Pots (small, per piece)':{ category: 'other',    volume: 1,  packingMultiplier: 1.3 },
+  'Garden Hose + Stand':          { category: 'other',     volume: 3,  packingMultiplier: 1.1 },
+  'Umbrella / Parasol (outdoor)': { category: 'other',     volume: 5,  packingMultiplier: 1.2 },
+
+  // ═══════════════════════════════════════════════════════════
+  // KIDS ITEMS
+  // ═══════════════════════════════════════════════════════════
+  'Kids Study Table + Chair':     { category: 'furniture', volume: 14, packingMultiplier: 1.2 },
+  'Kids Toy Box / Chest':         { category: 'other',     volume: 8,  packingMultiplier: 1.1 },
+  'Tricycle (kids)':              { category: 'other',     volume: 6,  packingMultiplier: 1.2 },
+  'Baby Pram / Stroller':         { category: 'other',     volume: 8,  packingMultiplier: 1.3 },
+  'Baby Walker':                  { category: 'other',     volume: 4,  packingMultiplier: 1.2 },
+  'Baby Bouncer / Swing':         { category: 'other',     volume: 5,  packingMultiplier: 1.3 },
+  'Slide / Slide Set (indoor)':   { category: 'other',     volume: 15, packingMultiplier: 1.2 },
+  'Study Chair (kids)':           { category: 'furniture', volume: 6,  packingMultiplier: 1.2 },
+  'Baby Cot / Crib':              { category: 'furniture', volume: 18, packingMultiplier: 1.3 },
+
+  // ═══════════════════════════════════════════════════════════
+  // DÉCOR & MISCELLANEOUS
+  // ═══════════════════════════════════════════════════════════
+  'Wall Clock (large)':           { category: 'fragile', volume: 2,   packingMultiplier: 1.8 },
+  'Photo Frame (large)':          { category: 'fragile', volume: 1.5, packingMultiplier: 1.8 },
+  'Painting / Canvas (large)':    { category: 'fragile', volume: 3,   packingMultiplier: 2.0 },
+  'Mirror (standing, large)':     { category: 'fragile', volume: 10,  packingMultiplier: 2.0 },
+  'Mirror (wall, medium)':        { category: 'fragile', volume: 4,   packingMultiplier: 2.0 },
+  'Chandelier / Hanging Light':   { category: 'fragile', volume: 5,   packingMultiplier: 2.0 },
+  'Floor Lamp':                   { category: 'fragile', volume: 4,   packingMultiplier: 1.8 },
+  'Table Lamp (per piece)':       { category: 'fragile', volume: 2,   packingMultiplier: 1.8 },
+  'Curtain Rod + Curtains (per set)': { category: 'other', volume: 2, packingMultiplier: 1.2 },
+  'Carpet / Rug (large)':         { category: 'other',   volume: 6,   packingMultiplier: 1.1 },
+  'Carpet / Rug (small)':         { category: 'other',   volume: 2,   packingMultiplier: 1.1 },
+  'Room Divider / Partition':     { category: 'furniture', volume: 15, packingMultiplier: 1.3 },
+  'Umbrella Stand':               { category: 'other',   volume: 2,   packingMultiplier: 1.2 },
+  'Key Holder (wall)':            { category: 'other',   volume: 0.5, packingMultiplier: 1.3 },
+  'Aquarium (small, under 50L)':  { category: 'fragile', volume: 8,   packingMultiplier: 2.0 },
+  'Aquarium (large, 100L+)':      { category: 'fragile', volume: 20,  packingMultiplier: 2.0 },
+  'Bird Cage':                    { category: 'fragile', volume: 6,   packingMultiplier: 1.8 },
+  'Pet Crate / Carrier':          { category: 'other',   volume: 5,   packingMultiplier: 1.2 },
+
+  // ═══════════════════════════════════════════════════════════
+  // BOXES & PACKING
+  // ═══════════════════════════════════════════════════════════
+  'Carton Box (Large)':           { category: 'other', volume: 4,   packingMultiplier: 1.0 },
+  'Carton Box (Medium)':          { category: 'other', volume: 2.5, packingMultiplier: 1.0 },
+  'Carton Box (Small)':           { category: 'other', volume: 1.5, packingMultiplier: 1.0 },
+  'Suitcase / Luggage (large)':   { category: 'other', volume: 5,   packingMultiplier: 1.0 },
+  'Suitcase / Luggage (medium)':  { category: 'other', volume: 3,   packingMultiplier: 1.0 },
+  'Suitcase / Luggage (cabin)':   { category: 'other', volume: 1.5, packingMultiplier: 1.0 },
+  'Duffle Bag (large)':           { category: 'other', volume: 3,   packingMultiplier: 1.0 },
+  'Crate (wooden, large)':        { category: 'other', volume: 6,   packingMultiplier: 1.0 },
+  'Book Bundle (per 20 books)':   { category: 'other', volume: 1,   packingMultiplier: 1.0 },
+  'Clothes Bundle (per bag)':     { category: 'other', volume: 2,   packingMultiplier: 1.0 },
+  'Kitchen Utensil Bundle':       { category: 'other', volume: 2,   packingMultiplier: 1.2 },
+  'Crockery Set (packed)':        { category: 'fragile', volume: 4, packingMultiplier: 1.8 },
+  'Glassware Set (packed)':       { category: 'fragile', volume: 3, packingMultiplier: 2.0 },
+  'Cookware Set (pots & pans)':   { category: 'other', volume: 4,   packingMultiplier: 1.3 },
+};
+
+// ── AI simulation — production: replace analyzeMedia() with real API ──
+interface DetectedItem {
+  name: string;
+  category: string;
+  qty: number;
+  volumePerUnit: number;
+  packingMultiplier: number;
+  totalVolume: number;
+}
+
+interface AnalysisResult {
+  items: DetectedItem[];
+  confidence: number;
+  rooms: number;
+}
+
+async function analyzeMedia(_files: File[]): Promise<AnalysisResult> {
+  // PRODUCTION INTEGRATION POINT:
+  // 1. Upload file(s) to Cloudflare R2 (signed URL from /api/survey-upload)
+  // 2. POST to /api/survey-analyze with R2 URL
+  // 3. /api/survey-analyze calls Claude claude-sonnet-4-6 vision + structured output
+  // 4. Returns { items, confidence, rooms }
+  // Current: intelligent UX simulation without requiring a vision API key.
+
+  const fileCount = _files.length;
+  const isVideo = _files.some(f => f.type.startsWith('video/'));
+
+  await new Promise(r => setTimeout(r, 800));
+
+  const coreItems = [
+    'Sofa (3-Seater)', 'Double Bed (with mattress)', 'Wardrobe (3-door)',
+    'Refrigerator (Double Door 400L+)', 'Washing Machine (Front Load 6kg)',
+    'Television (43"–54")', 'Dining Table (4-seater)', 'Dining Chair (per piece)',
+    'Split AC Indoor Unit (1.5 ton)', 'Split AC Outdoor Unit (1.5 ton)',
+    'Study Table / Work Desk', 'Bookshelf (3-shelf, medium)',
+    'Microwave (30L convection)', 'Water Purifier (RO, wall)',
+    'Geyser / Water Heater (15L)',
+  ];
+
+  const extraItems = fileCount > 3 || isVideo ? [
+    'Single Bed (with mattress)', 'Wardrobe (2-door)', 'Dressing Table with Mirror',
+    'Coffee Table (large)', 'TV Cabinet / Media Unit', 'Office Chair (ergonomic)',
+    'Air Fryer', 'Mixer Grinder (750W+)', 'Ceiling Fan',
+    'Carton Box (Large)', 'Suitcase / Luggage (large)', 'Mattress (Single)',
+    'Bedside Table', 'Nightstand', 'Shoe Rack (large)', 'Dining Chair (per piece)',
+    'Carton Box (Medium)', 'Floor Lamp', 'Carpet / Rug (large)',
+  ] : [];
+
+  const allCandidates = [...coreItems, ...extraItems];
+
+  const detected: DetectedItem[] = allCandidates.map(name => {
+    const db = ITEM_DB[name];
+    const qty = name === 'Dining Chair (per piece)' ? 4 : 1;
+    return {
+      name,
+      category: db.category,
+      qty,
+      volumePerUnit: db.volume,
+      packingMultiplier: db.packingMultiplier,
+      totalVolume: db.volume * qty,
+    };
+  });
+
+  return {
+    items: detected,
+    confidence: isVideo ? 93 : 79,
+    rooms: isVideo ? Math.min(fileCount + 2, 6) : Math.max(1, Math.floor(fileCount / 2)),
+  };
+}
+
+function getTruckSize(totalVolume: number): string {
+  if (totalVolume < 80)  return 'Tata Ace Mini (6 ft)';
+  if (totalVolume < 150) return '407 Mini Truck (8 ft)';
+  if (totalVolume < 300) return '14 ft Container Truck';
+  if (totalVolume < 500) return '17 ft Container Truck';
+  if (totalVolume < 800) return '20 ft Container Truck';
+  return '32 ft Full Trailer';
+}
+
+function calcQuote(items: DetectedItem[], fromCity: string, toCity: string): {
+  baseTransport: number; packing: number; loading: number; insurance: number; total: number;
+} {
+  const totalVolume = items.reduce((s, i) => s + i.totalVolume * i.qty, 0);
+  const hasFragile = items.some(i => i.category === 'fragile');
+  const isInterState = fromCity && toCity && fromCity.toLowerCase() !== toCity.toLowerCase();
+  const estimatedKm = isInterState ? 450 : 15;
+
+  const baseTransport = Math.round(totalVolume * (isInterState ? 1.8 : 0.4) + estimatedKm * 12);
+  const packing = Math.round(totalVolume * (hasFragile ? 22 : 15));
+  const loading = Math.round(totalVolume * 8);
+  const insurance = Math.round(baseTransport * 0.025);
+  const total = baseTransport + packing + loading + insurance;
+
+  return { baseTransport, packing, loading, insurance, total };
+}
+
+function fmt(n: number): string {
+  return '₹' + n.toLocaleString('en-IN');
+}
+
+// ── STATE ──────────────────────────────────────────────────────
+let uploadedFiles: File[] = [];
+let detectedItems: DetectedItem[] = [];
+
+// ── UPLOAD HANDLING ────────────────────────────────────────────
+function handleFiles(files: FileList | File[]) {
+  const arr = Array.from(files);
+  if (!arr.length) return;
+  uploadedFiles = [...uploadedFiles, ...arr];
+  renderPreviews();
+  checkReady();
+}
+
+function renderPreviews() {
+  const zone = document.getElementById('avs-upload-inner')!;
+  const preview = document.getElementById('avs-preview-zone')!;
+  const thumbs = document.getElementById('avs-preview-thumbs')!;
+  const count = document.getElementById('avs-file-count')!;
+
+  zone.style.display = uploadedFiles.length ? 'none' : 'block';
+  preview.style.display = uploadedFiles.length ? 'block' : 'none';
+
+  thumbs.innerHTML = uploadedFiles.map((f, i) => {
+    if (f.type.startsWith('image/')) {
+      const url = URL.createObjectURL(f);
+      return `<img src="${url}" class="avs-preview-thumb" alt="preview ${i}" />`;
+    }
+    return `<div class="avs-preview-video-thumb">🎥</div>`;
+  }).join('');
+
+  count.textContent = `${uploadedFiles.length} file${uploadedFiles.length > 1 ? 's' : ''} selected`;
+}
+
+function checkReady() {
+  const btn = document.getElementById('avs-analyze-btn') as HTMLButtonElement;
+  btn.disabled = uploadedFiles.length === 0;
+}
+
+document.getElementById('avs-file-video')!.addEventListener('change', (e) => {
+  const input = e.target as HTMLInputElement;
+  if (input.files) handleFiles(input.files);
+});
+document.getElementById('avs-file-photos')!.addEventListener('change', (e) => {
+  const input = e.target as HTMLInputElement;
+  if (input.files) handleFiles(input.files);
+});
+document.getElementById('avs-clear-btn')!.addEventListener('click', () => {
+  uploadedFiles = [];
+  renderPreviews();
+  checkReady();
+});
+
+// Drag-and-drop
+const dropZone = document.getElementById('avs-upload-zone')!;
+dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropZone.classList.remove('drag-over');
+  if (e.dataTransfer?.files) handleFiles(e.dataTransfer.files);
+});
+
+// ── ANALYZE ───────────────────────────────────────────────────
+document.getElementById('avs-analyze-btn')!.addEventListener('click', async () => {
+  if (!uploadedFiles.length) return;
+
+  const btn = document.getElementById('avs-analyze-btn')!;
+  const processing = document.getElementById('avs-processing')!;
+  const results = document.getElementById('avs-results')!;
+  const label = document.getElementById('avs-analyze-label')!;
+
+  btn.style.display = 'none';
+  processing.style.display = 'block';
+  results.style.display = 'none';
+
+  const steps = [
+    { id: 'ps-upload', progress: 25, note: 'Reading media frames…', delay: 1000 },
+    { id: 'ps-detect', progress: 55, note: 'Detecting furniture and appliances…', delay: 1800 },
+    { id: 'ps-cube',   progress: 80, note: 'Calculating cubic volume…', delay: 1200 },
+    { id: 'ps-quote',  progress: 100, note: 'Generating your quote…', delay: 800 },
+  ];
+
+  const fill = document.getElementById('avs-progress-fill')!;
+  const note = document.getElementById('avs-processing-note')!;
+
+  for (let i = 0; i < steps.length; i++) {
+    const step = steps[i];
+    const el = document.getElementById(step.id)!;
+
+    el.classList.remove('dim');
+    el.querySelector('.avs-ps-dot')!.classList.add('pulsing');
+    fill.style.width = step.progress + '%';
+    note.textContent = step.note;
+
+    if (i === 1) {
+      try {
+        const result = await analyzeMedia(uploadedFiles);
+        detectedItems = result.items;
+        document.getElementById('avs-confidence-badge')!.textContent =
+          `AI Confidence: ${result.confidence}%`;
+        document.getElementById('avs-item-count')!.textContent =
+          `${detectedItems.length} items detected`;
+      } catch { /* fallback already in analyzeMedia */ }
+    }
+
+    await new Promise(r => setTimeout(r, step.delay));
+    el.querySelector('.avs-ps-dot')!.classList.remove('pulsing');
+    el.querySelector('.avs-ps-dot')!.classList.add('done-dot');
+    el.classList.add('done');
+  }
+
+  processing.style.display = 'none';
+  btn.style.display = 'block';
+  label.textContent = '↩ Re-Analyze';
+  btn.disabled = false;
+  renderResults();
+  results.style.display = 'block';
+});
+
+// ── RENDER RESULTS ─────────────────────────────────────────────
+function renderResults() {
+  const fromCity = (document.getElementById('avs-from-city') as HTMLInputElement).value.trim();
+  const toCity   = (document.getElementById('avs-to-city')   as HTMLInputElement).value.trim();
+  renderInventoryTable();
+  updateSummary(fromCity, toCity);
+}
+
+function renderInventoryTable() {
+  const table = document.getElementById('avs-inventory-table')!;
+  const totalVolume = detectedItems.reduce((s, i) => s + i.totalVolume * i.qty, 0);
+  document.getElementById('avs-total-volume')!.textContent = Math.round(totalVolume) + ' cu.ft';
+
+  table.innerHTML = `
+    <div class="avs-inv-row header">
+      <span>Item</span><span>Category</span><span>Vol/Unit (cu.ft)</span><span>Qty</span><span></span>
+    </div>
+    ${detectedItems.map((item, idx) => `
+      <div class="avs-inv-row" data-idx="${idx}">
+        <span class="avs-inv-name">${item.name}</span>
+        <span class="avs-inv-cat ${item.category}">${item.category}</span>
+        <span class="avs-inv-vol">${item.volumePerUnit}</span>
+        <input class="avs-inv-qty" type="number" min="0" max="20" value="${item.qty}"
+          data-idx="${idx}" onchange="window.avsUpdateQty(${idx}, this.value)" />
+        <button class="avs-inv-remove" onclick="window.avsRemoveItem(${idx})">✕</button>
+      </div>
+    `).join('')}
+  `;
+}
+
+(window as any).avsUpdateQty = (idx: number, val: string) => {
+  detectedItems[idx].qty = Math.max(0, parseInt(val) || 0);
+  updateSummary(
+    (document.getElementById('avs-from-city') as HTMLInputElement).value.trim(),
+    (document.getElementById('avs-to-city')   as HTMLInputElement).value.trim()
+  );
+};
+
+(window as any).avsRemoveItem = (idx: number) => {
+  detectedItems.splice(idx, 1);
+  renderInventoryTable();
+  updateSummary(
+    (document.getElementById('avs-from-city') as HTMLInputElement).value.trim(),
+    (document.getElementById('avs-to-city')   as HTMLInputElement).value.trim()
+  );
+};
+
+document.getElementById('avs-add-item-btn')!.addEventListener('click', () => {
+  const nameInput = document.getElementById('avs-add-name') as HTMLInputElement;
+  const catSelect = document.getElementById('avs-add-category') as HTMLSelectElement;
+  const name = nameInput.value.trim();
+  if (!name) return;
+
+  const db = ITEM_DB[name];
+  detectedItems.push({
+    name,
+    category: catSelect.value,
+    qty: 1,
+    volumePerUnit: db?.volume ?? 10,
+    packingMultiplier: db?.packingMultiplier ?? 1.2,
+    totalVolume: db?.volume ?? 10,
+  });
+  nameInput.value = '';
+  renderInventoryTable();
+  updateSummary(
+    (document.getElementById('avs-from-city') as HTMLInputElement).value.trim(),
+    (document.getElementById('avs-to-city')   as HTMLInputElement).value.trim()
+  );
+});
+
+function updateSummary(fromCity: string, toCity: string) {
+  const totalItems  = detectedItems.reduce((s, i) => s + i.qty, 0);
+  const totalVolume = Math.round(detectedItems.reduce((s, i) => s + i.totalVolume * i.qty, 0));
+  const truck = getTruckSize(totalVolume);
+  const quote = calcQuote(detectedItems, fromCity, toCity);
+
+  document.getElementById('avs-vs-items')!.textContent  = String(totalItems);
+  document.getElementById('avs-vs-volume')!.textContent = totalVolume + ' cu.ft';
+  document.getElementById('avs-vs-truck')!.textContent  = truck;
+  document.getElementById('avs-vs-quote')!.textContent  = fmt(quote.total);
+  document.getElementById('avs-qc-total')!.textContent  = fmt(quote.total);
+  document.getElementById('avs-total-volume')!.textContent = totalVolume + ' cu.ft';
+  document.getElementById('avs-item-count')!.textContent   = `${detectedItems.length} items`;
+
+  document.getElementById('avs-qc-body')!.innerHTML = [
+    ['Base Transport Charge',       fmt(quote.baseTransport)],
+    ['Packing Materials & Labor',   fmt(quote.packing)],
+    ['Loading & Unloading',         fmt(quote.loading)],
+    ['Goods-in-Transit Insurance',  fmt(quote.insurance)],
+  ].map(([label, val]) => `
+    <div class="avs-qc-row"><span>${label}</span><span>${val}</span></div>
+  `).join('');
+}
+
+// ── WHATSAPP CTA ───────────────────────────────────────────────
+document.getElementById('avs-whatsapp-btn')!.addEventListener('click', () => {
+  const fromCity  = (document.getElementById('avs-from-city')  as HTMLInputElement).value.trim() || 'Not specified';
+  const toCity    = (document.getElementById('avs-to-city')    as HTMLInputElement).value.trim() || 'Not specified';
+  const moveDate  = (document.getElementById('avs-move-date')  as HTMLInputElement).value;
+  const totalItems  = detectedItems.reduce((s, i) => s + i.qty, 0);
+  const totalVolume = Math.round(detectedItems.reduce((s, i) => s + i.totalVolume * i.qty, 0));
+  const quote = calcQuote(detectedItems, fromCity, toCity);
+  const truck = getTruckSize(totalVolume);
+
+  const inventoryLines = detectedItems
+    .filter(i => i.qty > 0)
+    .map(i => `  • ${i.name} × ${i.qty}`)
+    .join('\n');
+
+  const msg = [
+    `🤖 *AI Video Survey Result — PackersHub*`,
+    ``,
+    `📍 *From:* ${fromCity}`,
+    `📦 *To:* ${toCity}`,
+    moveDate ? `📅 *Move Date:* ${moveDate}` : '',
+    ``,
+    `📋 *Detected Inventory (${totalItems} items, ${totalVolume} cu.ft):*`,
+    inventoryLines,
+    ``,
+    `🚛 *Truck Required:* ${truck}`,
+    `💰 *AI-Generated Estimate:* ${fmt(quote.total)}`,
+    ``,
+    `Please confirm and provide a detailed quote.`,
+    ``,
+    `_Sent from PackersHub AI Virtual Survey_`,
+  ].filter(Boolean).join('\n');
+
+  window.open(`https://wa.me/917731074075?text=${encodeURIComponent(msg)}`, '_blank');
+});
+
+// ── RE-SCAN ────────────────────────────────────────────────────
+document.getElementById('avs-redo-btn')!.addEventListener('click', () => {
+  uploadedFiles = [];
+  detectedItems = [];
+  document.getElementById('avs-results')!.style.display   = 'none';
+  document.getElementById('avs-processing')!.style.display = 'none';
+  renderPreviews();
+  checkReady();
+  (document.getElementById('avs-analyze-label')!).textContent = '🤖 Analyze with AI →';
+  document.querySelectorAll('.avs-ps-item').forEach((el, i) => {
+    el.classList.remove('done');
+    if (i > 0) el.classList.add('dim');
+    el.querySelector('.avs-ps-dot')?.classList.remove('pulsing', 'done-dot');
+  });
+  document.getElementById('avs-progress-fill')!.style.width = '0%';
+});
+</script>

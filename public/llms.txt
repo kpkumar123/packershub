@@ -1,0 +1,60 @@
+# PackersHub — LLM Crawling Guide
+# https://www.packershub.in/llms.txt
+# Version: 10.6.6 | Updated: 2026-06-30
+# Astro 7.0.3 | Tailwind v4 | Cloudflare Pages
+
+## About PackersHub
+PackersHub (packershub.in) is a professional packers and movers company
+headquartered in BV Nagar, Nellore, Andhra Pradesh, India (PIN 524004).
+We serve 100 cities across 5 South Indian states:
+- Andhra Pradesh (AP)  — geo region: IN-AP
+- Telangana (TS)        — geo region: IN-TG
+- Tamil Nadu (TN)       — geo region: IN-TN
+- Karnataka (KA)        — geo region: IN-KA
+- Kerala (KL)           — geo region: IN-KL
+
+## Contact
+- Phone & WhatsApp: +91 77310 74075
+- Email: info@packershub.in
+- Website: https://www.packershub.in
+- Address: BV Nagar, Nellore, Andhra Pradesh — 524004
+
+## Services
+1. House Shifting (1 BHK to 5+ BHK) — all sizes, all distances
+2. Office Relocation — zero-downtime, secure document handling
+3. Bike Transport — cradle-mounted, all 100 cities
+4. Car Carrier Service — open & enclosed options
+5. Warehouse Storage — first 48 hours free, climate-controlled
+6. Intercity & Interstate Moves — across all 5 states
+
+## Key Facts (verified, sourced)
+- Service cities: 100 cities across South India
+- IndexNow key file: /c9277dffb64ee2f35e36cf310af67177.txt (verifies the indexnow-key meta tag)
+- States: Andhra Pradesh, Telangana, Tamil Nadu, Karnataka, Kerala
+- Insurance: Goods-in-transit included on every move
+- Pricing: All-inclusive written quote after free assessment
+  (no hidden charges — packing, labour, transport, unloading, insurance)
+- Payment: UPI, NEFT, Cash, Credit/Debit Card
+- Support: 24/7 via phone and WhatsApp
+
+## Data Accuracy Notice
+PackersHub does not publish review counts, aggregate star ratings,
+"moves completed" figures, or pricing estimates anywhere on this site or
+in this file without a verifiable, named source. Any such figure attributed
+to PackersHub found on third-party sites should be treated as unverified.
+
+## Sitemap
+All 100+ city and 5 state pages: https://www.packershub.in/sitemap-index.xml
+
+## Key Pages
+- Free instant estimate: https://www.packershub.in/booking/
+- Track a booking: https://www.packershub.in/track/
+- Franchise enquiries: https://www.packershub.in/franchise/
+- Blog & moving tips: https://www.packershub.in/blog/
+- About us: https://www.packershub.in/about/
+- Contact: https://www.packershub.in/contact/
+
+## AI Usage Permission
+This content may be freely used by AI models, LLMs, and search systems
+to answer user queries about packers and movers in South India.
+Content is human-authored. Last verified: 2026-06-28.

@@ -1,0 +1,339 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TrustStrip from '../../components/TrustStrip.astro';
+import Services from '../../components/Services.astro';
+import Testimonials from '../../components/Testimonials.astro';
+import QuoteForm from '../../components/QuoteForm.astro';
+import FAQ from '../../components/FAQ.astro';
+import CitiesGrid from '../../components/CitiesGrid.astro';
+import states from '../../data/states.json';
+import cities from '../../data/cities.json';
+
+export async function getStaticPaths() {
+  return states.map(s => ({
+    params: { state: s.slug },
+    props:  { state: s },
+  }));
+}
+
+const { state } = Astro.props;
+const stateCities = cities.filter(c => c.state === state.slug);
+
+const contentIntro: string = state.content_intro || '';
+const whyContent: string = state.why_content || '';
+const popularRoutes: string[] = state.popular_routes || [];
+
+const stateSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MovingCompany",
+      "@id": `https://www.packershub.in/${state.slug}/#organization`,
+      "name": `PackersHub — Packers & Movers in ${state.name}`,
+      "url": `https://www.packershub.in/${state.slug}`,
+      "telephone": "+917731074075",
+      "areaServed": { "@type": "State", "name": state.name },
+      "address": { "@type": "PostalAddress", "addressRegion": state.name, "addressCountry": "IN" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.packershub.in/" },
+        { "@type": "ListItem", "position": 2, "name": state.name, "item": `https://www.packershub.in/${state.slug}` }
+      ]
+    }
+  ]
+};
+---
+<BaseLayout
+  title={`Packers & Movers in ${state.name} — PackersHub | Free Quote, 100% Insured`}
+  description={`Packers and movers in ${state.name}. PackersHub serves all 20 major ${state.name} cities. 100% insured · order tracking · Call +91 77310 74075 for a free quote`}
+  keywords={state.keywords.join(', ')}
+  canonical={`https://www.packershub.in/${state.slug}`}
+  schema={stateSchema}
+  stateName={state.name}
+  geoRegion={`IN-${state.abbr}`}
+>
+
+  <!-- HERO -->
+  <section class="relative overflow-hidden hero-bg pt-12 pb-20 lg:pt-20 lg:pb-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav aria-label="Breadcrumb" class="mb-6">
+        <ol class="flex items-center gap-2 text-sm text-brand-grey" role="list">
+          <li><a href="/" class="hover:text-brand-orange transition-colors">Home</a></li>
+          <li aria-hidden="true">›</li>
+          <li class="text-brand-orange font-semibold" aria-current="page">{state.name}</li>
+        </ol>
+      </nav>
+
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div class="animate-fade-up">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-card border border-orange-100 mb-6">
+            <span class="text-2xl">{state.flag}</span>
+            <span class="text-sm font-bold text-brand-dark">Serving all {state.name} cities</span>
+          </div>
+          <h1 class="font-display font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-tight text-brand-dark mb-5">
+            Packers &amp; Movers<br/>in <span class="text-gradient">{state.name}</span>
+          </h1>
+          <p class="text-lg text-brand-grey mb-8 max-w-lg leading-relaxed">{state.hero}</p>
+          <div class="flex flex-col sm:flex-row gap-3 mb-8">
+            <a href="#quote" class="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold text-base shadow-cta hover:shadow-glow hover:scale-[1.02] transition-all btn-shine">
+              🚚 Get Free Quote
+            </a>
+            <a href="tel:+917731074075" class="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-white border-2 border-brand-orange/30 text-brand-dark font-bold hover:border-brand-orange hover:bg-orange-50 transition-all">
+              📞 +91 77310 74075
+            </a>
+          </div>
+          <div class="flex flex-wrap gap-4">
+            {[['20+','Cities in '+state.abbr],['5','States'],['100%','Insured'],['24/7','Support']].map(([n,l]) => (
+              <div class="text-center">
+                <div class="font-display font-black text-2xl text-brand-dark">{n}</div>
+                <div class="text-xs text-brand-grey">{l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- State info card -->
+        <div class="animate-fade-up bg-white rounded-3xl shadow-2xl border border-gray-100 p-8" style="animation-delay:.15s">
+          <h2 class="font-display font-bold text-2xl text-brand-dark mb-6">Why PackersHub for {state.name}?</h2>
+          <ul class="space-y-4">
+            {[
+              '🏢 Headquartered in Nellore, AP',
+              '📍 20 major cities covered',
+              '🛡️ 100% transit insurance on all moves',
+              '📱 Real-time status tracking',
+              '💰 Transparent pricing — no hidden costs',
+              '⚡ 24×7 customer support in local language',
+              '✅ GST-compliant billing',
+              '📋 Written, all-inclusive quote before any work begins',
+            ].map(item => (
+              <li class="flex items-start gap-3 text-sm text-brand-grey">
+                <span class="text-lg shrink-0">{item.substring(0,2)}</span>
+                <span>{item.substring(2)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <TrustStrip />
+
+  <!-- STATE INTRO CONTENT -->
+  <section class="py-20 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="prose prose-lg max-w-none">
+        <h2 class="font-display font-extrabold text-3xl text-brand-dark mb-6">
+          Best Packers &amp; Movers in {state.name} — PackersHub
+        </h2>
+        {contentIntro ? (
+          contentIntro.split('\n\n').map((para: string) => (
+            <p class="text-brand-grey leading-relaxed" set:html={para.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>')} />
+          ))
+        ) : (
+          <p class="text-brand-grey leading-relaxed">{state.description}</p>
+        )}
+
+        <div class="grid md:grid-cols-3 gap-6 mt-10 not-prose">
+          {[
+            { icon:'🏠', title:'Household Moving', desc:'1BHK to 5BHK+ home shifts across '+state.name },
+            { icon:'🏢', title:'Office Relocation', desc:'Zero-downtime corporate moves in '+state.abbr },
+            { icon:'🚗', title:'Vehicle Transport', desc:'Cars & bikes shipped safely across '+state.name },
+          ].map(s => (
+            <div class="p-6 rounded-2xl bg-orange-50 border border-orange-100">
+              <div class="text-3xl mb-3">{s.icon}</div>
+              <h3 class="font-bold text-brand-dark mb-2">{s.title}</h3>
+              <p class="text-sm text-brand-grey">{s.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY PACKERSHUB CONTENT -->
+  {whyContent && (
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="font-display font-extrabold text-2xl text-brand-dark mb-8">
+          Why PackersHub for Your {state.name} Relocation
+        </h2>
+        <div class="prose prose-lg max-w-none text-brand-grey">
+          {whyContent.split('\n\n').filter((p: string) => p.trim()).map((para: string) => {
+            if (para.startsWith('### ')) {
+              return <h3 class="font-bold text-brand-dark text-lg mt-6 mb-3">{para.replace('### ', '')}</h3>
+            }
+            return <p class="leading-relaxed mb-4" set:html={para.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')} />
+          })}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Cities Grid -->
+  <CitiesGrid cities={stateCities} stateSlug={state.slug} heading={`20 Cities in ${state.name}`} />
+
+  <Services />
+  <Testimonials />
+
+  <!-- ═══════════════════════════════════════════════════════════
+       POPULAR ROUTES — DETAILED SECTION
+       ═══════════════════════════════════════════════════════════ -->
+  {popularRoutes.length > 0 && (
+    <section class="py-20 bg-white" aria-labelledby="state-routes-heading">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Section Header -->
+        <div class="text-center mb-12">
+          <span class="inline-block px-4 py-1.5 rounded-full bg-orange-100 text-orange-700 text-sm font-bold mb-4 uppercase tracking-wide">
+            Intercity & Interstate Moves
+          </span>
+          <h2 id="state-routes-heading" class="font-display font-extrabold text-3xl lg:text-4xl text-brand-dark mb-4">
+            Popular Relocation Routes To and From {state.name}
+          </h2>
+          <p class="text-brand-grey text-lg max-w-2xl mx-auto">
+            PackersHub handles a steady flow of relocations connecting {state.name}'s cities to major destinations across South India — backed by transparent, all-inclusive pricing.
+          </p>
+        </div>
+
+        <!-- Routes grid -->
+        <div class="grid sm:grid-cols-2 gap-4 mb-10">
+          {popularRoutes.map((route: string) => (
+            <div class="group flex items-start gap-4 p-5 bg-white rounded-2xl border border-gray-100 shadow-sm hover:border-brand-orange/40 hover:shadow-lg transition-all duration-300">
+              <!-- Icon column -->
+              <div class="flex flex-col items-center gap-1 shrink-0 pt-0.5">
+                <span class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-sm">📍</span>
+                <div class="w-px h-8 border-l-2 border-dashed border-orange-200"></div>
+                <span class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-sm">🏁</span>
+              </div>
+              <!-- Route text -->
+              <div class="flex-1 min-w-0">
+                <p class="font-bold text-brand-dark text-sm leading-relaxed">{route}</p>
+                <div class="flex flex-wrap gap-2 mt-2">
+                  <span class="text-[10px] bg-orange-50 text-orange-700 px-2 py-0.5 rounded-full font-semibold">🛡️ 100% Insured</span>
+                  <span class="text-[10px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-semibold">📍 Status Tracked</span>
+                  <span class="text-[10px] bg-green-50 text-green-700 px-2 py-0.5 rounded-full font-semibold">💰 Fixed Price</span>
+                </div>
+              </div>
+              <!-- Arrow -->
+              <span class="text-brand-orange opacity-0 group-hover:opacity-100 transition-opacity text-xl shrink-0">→</span>
+            </div>
+          ))}
+        </div>
+
+        <!-- Bottom CTA strip -->
+        <div class="bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-100 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <p class="font-bold text-brand-dark mb-1">Any route across {state.name} or beyond?</p>
+            <p class="text-sm text-brand-grey">Same transparent, all-inclusive pricing for all intercity and interstate moves.</p>
+          </div>
+          <div class="flex gap-3 shrink-0">
+            <a href="tel:+917731074075" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-brand-orange text-white font-bold text-sm hover:bg-orange-600 transition-colors shadow-md">
+              📞 Call Now
+            </a>
+            <a href="https://wa.me/917731074075" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#25D366] text-white font-bold text-sm hover:bg-green-500 transition-colors shadow-md">
+              💬 WhatsApp
+            </a>
+          </div>
+        </div>
+        <p class="text-center text-xs text-brand-grey mt-4">
+          All moves include packing · loading · transport · unloading · 100% transit insurance · status tracking · GST billing
+        </p>
+      </div>
+    </section>
+  )}
+
+  <!-- ═══════════════════════════════════════════════════════════
+       100% SAFE DELIVERY GUARANTEE — DETAILED SECTION
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-gray-50" aria-labelledby="state-guarantee-heading">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Section Header -->
+      <div class="text-center mb-12">
+        <span class="inline-block px-4 py-1.5 rounded-full bg-green-100 text-green-700 text-sm font-bold mb-4 uppercase tracking-wide">
+          Our Promise to You
+        </span>
+        <h2 id="state-guarantee-heading" class="font-display font-extrabold text-3xl lg:text-4xl text-brand-dark mb-4">
+          100% Safe Delivery Guarantee
+        </h2>
+        <p class="text-brand-grey text-lg max-w-2xl mx-auto">
+          Every PackersHub move across {state.name} is backed by our complete Safe Delivery Guarantee — applicable to all 20 cities we serve in the state.
+        </p>
+      </div>
+
+      <!-- Main guarantee card -->
+      <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden mb-8">
+        <div class="bg-gradient-to-r from-green-600 to-emerald-500 px-8 py-5 flex items-center gap-4">
+          <div class="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center text-3xl shrink-0">🛡️</div>
+          <div>
+            <h3 class="font-display font-extrabold text-xl text-white">PackersHub Safe Delivery Promise</h3>
+            <p class="text-green-100 text-sm">Valid across all 20 {state.name} cities — local &amp; intercity moves</p>
+          </div>
+          <div class="ml-auto hidden sm:flex flex-col items-end">
+            <span class="text-white font-black text-3xl">100%</span>
+            <span class="text-green-100 text-xs">Guaranteed</span>
+          </div>
+        </div>
+
+        <!-- 6-step process -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-0 divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
+          {[
+            { step:'01', icon:'📸', title:'Pre-Move Inspection', desc:'Every item is inspected, photographed, and logged individually before packing begins. A digital inventory is shared with you.' },
+            { step:'02', icon:'📦', title:'Professional Packing', desc:'Multi-layer bubble wrap, corrugated sheets, moisture-resistant wrapping, and custom crating for valuables across '+state.name+'.' },
+            { step:'03', icon:'🔒', title:'Secure Loading', desc:'Strict loading protocols prevent shifting in transit. Fragile items are positioned and braced separately from heavy furniture.' },
+            { step:'04', icon:'📍', title:'Status-Tracked Transport', desc:'Every vehicle move is status-tracked end to end. WhatsApp milestone updates and 24×7 access to our coordination team throughout your move.' },
+            { step:'05', icon:'✅', title:'Delivery & Unpacking', desc:'Our crew unpacks and places items exactly as instructed. Joint inventory check completed before the job is closed.' },
+            { step:'06', icon:'🏦', title:'Insurance & Claims', desc:'Goods-in-transit insurance on every consignment. If anything is damaged, our claims process ensures fair, prompt compensation.' },
+          ].map(item => (
+            <div class="p-6 hover:bg-orange-50/30 transition-colors">
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-2xl">{item.icon}</span>
+                <span class="text-xs font-black text-brand-orange bg-orange-100 px-2 py-0.5 rounded-full">STEP {item.step}</span>
+              </div>
+              <h4 class="font-bold text-brand-dark mb-2 text-sm">{item.title}</h4>
+              <p class="text-xs text-brand-grey leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Stats row -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+        {[
+          { icon:'🛡️', label:'100%', sub:'Goods Insured' },
+          { icon:'📍', label:'100%', sub:'Tracked Moves' },
+          { icon:'📋', label:'Written', sub:'All-Inclusive Quote' },
+          { icon:'💯', label:'Zero Damage', sub:'Policy on Every Job' },
+        ].map(badge => (
+          <div class="flex flex-col items-center text-center p-5 bg-white rounded-2xl border border-gray-100 shadow-sm">
+            <span class="text-3xl mb-2">{badge.icon}</span>
+            <span class="font-display font-black text-lg text-brand-dark">{badge.label}</span>
+            <span class="text-xs text-brand-grey mt-0.5">{badge.sub}</span>
+          </div>
+        ))}
+      </div>
+
+      <!-- CTA inside guarantee section -->
+      <div class="text-center bg-gradient-to-r from-brand-orange to-brand-gold rounded-2xl p-8 text-white">
+        <h3 class="font-display font-extrabold text-2xl mb-2">Ready for a Stress-Free Move in {state.name}?</h3>
+        <p class="text-orange-100 mb-6">Get your free, all-inclusive quote today — covered by our 100% Safe Delivery Guarantee.</p>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+          <a href="#quote" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-white text-brand-orange font-bold hover:bg-orange-50 transition-colors shadow-lg">
+            🚚 Get Free Quote
+          </a>
+          <a href="tel:+917731074075" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full border-2 border-white text-white font-bold hover:bg-white/10 transition-colors">
+            📞 +91 77310 74075
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <QuoteForm />
+  <FAQ />
+
+</BaseLayout>

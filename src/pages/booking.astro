@@ -1,0 +1,87 @@
+---
+// v10.6 — Booking page with BookingEngine + AI Video Survey + Razorpay payment.
+// AIVideoSurvey is rendered ONLY here via bookingOnly={true} prop.
+// RazorpayCheckout injects the payment UI that BookingEngine activates
+// after WhatsApp submission (when a trackingId is available in KV).
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookingEngine from '../components/BookingEngine.astro';
+import AIVideoSurvey from '../components/AIVideoSurvey.astro';
+import RazorpayCheckout from '../components/RazorpayCheckout.astro';
+
+// Pre-fill from URL query params if customer arrives from a city page
+const url = new URL(Astro.request.url);
+const preFromCity = url.searchParams.get('from') ?? '';
+const preToCity   = url.searchParams.get('to')   ?? '';
+---
+<BaseLayout
+  title="Book Packers & Movers Online | Instant Price Estimate — PackersHub"
+  description="Book packers and movers online with instant price comparison across 100 South Indian cities. Get transparent estimates and book via WhatsApp in minutes."
+>
+  <!-- Hero Banner -->
+  <section class="bg-gradient-to-br from-orange-50 via-white to-orange-50 min-h-[280px] flex items-center">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center w-full">
+      <div class="inline-flex items-center gap-2 bg-white border border-orange-200 rounded-full px-4 py-2 mb-6">
+        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+        <span class="text-brand-dark text-sm font-semibold">Instant Price Estimate Engine</span>
+      </div>
+      <h1 class="text-3xl md:text-5xl font-display font-extrabold text-brand-dark mb-4 leading-tight">
+        Book Your Move Online
+        <span class="block text-brand-orange">Get Instant Price Estimate</span>
+      </h1>
+      <p class="text-brand-grey text-lg max-w-2xl mx-auto">
+        See a transparent, itemised PackersHub estimate for your move across 100 cities — no hidden charges.
+      </p>
+    </div>
+  </section>
+
+  <!-- Booking Engine -->
+  <section class="bg-gray-50 py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <BookingEngine />
+      <!-- RazorpayCheckout: activated by BookingEngine JS after WhatsApp send -->
+      <RazorpayCheckout />
+    </div>
+  </section>
+
+  <!-- AI Video Survey — /booking page only -->
+  <section class="bg-gray-900 py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-8">
+        <span class="inline-block bg-purple-600/20 border border-purple-500/30 text-purple-300 text-xs font-bold uppercase tracking-widest rounded-full px-4 py-1.5 mb-4">
+          🤖 AI-Powered Alternative
+        </span>
+        <h2 class="text-2xl md:text-3xl font-display font-extrabold text-white mb-3">
+          Skip the Dropdown — Let AI Scan Your Home
+        </h2>
+        <p class="text-gray-400 max-w-xl mx-auto text-sm leading-relaxed">
+          Upload a 30-second room walkthrough video or a few photos. Our AI detects 280+ item types,
+          calculates exact cubic volume, and generates a more accurate quote than any manual form.
+        </p>
+      </div>
+      <AIVideoSurvey bookingOnly={true} fromCity={preFromCity} toCity={preToCity} />
+    </div>
+  </section>
+
+  <!-- Why Booking Online -->
+  <section class="py-16 bg-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10 reveal">
+        <h2 class="text-2xl md:text-3xl font-display font-extrabold text-brand-dark mb-3">Why Book Online with PackersHub?</h2>
+        <p class="text-brand-grey">Smarter than calling around for quotes</p>
+      </div>
+      <div class="grid sm:grid-cols-3 gap-6">
+        {[
+          { icon: '⚡', title: 'Instant Estimate', desc: 'Get a detailed, itemised price estimate in under 60 seconds — before you even speak to anyone.' },
+          { icon: '📋', title: 'Transparent Breakdown', desc: 'Every line item — transport, packing, insurance — shown clearly, with no hidden charges.' },
+          { icon: '💬', title: 'WhatsApp Confirmation', desc: 'Your booking summary goes directly to WhatsApp — our team confirms within 30 minutes.' },
+        ].map(f => (
+          <div class="reveal bg-white rounded-2xl shadow-card p-6 text-center border border-gray-100">
+            <div class="text-4xl mb-3">{f.icon}</div>
+            <h3 class="font-bold text-lg font-display mb-2 text-brand-dark">{f.title}</h3>
+            <p class="text-brand-grey text-sm leading-relaxed">{f.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,144 @@
+---
+// v9.1 — wired to /api/chat (Claude Haiku backend). Previously this was a
+// UI-only mockup with quick-reply buttons and no way to actually type a
+// question or get a real answer.
+---
+<div id="chatbot-widget" class="fixed bottom-5 right-5 z-50">
+  <!-- Toggle Button -->
+  <button
+    id="chatbot-toggle"
+    aria-label="Open PackersHub chat assistant"
+    class="w-14 h-14 rounded-full bg-gradient-to-br from-brand-orange to-brand-gold text-white grid place-items-center shadow-cta hover:scale-110 transition-transform duration-200 relative"
+  >
+    <svg id="chat-icon" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+    </svg>
+    <span class="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white animate-pulse"></span>
+  </button>
+
+  <!-- Chat Window -->
+  <div id="chatbot-window" class="hidden absolute bottom-16 right-0 w-80 bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden flex flex-col">
+    <div class="bg-gradient-to-r from-brand-orange to-brand-gold px-5 py-4 text-white">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-white/20 grid place-items-center font-bold text-sm">PH</div>
+        <div>
+          <div class="font-bold text-sm">PackersHub Assistant</div>
+          <div class="text-[11px] text-orange-100 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-green-300"></span> Online Now
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-4 space-y-3 max-h-72 overflow-y-auto" id="chat-messages">
+      <div class="flex gap-2">
+        <div class="w-7 h-7 rounded-full bg-brand-orange/10 grid place-items-center text-xs font-bold text-brand-orange shrink-0">PH</div>
+        <div class="bg-gray-50 rounded-2xl rounded-tl-none px-4 py-3 text-sm text-brand-dark max-w-[220px]">
+          Hi! 👋 I'm your PackersHub assistant. Ask me anything about your move — pricing factors, services, or cities we cover.
+        </div>
+      </div>
+    </div>
+    <div class="p-3 border-t border-gray-100">
+      <div class="grid grid-cols-2 gap-2 mb-3" id="chat-quick-replies">
+        {["Get a quote","Check prices","Our services","Contact us"].map(q => (
+          <button type="button" data-quick-reply={q}
+             class="text-xs text-center px-3 py-2 rounded-xl bg-orange-50 text-brand-orange font-medium hover:bg-orange-100 transition-colors">{q}</button>
+        ))}
+      </div>
+      <form id="chat-form" class="flex items-center gap-2 mb-2">
+        <input id="chat-input" type="text" placeholder="Type your question…" autocomplete="off"
+               class="flex-1 px-4 py-2.5 rounded-full border border-gray-200 text-sm outline-none focus:border-brand-orange" />
+        <button type="submit" aria-label="Send message" id="chat-send"
+                class="w-9 h-9 rounded-full bg-brand-orange text-white grid place-items-center shrink-0 disabled:opacity-50">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </form>
+      <a href="https://wa.me/917731074075?text=Hi%20PackersHub%2C%20I%20need%20a%20quote" target="_blank" rel="noopener noreferrer"
+         class="flex items-center justify-center gap-2 w-full py-2.5 rounded-full bg-[#25D366] text-white text-sm font-bold">
+        💬 Chat on WhatsApp
+      </a>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+(function() {
+  const toggle = document.getElementById('chatbot-toggle');
+  const win = document.getElementById('chatbot-window');
+  const messagesEl = document.getElementById('chat-messages');
+  const form = document.getElementById('chat-form');
+  const input = document.getElementById('chat-input');
+  const sendBtn = document.getElementById('chat-send');
+
+  toggle?.addEventListener('click', () => win?.classList.toggle('hidden'));
+  document.addEventListener('click', (e) => {
+    if (!document.getElementById('chatbot-widget')?.contains(e.target)) win?.classList.add('hidden');
+  });
+
+  const history = [];
+
+  function addBubble(text, from) {
+    const row = document.createElement('div');
+    row.className = from === 'user' ? 'flex gap-2 justify-end' : 'flex gap-2';
+    if (from === 'bot') {
+      row.innerHTML = `
+        <div class="w-7 h-7 rounded-full bg-brand-orange/10 grid place-items-center text-xs font-bold text-brand-orange shrink-0">PH</div>
+        <div class="bg-gray-50 rounded-2xl rounded-tl-none px-4 py-3 text-sm text-brand-dark max-w-[220px]"></div>`;
+      row.querySelector('div:last-child').textContent = text;
+    } else {
+      row.innerHTML = `<div class="bg-brand-orange text-white rounded-2xl rounded-tr-none px-4 py-3 text-sm max-w-[220px]"></div>`;
+      row.querySelector('div').textContent = text;
+    }
+    messagesEl?.appendChild(row);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  async function sendMessage(text) {
+    if (!text.trim()) return;
+    addBubble(text, 'user');
+    history.push({ role: 'user', content: text });
+    input.value = '';
+    sendBtn.disabled = true;
+
+    const typing = document.createElement('div');
+    typing.className = 'flex gap-2';
+    typing.id = 'chat-typing';
+    typing.innerHTML = `<div class="w-7 h-7 rounded-full bg-brand-orange/10 grid place-items-center text-xs font-bold text-brand-orange shrink-0">PH</div><div class="bg-gray-50 rounded-2xl rounded-tl-none px-4 py-3 text-sm text-brand-grey">Typing…</div>`;
+    messagesEl?.appendChild(typing);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: history,
+          system: 'You are a helpful customer support assistant for PackersHub, a packers and movers company serving 100+ cities across South India (Andhra Pradesh, Telangana, Tamil Nadu, Karnataka, Kerala). Keep replies short and friendly. Never quote specific prices — pricing depends on volume, distance, and floor access, so direct people to call/WhatsApp +91 77310 74075 or use the online estimator at /booking for an exact, free quote.',
+        }),
+      });
+      const data = await res.json();
+      document.getElementById('chat-typing')?.remove();
+      addBubble(data.reply || "I'm here to help! Call +91 77310 74075.", 'bot');
+      history.push({ role: 'assistant', content: data.reply || '' });
+    } catch {
+      document.getElementById('chat-typing')?.remove();
+      addBubble("I'm having a moment — please call +91 77310 74075 or WhatsApp us.", 'bot');
+    } finally {
+      sendBtn.disabled = false;
+    }
+  }
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    sendMessage(input.value);
+  });
+
+  document.querySelectorAll('[data-quick-reply]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const q = btn.getAttribute('data-quick-reply');
+      if (q === 'Contact us') { window.location.href = 'tel:+917731074075'; return; }
+      if (q === 'Get a quote') { window.location.href = '/booking'; return; }
+      sendMessage(q);
+    });
+  });
+})();
+</script>

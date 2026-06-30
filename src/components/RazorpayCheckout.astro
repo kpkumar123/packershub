@@ -1,0 +1,250 @@
+---
+/**
+ * RazorpayCheckout.astro — PackersHub v10.6.3
+ *
+ * IMPORTANT — this component renders NO visible markup. The actual
+ * `#rzp-payment-block` HTML (and its dark-theme CSS) lives inside
+ * BookingEngine.astro itself, since the payment UI is designed to appear
+ * nested inside BookingEngine's dark-gradient success flow, not as a
+ * separate light-themed card below it.
+ *
+ * v10.6.3 fix: earlier versions had THIS component also render its own
+ * copy of `#rzp-payment-block` with the same element IDs as BookingEngine's
+ * copy. Both were mounted on /booking (BookingEngine first, this second),
+ * which meant duplicate IDs in the DOM — invalid HTML that happened to
+ * "work" only because `getElementById` always grabs the first match
+ * (BookingEngine's), leaving this component's own markup as dead, never-
+ * shown HTML. Adding the Advance/Full toggle exposed how fragile that was,
+ * so this component was converted to a script-only component: it defines
+ * `window.phInitRazorpay` (called by BookingEngine after a booking is
+ * confirmed in KV) and operates entirely on BookingEngine's elements.
+ *
+ * Render this component once per page that uses BookingEngine (currently
+ * just /booking) — it contributes only a <script>, no DOM nodes.
+ *
+ * Uses:
+ *   - Razorpay Checkout JS (CDN, loaded on demand)
+ *   - /api/payment/create-order  (server creates Razorpay order — accepts
+ *     any advancePct 1-100, so 100 = full payment needs no server change)
+ *   - /api/payment/verify        (server verifies HMAC signature)
+ *   - No npm dependencies
+ */
+
+const ADVANCE_PCT = 20; // unchanged default — do not change without an explicit instruction
+---
+
+<script define:vars={{ ADVANCE_PCT }}>
+// ── RazorpayCheckout — runtime logic ─────────────────────────────────────────
+// Operates on the #rzp-payment-block markup that lives in BookingEngine.astro.
+// Plain JS (no TS annotations) — Astro's define:vars bridge doesn't support
+// TypeScript syntax in the script body.
+
+let rzpScriptLoaded = false;
+
+// Load Razorpay checkout.js once (lazy — only on first click)
+function loadRazorpayScript() {
+  if (rzpScriptLoaded) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const s  = document.createElement('script');
+    s.src    = 'https://checkout.razorpay.com/v1/checkout.js';
+    s.async  = true;
+    s.onload  = () => { rzpScriptLoaded = true; resolve(); };
+    s.onerror = () => reject(new Error('Razorpay script failed to load.'));
+    document.head.appendChild(s);
+  });
+}
+
+function setStatus(msg, type) {
+  const el = document.getElementById('rzp-status');
+  if (!el) return;
+  el.textContent = msg;
+  el.className   = `rzp-status ${type}`;
+  el.style.display = msg ? '' : 'none';
+}
+
+// Called by BookingEngine after estimate is calculated, WhatsApp is sent,
+// and /api/lead confirms the booking exists in KV.
+// bookingData: { trackingId, amount, name, phone, email, fromCity, toCity }
+window.phInitRazorpay = async function(bookingData) {
+  const block      = document.getElementById('rzp-payment-block');
+  const btn        = document.getElementById('rzp-pay-btn');
+  const advLbl     = document.getElementById('rzp-advance-label');
+  const pctLbl     = document.getElementById('rzp-pct-label');
+  const btnLbl     = document.getElementById('rzp-btn-label');
+  const badgeTitle = document.getElementById('rzp-badge-title');
+  const badgeSub   = document.getElementById('rzp-badge-sub');
+  const optAdvance = document.getElementById('rzp-opt-advance');
+  const optFull    = document.getElementById('rzp-opt-full');
+
+  // Defensive — if BookingEngine's markup isn't present for some reason,
+  // fail quietly rather than throwing on a null element.
+  if (!block || !btn || !advLbl || !pctLbl || !btnLbl) {
+    console.warn('[RazorpayCheckout] Payment block elements not found — skipping.');
+    return;
+  }
+
+  block.style.display = '';
+  setStatus('', '');
+
+  // Selected payment option state — defaults to the advance, unchanged from
+  // before this toggle existed. Switching to "Full" sets pct to 100.
+  let selectedPct = ADVANCE_PCT;
+
+  function currentAmount() {
+    return Math.round((bookingData.amount * selectedPct) / 100);
+  }
+
+  function renderForSelection() {
+    const amountRupees = currentAmount();
+    advLbl.textContent = `₹${amountRupees.toLocaleString('en-IN')}`;
+    pctLbl.textContent = selectedPct.toString();
+
+    if (selectedPct >= 100) {
+      if (badgeTitle) badgeTitle.textContent = 'Pay in Full — Nothing Due Later';
+      if (badgeSub) badgeSub.innerHTML = `Pay <strong>₹${amountRupees.toLocaleString('en-IN')}</strong> now — full amount, no balance after delivery.`;
+      btnLbl.textContent = `Pay ₹${amountRupees.toLocaleString('en-IN')} (Full Amount)`;
+      optAdvance?.classList.remove('rzp-toggle-active');
+      optAdvance?.setAttribute('aria-checked', 'false');
+      optFull?.classList.add('rzp-toggle-active');
+      optFull?.setAttribute('aria-checked', 'true');
+    } else {
+      if (badgeTitle) badgeTitle.textContent = 'Secure Your Booking Instantly';
+      if (badgeSub) badgeSub.innerHTML = `Pay <strong>₹${amountRupees.toLocaleString('en-IN')}</strong> advance now (<span>${selectedPct}</span>% of estimate) — balance collected after delivery.`;
+      btnLbl.textContent = `Pay ₹${amountRupees.toLocaleString('en-IN')} Advance`;
+      optFull?.classList.remove('rzp-toggle-active');
+      optFull?.setAttribute('aria-checked', 'false');
+      optAdvance?.classList.add('rzp-toggle-active');
+      optAdvance?.setAttribute('aria-checked', 'true');
+    }
+  }
+
+  if (optAdvance) {
+    optAdvance.onclick = () => {
+      if (btn.disabled) return; // mid-payment — don't let the option change underneath
+      selectedPct = ADVANCE_PCT;
+      renderForSelection();
+    };
+  }
+  if (optFull) {
+    optFull.onclick = () => {
+      if (btn.disabled) return;
+      selectedPct = 100;
+      renderForSelection();
+    };
+  }
+
+  renderForSelection();
+  btn.disabled = false;
+
+  btn.onclick = async () => {
+    btn.disabled = true;
+    const amountRupees = currentAmount();
+    const isFull = selectedPct >= 100;
+    btnLbl.textContent = 'Opening payment…';
+    setStatus('', '');
+
+    function resetButtonLabel() {
+      btnLbl.textContent = isFull
+        ? `Pay ₹${amountRupees.toLocaleString('en-IN')} (Full Amount)`
+        : `Pay ₹${amountRupees.toLocaleString('en-IN')} Advance`;
+    }
+
+    try {
+      // 1. Load Razorpay script
+      await loadRazorpayScript();
+
+      // 2. Create Razorpay order on server — /api/payment/create-order
+      //    already accepts any advancePct 1-100, so 100 (full payment)
+      //    needs no server-side change.
+      const res = await fetch('/api/payment/create-order', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({
+          ...bookingData,
+          advancePct: selectedPct,
+        }),
+      });
+      const data = await res.json();
+
+      if (!data.ok) {
+        setStatus(`❌ ${data.error || 'Could not create payment order.'}`, 'error');
+        btn.disabled = false;
+        resetButtonLabel();
+        return;
+      }
+
+      // 3. Open Razorpay modal
+      const options = {
+        key:         data.keyId,
+        amount:      data.amount,         // paise
+        currency:    'INR',
+        name:        'PackersHub',
+        description: isFull
+          ? `Full Payment — ${bookingData.fromCity || ''} → ${bookingData.toCity || ''}`
+          : `Move Advance — ${bookingData.fromCity || ''} → ${bookingData.toCity || ''}`,
+        order_id:    data.orderId,
+        prefill:     data.prefill,
+        theme:       { color: '#f97316' },
+        modal: {
+          ondismiss() {
+            btn.disabled = false;
+            resetButtonLabel();
+            setStatus('Payment window closed. You can try again.', 'error');
+          },
+        },
+        handler: async (response) => {
+          // 4. Verify on server
+          btnLbl.textContent = 'Verifying payment…';
+          try {
+            const vRes = await fetch('/api/payment/verify', {
+              method:  'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                trackingId:        bookingData.trackingId,
+                razorpayOrderId:   response.razorpay_order_id,
+                razorpayPaymentId: response.razorpay_payment_id,
+                razorpaySignature: response.razorpay_signature,
+                isFullPayment:     isFull,
+              }),
+            });
+            const vData = await vRes.json();
+
+            if (vData.ok) {
+              setStatus(
+                isFull
+                  ? `✅ Payment confirmed! Your booking ${bookingData.trackingId} is fully paid — nothing due later. Payment ID: ${response.razorpay_payment_id}`
+                  : `✅ Payment confirmed! Your booking ${bookingData.trackingId} is now secured. Payment ID: ${response.razorpay_payment_id}`,
+                'success',
+              );
+              btn.style.display = 'none';
+              document.querySelector('.rzp-toggle')?.remove();
+              window.phPaymentSuccess?.({
+                trackingId: bookingData.trackingId,
+                paymentId:  response.razorpay_payment_id,
+                amount:     amountRupees,
+                isFullPayment: isFull,
+              });
+            } else {
+              setStatus(`⚠️ ${vData.error || 'Verification failed. Please call us.'}`, 'error');
+              btn.disabled = false;
+              resetButtonLabel();
+            }
+          } catch {
+            setStatus('Verification error. Please call +91 77310 74075.', 'error');
+            btn.disabled = false;
+            resetButtonLabel();
+          }
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+
+    } catch (e) {
+      setStatus(`Error: ${e.message || 'Unknown error. Please try again.'}`, 'error');
+      btn.disabled = false;
+      resetButtonLabel();
+    }
+  };
+};
+</script>

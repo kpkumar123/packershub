@@ -1,0 +1,108 @@
+---
+// FAQ.astro — MODULE 15 AEO Voice Search Optimized FAQs
+//
+// v10.6.5 — accepts an optional `localFaqs` prop (parsed from each city's
+// `faq_text` via src/utils/parseFaq.ts). Previously every city page showed
+// the exact same 8 generic questions; localFaqs are genuinely unique
+// per-city Q&A, rendered here (not just in JSON-LD) so the FAQPage schema
+// matches visible page content per Google's structured-data guidelines.
+interface FaqPair { q: string; a: string }
+const { city, localFaqs = [] as FaqPair[] } = Astro.props;
+
+const faqs = [
+  {
+    q: `How much do packers and movers cost${city ? ` in ${city}` : ''}?`,
+    a: `Moving costs in${city ? ` ${city}` : ' your city'} depend on home size (1BHK to 5BHK+), distance, floor access, and goods volume — so we don't publish flat rates. PackersHub provides a free pre-move assessment and a written all-inclusive quote (packing, labour, transport, transit insurance) before any work begins. Call or WhatsApp +91 77310 74075 for an exact number.`,
+  },
+  {
+    q: 'Are my belongings insured during transit?',
+    a: 'Yes! All PackersHub shipments include comprehensive transit insurance covering accidental damage, loss, and theft at no extra cost. For high-value items like artwork, antiques, or pianos, we recommend additional declared-value coverage which can be added to any package.',
+  },
+  {
+    q: 'How far in advance should I book packers and movers?',
+    a: 'We recommend booking 7–15 days in advance for best availability and rates. Month-end dates (25th–31st) get booked early. We also offer urgent same-day and next-day service for emergency moves — call +91 77310 74075 for urgent bookings.',
+  },
+  {
+    q: 'Do you provide packing materials?',
+    a: 'Yes — all packing materials are included in our quotes: bubble wrap, corrugated boxes, stretch wrap, foam padding, moving blankets, and specialized crating for fragile items. No need to arrange anything separately.',
+  },
+  {
+    q: 'Can I track my shipment in real time?',
+    a: 'We give you a Tracking ID and send WhatsApp updates at each key milestone — booking confirmed, packing started, loaded, in transit, and delivered. Check your status anytime at packershub.in/track using your Tracking ID and phone number. This is milestone-based status tracking, not a live GPS map — for anything urgent, our coordination team is reachable directly on call or WhatsApp.',
+  },
+  {
+    q: 'What happens if something gets damaged during the move?',
+    a: 'In the rare event of damage, our insurance claim process begins immediately. We document, assess, and process claims within 7 working days — backed by our Zero Damage Guarantee on every job.',
+  },
+  {
+    q: 'Do you offer storage if my new home is not ready?',
+    a: 'Yes. We have climate-controlled, CCTV-monitored warehouses across South India. Short-term (weekly) and long-term (monthly) storage is available. Your goods are fully insured during storage too.',
+  },
+  {
+    q: `Which areas do you serve${city ? ` from ${city}` : ' in South India'}?`,
+    a: `PackersHub serves 100+ cities across 5 South Indian states — Andhra Pradesh, Telangana, Tamil Nadu, Karnataka, and Kerala. We also handle intercity moves to all major cities in North India and international relocations worldwide.`,
+  },
+];
+
+// City-specific FAQs (when provided) are inserted right after the cost
+// question — most relevant, most-searched content first — rather than
+// tacked on the end where they'd be less likely to be read or crawled
+// with the same weight.
+const allFaqs = localFaqs.length
+  ? [faqs[0], ...localFaqs, ...faqs.slice(1)]
+  : faqs;
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": allFaqs.map(f => ({
+    "@type": "Question",
+    "name": f.q,
+    "acceptedAnswer": { "@type": "Answer", "text": f.a }
+  }))
+};
+---
+<section class="py-20 bg-white" aria-labelledby="faq-heading">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12 reveal">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-sky-100 text-accent-sky text-sm font-bold mb-4 uppercase tracking-wide">
+        FAQ
+      </span>
+      <h2 id="faq-heading" class="font-display text-4xl lg:text-5xl font-extrabold text-brand-dark mb-4">
+        Frequently Asked Questions
+      </h2>
+      <p class="text-brand-grey">Everything you need to know about moving with PackersHub{city ? ` in ${city}` : ''}</p>
+    </div>
+
+    <div class="space-y-3">
+      {allFaqs.map((f, i) => (
+        <details
+          class="group bg-gray-50 hover:bg-orange-50/50 rounded-2xl border border-gray-100 hover:border-orange-100 overflow-hidden transition-colors duration-200 reveal"
+          open={i === 0}
+          style={`animation-delay:${i*.05}s`}
+        >
+          <summary class="cursor-pointer px-6 py-5 flex items-center justify-between gap-4 font-semibold text-brand-dark hover:text-brand-orange transition-colors">
+            <span class="text-sm sm:text-base">{f.q}</span>
+            <span class="text-brand-orange shrink-0 group-open:rotate-45 transition-transform duration-300 text-2xl font-light">+</span>
+          </summary>
+          <div class="px-6 pb-5 text-brand-grey text-sm leading-relaxed border-t border-gray-100">
+            <p class="pt-3">{f.a}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+
+    <div class="mt-10 text-center reveal">
+      <p class="text-brand-grey text-sm mb-4">Still have questions?</p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="tel:+917731074075" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold btn-shine">
+          📞 Call Us Now
+        </a>
+        <a href="https://wa.me/917731074075?text=Hi%20PackersHub%2C%20I%20have%20a%20question" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#25D366]/10 hover:bg-[#25D366] border border-[#25D366]/30 text-[#25D366] hover:text-white font-bold transition-colors">
+          💬 Ask on WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
