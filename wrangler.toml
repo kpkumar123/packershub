@@ -1,6 +1,9 @@
 name = "packershub"
 compatibility_date = "2026-06-28"
 compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "dist"
+
+
 
 [placement]
 mode = "smart"
@@ -15,3 +18,4 @@ SITE_URL = "https://packershub.in"
 [assets]
 directory = "dist"
 binding = "STATIC_ASSETS"
+pages_build_output_dir = "dist"
