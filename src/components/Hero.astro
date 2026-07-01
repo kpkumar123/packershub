@@ -52,7 +52,7 @@ const { title, subtitle, cityName, stateName, showStats = true } = Astro.props;
           ) : (
             <>
               <span>South India's</span><br/>
-              <span class="text-gradient">#1 Movers</span>
+              <span class="text-gradient">#1 Packers & Movers</span>
             </>
           )}
         </h1>
@@ -108,7 +108,7 @@ const { title, subtitle, cityName, stateName, showStats = true } = Astro.props;
         <!-- Main image container -->
         <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-orange-100 to-sky-100 aspect-[4/3]">
           <img
-            src="/hero.jpg"
+            src="/hero.png"
             alt="PackersHub professional movers carefully packing and loading household items into a status-tracked truck"
             class="w-full h-full object-cover"
             loading="eager"
@@ -118,9 +118,9 @@ const { title, subtitle, cityName, stateName, showStats = true } = Astro.props;
             decoding="async"
             onerror="this.style.display='none';document.getElementById('hero-fallback-svg').style.display='block';"
           />
-          <!-- v10.6.5 — Core Web Vitals fix: /hero.jpg was never present in public/,
+          <!-- v10.6.5 — Core Web Vitals fix: /hero.png was never present in public/,
                so this was 404-ing on every single page load (LCP element failing
-               to render). Drop a real photo into public/hero.jpg to replace this
+               to render). Drop a real photo into public/hero.png to replace this
                permanently. Until then, this inline SVG renders instantly with
                zero extra HTTP request, so the hero never shows a broken image. -->
           <svg id="hero-fallback-svg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" class="w-full h-full" style="display:none" aria-hidden="true">
@@ -148,11 +148,11 @@ const { title, subtitle, cityName, stateName, showStats = true } = Astro.props;
           </svg>
           <script is:inline>
             // Check immediately on each Astro page-load (covers ClientRouter
-            // transitions) whether hero.jpg actually loaded; if not, the
+            // transitions) whether hero.png actually loaded; if not, the
             // onerror handler above already swapped to the SVG, but this
             // covers the case where the image was cached as a 404 response.
             document.addEventListener('astro:page-load', function () {
-              var img = document.querySelector('img[src="/hero.jpg"]');
+              var img = document.querySelector('img[src="/hero.png"]');
               if (img && img.complete && img.naturalWidth === 0) {
                 img.style.display = 'none';
                 var svg = document.getElementById('hero-fallback-svg');
