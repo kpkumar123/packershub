@@ -44,7 +44,7 @@ const pageTitle = page.currentPage === 1
     <div class="max-w-5xl mx-auto px-4">
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {posts.map((post, i) => (
-          <a href={`/blog/${post.id}/`} class="reveal bg-white rounded-2xl shadow-card overflow-hidden hover:shadow-glass hover:-translate-y-1 transition-all duration-200" style={`transition-delay:${i*0.05}s`}>
+          <a href={`/blog/${post.slug || post.id}/`} class="reveal bg-white rounded-2xl shadow-card overflow-hidden hover:shadow-glass hover:-translate-y-1 transition-all duration-200" style={`transition-delay:${i*0.05}s`}>
             {post.data.image ? (
               <Image src={post.data.image} alt={post.data.title} class="h-40 w-full object-cover" loading="lazy" width={400} height={160} />
             ) : (
