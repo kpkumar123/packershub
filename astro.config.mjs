@@ -114,7 +114,7 @@ function classify(pathname) {
 
 export default defineConfig({
   site: 'https://www.packershub.in',
-  output: 'server',
+  output: 'static',
   // v10.7.6 — FIX: canonical URL strategy is now explicit instead of
   // relying on Astro's default ('ignore'), which let /city and /city/
   // both resolve with no single canonical form. 'always' matches the
