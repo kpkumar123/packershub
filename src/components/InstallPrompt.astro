@@ -1,0 +1,143 @@
+---
+/**
+ * InstallPrompt.astro — PackersHub v10.6.3
+ *
+ * The manifest.webmanifest + service worker were already fully wired
+ * (linked in SEOHead.astro, registered in BaseLayout.astro) — the site
+ * was already a valid installable PWA. The only missing piece was a
+ * visible "Install App" call-to-action, since Chrome/Edge don't show
+ * their native install icon prominently on mobile.
+ *
+ * This component listens for the browser's `beforeinstallprompt` event
+ * and shows a small dismissible banner. If the browser never fires that
+ * event (Safari/iOS has no such event — it uses "Add to Home Screen"
+ * from the Share sheet instead), the banner simply never appears, so
+ * this is safe everywhere.
+ *
+ * Dismissal is remembered for 14 days (not forever) — long enough to
+ * not nag, short enough that a returning customer on a future booking
+ * sees it again.
+ */
+---
+<div
+  id="install-banner"
+  class="install-banner"
+  style="display:none"
+  role="region"
+  aria-label="Install PackersHub app"
+>
+  <div class="install-icon">📲</div>
+  <div class="install-text">
+    <p class="install-title">Install PackersHub</p>
+    <p class="install-sub">Faster access, offline-friendly, no app store needed.</p>
+  </div>
+  <button id="install-btn" type="button" class="install-btn">Install</button>
+  <button id="install-dismiss" type="button" class="install-dismiss" aria-label="Dismiss">✕</button>
+</div>
+
+<style>
+.install-banner {
+  position: fixed;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #1a1a2e;
+  color: #fff;
+  border-radius: 1.25rem;
+  padding: 0.875rem 1rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  max-width: 26rem;
+  margin: 0 auto;
+}
+.install-icon { font-size: 1.5rem; flex-shrink: 0; }
+.install-text { flex: 1; min-width: 0; }
+.install-title { font-weight: 700; font-size: 0.875rem; margin: 0; }
+.install-sub   { font-size: 0.75rem; color: #b8bcd4; margin: 0.1rem 0 0; }
+.install-btn {
+  background: linear-gradient(135deg, #f97316, #f59e0b);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.8rem;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.install-dismiss {
+  background: transparent;
+  border: none;
+  color: #b8bcd4;
+  font-size: 0.9rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0.25rem;
+}
+@media (max-width: 380px) {
+  .install-sub { display: none; }
+}
+</style>
+
+<script is:inline>
+(function () {
+  const DISMISS_KEY = 'ph_install_dismissed_at';
+  const DISMISS_DAYS = 14;
+
+  function isDismissedRecently() {
+    const raw = localStorage.getItem(DISMISS_KEY);
+    if (!raw) return false;
+    const dismissedAt = parseInt(raw, 10);
+    if (Number.isNaN(dismissedAt)) return false;
+    const daysSince = (Date.now() - dismissedAt) / (1000 * 60 * 60 * 24);
+    return daysSince < DISMISS_DAYS;
+  }
+
+  let deferredPrompt = null;
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent the browser's default mini-infobar — we show our own banner.
+    e.preventDefault();
+    deferredPrompt = e;
+
+    if (isDismissedRecently()) return;
+
+    const banner = document.getElementById('install-banner');
+    if (banner) banner.style.display = 'flex';
+  });
+
+  document.addEventListener('astro:page-load', function attachHandlers() {
+    const banner    = document.getElementById('install-banner');
+    const installBtn = document.getElementById('install-btn');
+    const dismissBtn = document.getElementById('install-dismiss');
+    if (!banner || banner.dataset.boundOnce) return;
+    banner.dataset.boundOnce = 'true';
+
+    installBtn?.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      banner.style.display = 'none';
+      deferredPrompt.prompt();
+      try {
+        await deferredPrompt.userChoice;
+      } catch { /* user dismissed the native dialog — fine either way */ }
+      deferredPrompt = null;
+    });
+
+    dismissBtn?.addEventListener('click', () => {
+      banner.style.display = 'none';
+      localStorage.setItem(DISMISS_KEY, Date.now().toString());
+    });
+  });
+
+  // App already installed — never show the banner again this session.
+  window.addEventListener('appinstalled', () => {
+    const banner = document.getElementById('install-banner');
+    if (banner) banner.style.display = 'none';
+    deferredPrompt = null;
+  });
+})();
+</script>

@@ -1,0 +1,281 @@
+[
+  {
+    "slug": "home-shifting-services",
+    "moduleRef": "Module 31",
+    "name": "Home Shifting Services",
+    "shortName": "Home Shifting",
+    "icon": "🏠",
+    "metaTitle": "Home Shifting Services in India | PackersHub — Free Quote, 100% Insured",
+    "metaDescription": "Home shifting across 100 South Indian cities. Trained packing crew, GST billing, 100% transit insurance. Call +91 77310 74075.",
+    "keywords": "home shifting services, house shifting, packers and movers for home, 1bhk 2bhk 3bhk shifting india",
+    "definition": "Home shifting is the process of packing, transporting, and unpacking an entire household — furniture, appliances, kitchenware, and personal belongings — from one residence to another. It covers everything from a 1BHK apartment move within the same city to a full family relocation to a different state.",
+    "highlights": [
+      "Trained packing crew for every room — kitchen, wardrobe, electronics, furniture",
+      "Multi-layer bubble wrap, corrugated boxes, moisture-resistant wrapping",
+      "Furniture disassembly and reassembly at the new home",
+      "100% goods-in-transit insurance on every move",
+      "Written, all-inclusive quote after a free home assessment — no hidden charges",
+      "GST-compliant billing for every booking"
+    ],
+    "process": [
+      { "title": "Free Home Assessment", "desc": "Share your home size and move details — we give a written, all-inclusive quote before any work begins." },
+      { "title": "Packing Day", "desc": "Our crew arrives with all materials included and packs every item by category and room." },
+      { "title": "Loading & Transport", "desc": "Goods are loaded with a strict protocol to prevent shifting in transit, then moved to your new address." },
+      { "title": "Unpacking & Placement", "desc": "Furniture is reassembled and boxes placed in the rooms you specify, with a joint inventory check before we close the job." }
+    ],
+    "faqs": [
+      { "q": "How is home shifting priced?", "a": "Cost depends on home size (1BHK to 5BHK+), distance, floor access, and the volume of goods — we don't publish flat rates. You'll get a free assessment and a written all-inclusive quote before any work starts." },
+      { "q": "Do you pack fragile and electronic items separately?", "a": "Yes. TVs, mirrors, glassware, and other fragile items get individual bubble wrap and dedicated boxes; large appliances are wrapped and secured separately from general furniture." },
+      { "q": "Can I get help with just packing, without the move?", "a": "Yes, packing-only service is available if you're arranging your own transport — ask for a packing-only quote when you call." },
+      { "q": "How far in advance should I book?", "a": "We recommend 7–15 days ahead for the best slot availability, especially around month-end. Urgent same-day and next-day bookings are also available — call +91 77310 74075." }
+    ]
+  },
+  {
+    "slug": "office-relocation-services",
+    "moduleRef": "Module 32",
+    "name": "Office Relocation Services",
+    "shortName": "Office Relocation",
+    "icon": "🏢",
+    "metaTitle": "Office Relocation Services India | Corporate Movers — PackersHub",
+    "metaDescription": "Corporate office relocation across 100 South Indian cities. IT equipment handling, weekend/night moves, minimal downtime. Call +91 77310 74075.",
+    "keywords": "office relocation services, corporate movers, office shifting india, IT equipment relocation",
+    "definition": "Office relocation covers moving an entire workplace — desks, workstations, servers, IT infrastructure, and documents — with the goal of minimising downtime for the business. It's planned around your working hours, not the other way round.",
+    "highlights": [
+      "IT equipment and server handling with anti-static packing",
+      "Weekend and night moves available to avoid business disruption",
+      "Labelled, department-wise inventory management",
+      "Corporate GST billing and invoicing",
+      "A single point of contact coordinates the entire move",
+      "100% transit insurance on office assets"
+    ],
+    "process": [
+      { "title": "Site Survey", "desc": "We visit or video-survey both locations to plan layout, lift access, and IT disconnection/reconnection needs." },
+      { "title": "Move Plan & Quote", "desc": "A written plan and all-inclusive quote is shared, scheduled around your least disruptive hours." },
+      { "title": "Packing & Labelling", "desc": "Workstations and equipment are packed and labelled by department for a faster, organised unpack." },
+      { "title": "Setup at New Office", "desc": "Furniture and equipment are placed per your floor plan; IT setup coordination is available on request." }
+    ],
+    "faqs": [
+      { "q": "Can you move our office over a weekend to avoid downtime?", "a": "Yes — weekend and night moves are available specifically to minimise business disruption; just flag this when requesting your quote." },
+      { "q": "Do you handle server and IT equipment?", "a": "Yes, our teams use anti-static wrapping and secure crating for servers, networking gear, and workstations. For reconnection, we coordinate with your IT vendor on-site." },
+      { "q": "Is GST billing available for corporate accounts?", "a": "Yes, every office relocation booking includes a GST-compliant invoice suitable for corporate accounting." },
+      { "q": "How do you keep track of which item goes where?", "a": "Each item is tagged by department/floor during packing, and a digital inventory is shared so unpacking at the new office is organised, not chaotic." }
+    ]
+  },
+  {
+    "slug": "car-transportation",
+    "moduleRef": "Module 33",
+    "name": "Car Transportation Services",
+    "shortName": "Car Transport",
+    "icon": "🚗",
+    "metaTitle": "Car Transport Services India | Door-to-Door Car Carrier — PackersHub",
+    "metaDescription": "Door-to-door car transport across 100 South Indian cities on enclosed carriers. Insured, with condition report. Call +91 77310 74075.",
+    "keywords": "car transport services, car carrier service, vehicle transportation india, door to door car shifting",
+    "definition": "Car transportation moves your vehicle on a dedicated carrier truck instead of being driven — reducing odometer wear and road risk on long-distance or interstate moves.",
+    "highlights": [
+      "Enclosed and open carrier truck options",
+      "Door-to-door pickup and delivery",
+      "Detailed condition report with photos before loading and after delivery",
+      "Insurance coverage included during transit",
+      "Coverage across all 100 PackersHub cities",
+      "Status updates through pickup, transit, and delivery"
+    ],
+    "process": [
+      { "title": "Book & Share Vehicle Details", "desc": "Tell us the car model, pickup and drop city — you'll get a quote based on distance and carrier type." },
+      { "title": "Pre-Loading Inspection", "desc": "A joint condition report with photos is completed with you present before the car is loaded." },
+      { "title": "Carrier Transport", "desc": "Your car travels secured on the carrier truck, with status updates at key milestones." },
+      { "title": "Delivery & Re-Inspection", "desc": "The same condition report is checked again at delivery before you sign off." }
+    ],
+    "faqs": [
+      { "q": "What's the difference between open and enclosed carriers?", "a": "Open carriers are more common and cost-effective; enclosed carriers add full weather and dust protection, usually chosen for premium or new vehicles." },
+      { "q": "Is my car insured during transport?", "a": "Yes, transit insurance is included. The pre- and post-loading condition report is what any claim, if ever needed, would be assessed against." },
+      { "q": "How long does interstate car transport take?", "a": "It depends on the route and carrier schedule — we'll give you an estimated transit window when you book, and status updates along the way." },
+      { "q": "Can I transport a car and my household goods together?", "a": "Yes, car transport can be bundled with a home shifting booking — mention this when requesting your quote for combined scheduling." }
+    ]
+  },
+  {
+    "slug": "bike-transportation",
+    "moduleRef": "Module 34",
+    "name": "Bike Transportation Services",
+    "shortName": "Bike Transport",
+    "icon": "🏍️",
+    "metaTitle": "Bike Transport Services India | 2-Wheeler Shifting — PackersHub",
+    "metaDescription": "Safe two-wheeler transport across 100 South Indian cities with cradle mounting and full insurance. Free quote: +91 77310 74075.",
+    "keywords": "bike transport services, two wheeler shifting, motorcycle transportation india",
+    "definition": "Bike transportation moves motorcycles and scooters between cities using cradle-mounted or crated methods on a carrier truck, so the vehicle arrives without accumulating road mileage or wear.",
+    "highlights": [
+      "Cradle-mounting to prevent tipping or shifting in transit",
+      "Optional wooden crating for higher-value or vintage bikes",
+      "Fuel tank drained to safe transport level per carrier norms",
+      "Condition report with photos before and after transport",
+      "Insurance included during transit",
+      "Coverage across all 100 PackersHub cities"
+    ],
+    "process": [
+      { "title": "Book & Share Bike Details", "desc": "Tell us the make/model, pickup and drop city for a distance-based quote." },
+      { "title": "Pre-Transport Inspection", "desc": "Odometer reading and a photo condition report are recorded jointly before mounting." },
+      { "title": "Cradle-Mount & Transport", "desc": "Your bike is cradle-mounted or crated and secured for the journey, with status updates en route." },
+      { "title": "Delivery & Re-Inspection", "desc": "The same inspection is repeated at delivery before handover." }
+    ],
+    "faqs": [
+      { "q": "Will my bike arrive with more mileage on it?", "a": "No — it travels mounted on the carrier, not ridden, so the odometer stays as recorded at pickup." },
+      { "q": "Can I transport more than one bike at a time?", "a": "Yes, multiple two-wheelers can be booked in the same consignment — ask for a combined quote." },
+      { "q": "Is crating available for a premium or vintage bike?", "a": "Yes, wooden crating is available on request for extra protection on higher-value bikes." },
+      { "q": "Can bike transport be combined with a home shifting booking?", "a": "Yes, it's commonly booked alongside a home or vehicle move — mention it when requesting your quote." }
+    ]
+  },
+  {
+    "slug": "international-relocation",
+    "moduleRef": "Module 36",
+    "name": "International Relocation Services",
+    "shortName": "International Moving",
+    "icon": "🌍",
+    "metaTitle": "International Relocation Services India | PackersHub — Free Quote",
+    "metaDescription": "International relocation from South India — customs documentation support, export-grade crating, door-to-door options. Call +91 77310 74075.",
+    "keywords": "international relocation services, international movers india, overseas shifting",
+    "definition": "International relocation moves household or office goods from India to another country, coordinating export-grade packing, customs paperwork, and freight (sea or air) through the full journey.",
+    "highlights": [
+      "Export-grade wooden crating for international freight",
+      "Customs documentation support",
+      "Sea and air freight options based on your timeline and budget",
+      "Door-to-door coordination from your home to the destination address",
+      "A dedicated move coordinator for the full process",
+      "Insurance coverage during transit"
+    ],
+    "process": [
+      { "title": "Consultation & Quote", "desc": "Share origin and destination country, approximate volume, and timeline for a custom quote — international pricing is on-request and route-specific." },
+      { "title": "Export-Grade Packing", "desc": "Goods are packed and crated to international shipping standards." },
+      { "title": "Documentation & Customs", "desc": "We help prepare the paperwork needed for export customs clearance." },
+      { "title": "Freight & Delivery", "desc": "Your shipment moves by sea or air freight with tracking updates through to delivery at the destination." }
+    ],
+    "faqs": [
+      { "q": "Do you handle customs clearance?", "a": "We support you with export-side customs documentation from India. Destination-country import clearance requirements vary by country — we'll guide you on what's typically needed for your route." },
+      { "q": "Sea freight or air freight — which is better?", "a": "Sea freight is more economical for large household shipments but takes longer; air freight is faster and suited to smaller, time-sensitive shipments. We'll help you compare based on your move." },
+      { "q": "How is international relocation priced?", "a": "It depends on destination country, freight mode, and shipment volume, so we quote on request after understanding your specific move — call +91 77310 74075." },
+      { "q": "Can you pack fragile and valuable items for international transit?", "a": "Yes, export-grade crating with extra cushioning is used for fragile, valuable, and oddly-shaped items on international shipments." }
+    ]
+  },
+  {
+    "slug": "local-shifting",
+    "moduleRef": "Module 37",
+    "name": "Local Shifting Services",
+    "shortName": "Local Shifting",
+    "icon": "📍",
+    "metaTitle": "Local Packers and Movers | Same City Shifting — PackersHub",
+    "metaDescription": "Same-city local shifting across all 100 PackersHub cities. Same-day and next-day slots, full packing service, 100% insured. Call +91 77310 74075.",
+    "keywords": "local shifting, same city packers movers, local house shifting india",
+    "definition": "Local shifting is a move within the same city or metro area — from one apartment, locality, or neighbourhood to another — typically completed within a single day.",
+    "highlights": [
+      "Same-day and next-day slots available for urgent local moves",
+      "Full packing, loading, transport, and unpacking in one visit",
+      "Right-sized vehicle for the load — no paying for unused truck space",
+      "100% transit insurance even for short-distance moves",
+      "GST-compliant billing",
+      "Local crew familiar with your city's building and society access rules"
+    ],
+    "process": [
+      { "title": "Same-Day Quote", "desc": "Share your locality-to-locality move and home size — local quotes can often be confirmed the same day." },
+      { "title": "Packing & Loading", "desc": "Our crew packs and loads on move day, typically completing a local shift within hours." },
+      { "title": "Transport", "desc": "A right-sized vehicle for your load moves goods directly to the new address." },
+      { "title": "Unpacking & Placement", "desc": "Boxes and furniture are placed as instructed the same day, so you can start settling in immediately." }
+    ],
+    "faqs": [
+      { "q": "Can a local move be done in a single day?", "a": "Most local, same-city moves are completed in a single day from packing through to unpacking at the new address, depending on home size." },
+      { "q": "Do I still get insurance for a short-distance move?", "a": "Yes, transit insurance applies regardless of distance — even a move within the same locality is covered." },
+      { "q": "How quickly can you schedule a local move?", "a": "Same-day and next-day slots are often available for local shifts — call +91 77310 74075 to check availability for your date." },
+      { "q": "Is pricing different for local vs intercity moves?", "a": "Yes, local moves are typically priced by load and labour rather than distance, since travel is short — you'll get a specific quote after sharing your home size and locations." }
+    ]
+  },
+  {
+    "slug": "intercity-shifting",
+    "moduleRef": "Module 38",
+    "name": "Intercity Shifting Services",
+    "shortName": "Intercity Shifting",
+    "icon": "🛣️",
+    "metaTitle": "Intercity Packers and Movers | Pan-India Moving — PackersHub",
+    "metaDescription": "Intercity and interstate shifting across South India and pan-India routes. Status-tracked transport, 100% insured, GST billing. Call +91 77310 74075.",
+    "keywords": "intercity shifting, interstate packers movers, pan india moving services",
+    "definition": "Intercity shifting moves your household or office goods between two different cities — anywhere from a short interstate hop within South India to a long-distance pan-India route.",
+    "highlights": [
+      "Coverage across all 100 PackersHub cities and beyond via pan-India network",
+      "Status-tracked transport with WhatsApp milestone updates",
+      "Consolidated or dedicated truck options depending on load size",
+      "100% transit insurance for the full journey",
+      "Written, all-inclusive quote before any work begins",
+      "GST-compliant billing"
+    ],
+    "process": [
+      { "title": "Route & Quote", "desc": "Share pickup and drop cities and home size for a written, all-inclusive intercity quote." },
+      { "title": "Packing", "desc": "Goods are packed for the longer transit involved in an intercity move, with extra cushioning for fragile items." },
+      { "title": "Status-Tracked Transport", "desc": "Your shipment moves with milestone updates — booked, loaded, in transit, and out for delivery." },
+      { "title": "Delivery & Unpacking", "desc": "Crew at the destination city unpacks and places items as instructed, with a joint inventory check." }
+    ],
+    "faqs": [
+      { "q": "How long does an intercity move take?", "a": "Transit time depends on the distance between cities and route — we'll give you an estimated window when you book, plus milestone updates along the way." },
+      { "q": "Do you consolidate shipments with other customers?", "a": "For smaller loads, a shared/consolidated truck can reduce cost; for larger homes, a dedicated truck is used. We'll recommend the right option for your load size." },
+      { "q": "Is my shipment insured for the full intercity distance?", "a": "Yes, transit insurance covers the goods for the entire journey between the pickup and delivery cities." },
+      { "q": "Can I track my intercity shipment?", "a": "Yes — you get a Tracking ID and WhatsApp updates at each milestone; you can also check status anytime at packershub.in/track." }
+    ]
+  },
+  {
+    "slug": "industrial-shifting",
+    "moduleRef": "Module 39",
+    "name": "Industrial Shifting Services",
+    "shortName": "Industrial Shifting",
+    "icon": "🏭",
+    "metaTitle": "Industrial Shifting Services | Factory Relocation India — PackersHub",
+    "metaDescription": "Industrial and factory relocation across South India — machinery handling, planned downtime windows, GST billing. Custom quote: +91 77310 74075.",
+    "keywords": "industrial shifting services, factory relocation, machinery moving india",
+    "definition": "Industrial shifting relocates factory or plant assets — machinery, heavy equipment, racking, and inventory — with the move planned around minimising production downtime.",
+    "highlights": [
+      "Machinery and heavy equipment handling with appropriate lifting/loading gear",
+      "Move scheduled around planned downtime windows",
+      "Inventory and asset tagging before packing",
+      "Coordination with your plant/facility team for shutdown and restart sequencing",
+      "Insurance coverage during transit",
+      "Corporate GST billing"
+    ],
+    "process": [
+      { "title": "Site Assessment", "desc": "We assess machinery type, weight, access routes, and loading constraints at both locations." },
+      { "title": "Custom Move Plan & Quote", "desc": "Industrial moves are priced on request based on equipment type and scale — a written plan is shared before work begins." },
+      { "title": "Dismantling & Packing", "desc": "Machinery is dismantled where needed and packed/secured for transport with the right equipment." },
+      { "title": "Transport & Reinstallation Support", "desc": "Equipment is delivered and placed per your facility layout; reinstallation coordination is available on request." }
+    ],
+    "faqs": [
+      { "q": "Can you move heavy machinery?", "a": "Yes, we assess machinery weight and dimensions during the site visit and bring the appropriate loading equipment for the job." },
+      { "q": "How is industrial shifting priced?", "a": "Industrial moves vary widely by equipment type and scale, so we quote after a site assessment rather than publishing flat rates — call +91 77310 74075 to arrange one." },
+      { "q": "Can you plan the move around our production schedule?", "a": "Yes, industrial moves are typically scheduled around a planned downtime window agreed with your facility team." },
+      { "q": "Do you provide a GST invoice for industrial/corporate moves?", "a": "Yes, all industrial shifting bookings include GST-compliant billing." }
+    ]
+  },
+  {
+    "slug": "packing-services",
+    "moduleRef": "Module 40",
+    "name": "Professional Packing Services",
+    "shortName": "Packing Services",
+    "icon": "📦",
+    "metaTitle": "Professional Packing Services India | Safe Packing — PackersHub",
+    "metaDescription": "Professional packing-only service across 100 South Indian cities — all materials included, specialist crating for fragile items. Call +91 77310 74075.",
+    "keywords": "packing services, professional packers, packing only service india",
+    "definition": "Packing services cover professional packing of your belongings — using the right materials and technique for each item — whether or not you need PackersHub to also handle the transport.",
+    "highlights": [
+      "All materials included: bubble wrap, corrugated boxes, stretch wrap, foam padding",
+      "Specialist crating for fragile items — glassware, artwork, electronics",
+      "Room-by-room, labelled packing for an organised unpack",
+      "Available as a standalone service or bundled with a full move",
+      "Trained packing crew, not general labour",
+      "Furniture disassembly for safe transport of large items"
+    ],
+    "process": [
+      { "title": "Share What Needs Packing", "desc": "Tell us your home size or item list — packing-only quotes are based on volume and item type." },
+      { "title": "Packing Day", "desc": "Our crew packs room by room with labelled boxes, using appropriate materials for each item type." },
+      { "title": "Fragile & Specialty Items", "desc": "Glass, artwork, electronics, and other delicate items get individual wrapping and, where needed, custom crating." },
+      { "title": "Ready for Transport", "desc": "Everything is boxed, labelled, and ready — whether you're using our transport service or your own arrangement." }
+    ],
+    "faqs": [
+      { "q": "Can I book packing without the moving/transport service?", "a": "Yes, packing-only bookings are available if you're arranging your own transport separately." },
+      { "q": "Do you bring all the packing materials?", "a": "Yes, boxes, bubble wrap, stretch wrap, and foam padding are all included — you don't need to arrange anything." },
+      { "q": "Can you pack a single item, like a piano or artwork?", "a": "Yes, specialist crating is available for individual high-value or fragile items even outside a full home move." },
+      { "q": "How long does packing a full home take?", "a": "It depends on home size — a 1BHK can often be packed in a few hours, while larger homes may need a full day. We'll estimate this when you book." }
+    ]
+  }
+]

@@ -1,0 +1,30 @@
+{
+  "name": "packershub",
+  "type": "module",
+  "version": "10.7.35",
+  "private": true,
+  "description": "PackersHub v10.7.35 — South India Packers & Movers | 100 city pages | Astro 7.0.3 + Tailwind v4 + Cloudflare | v10.7.35 fixed 13 build-breaking raw HTML comments (<!-- -->) placed inside JSX-style {} expressions across index.astro, [state]/[city].astro and [state]/index.astro (Astro compiler requires {/* */} inside expressions), and fixed a literal '<script>' substring inside a JSDoc comment in RazorpayCheckout.astro that was confusing Vite's dependency pre-scanner",
+  "scripts": {
+    "dev": "astro dev --host",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "types": "wrangler types",
+    "deploy": "astro build && wrangler pages deploy dist",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^7.0.3",
+    "@astrojs/sitemap": "^3.7.3",
+    "@astrojs/cloudflare": "^13.5.0",
+    "@tailwindcss/vite": "^4.3.1",
+    "tailwindcss": "^4.3.1",
+    "@tailwindcss/typography": "^0.5.20",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "wrangler": "^4.105.0",
+    "@astrojs/check": "^0.9.9",
+    "typescript": "^6.0.3"
+  }
+}
