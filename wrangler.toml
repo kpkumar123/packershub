@@ -1,0 +1,48 @@
+# PackersHub v10.7.33 — Astro 7.0.3 + Tailwind v4 + Cloudflare Pages (wrangler v4 / adapter v13)
+name = "packershub"
+compatibility_date = "2026-06-28"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "dist"
+
+[placement]
+mode = "smart"
+
+# ── Order Tracking (Cloudflare KV) — ACTION NEEDED BEFORE /track/ WORKS ──
+# Powers /track/ (customer lookup) and /admin/orders/ (staff updates).
+# This cannot be filled in from a zip file — a KV namespace only exists
+# once it's created inside YOUR Cloudflare account, so this is the one
+# remaining manual step (not a code bug) to make live order tracking work:
+#
+# 1. Run this from the project root, logged into your Cloudflare account:
+#      wrangler kv namespace create TRACKING_KV
+#    (and, for local dev: wrangler kv namespace create TRACKING_KV --preview)
+# 2. It prints a real namespace id, e.g.:
+#      { binding = "TRACKING_KV", id = "a1b2c3d4e5f6..." }
+# 3. Uncomment the two lines below and paste that id in place of
+#    REPLACE_WITH_YOUR_NAMESPACE_ID — do NOT invent or reuse an id from
+#    another project, the binding will silently point at the wrong data.
+# 4. Re-deploy: npm run deploy
+#
+# Until this is done, /track/ and lead-capture still work end-to-end —
+# they skip the KV read/write step gracefully (see src/pages/track/index.astro
+# and src/pages/api/lead.ts) — so nothing breaks, but tracking numbers won't
+# persist or be look-up-able yet.
+# [[kv_namespaces]]
+# binding = "TRACKING_KV"
+# id = "REPLACE_WITH_YOUR_NAMESPACE_ID"
+
+# ── Non-secret vars ───────────────────────────────────────────────
+# Safe to commit — no API keys or tokens here.
+[vars]
+SITE_URL = "https://www.packershub.in"
+
+# ── Secrets (DO NOT put these in this file) ───────────────────────
+# See .env.example for the full list and what each one does.
+# Set each one you actually use with:
+#   wrangler pages secret put VAR_NAME --project-name=packershub
+# At minimum, the review-request step needs GOOGLE_REVIEW_URL, and the
+# cron endpoint needs CRON_SECRET if it's exposed to an external caller:
+#   wrangler pages secret put GOOGLE_REVIEW_URL --project-name=packershub
+#   wrangler pages secret put CRON_SECRET --project-name=packershub
+# Every integration no-ops gracefully if its secret is unset, so partial
+# setup is fine — only configure what you're actually using.

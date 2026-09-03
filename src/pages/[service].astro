@@ -1,0 +1,210 @@
+---
+// [service].astro — Module 31-40 (dedicated service pages) + Module 53
+// (semantic SEO service-cluster layer).
+//
+// v10.7.4 — one dynamic route generating the 9 service pages that didn't
+// already exist as their own URL (warehouse-storage already has a live,
+// indexed page at /storage-warehousing — see public/_redirects — so it is
+// deliberately NOT duplicated here to avoid a duplicate-content pair).
+//
+// No fabricated ratings, review counts, or fixed rupee pricing are used —
+// same no-fabrication standard as the rest of this codebase (see
+// SEO_59_MODULES_AUDIT.md). Pricing language stays "free quote / on
+// request", matching how QuoteForm/booking already works.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import services from '../data/services.json';
+import states from '../data/states.json';
+
+interface Faq { q: string; a: string }
+interface ProcessStep { title: string; desc: string }
+interface ServiceEntry {
+  slug: string; moduleRef: string; name: string; shortName: string; icon: string;
+  metaTitle: string; metaDescription: string; keywords: string; definition: string;
+  highlights: string[]; process: ProcessStep[]; faqs: Faq[];
+}
+
+export async function getStaticPaths() {
+  return (services as ServiceEntry[]).map((s) => ({
+    params: { service: s.slug },
+    props: { service: s },
+  }));
+}
+
+const { service } = Astro.props as { service: ServiceEntry };
+
+// A couple of related services (for cross-linking / topic-cluster interlinking —
+// Module 53) — simple "everything else" pick, capped at 3.
+const related = (services as ServiceEntry[]).filter((s) => s.slug !== service.slug).slice(0, 3);
+
+const canonical = `https://www.packershub.in/${service.slug}/`;
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: service.faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "@id": `${canonical}#service`,
+      name: service.name,
+      serviceType: service.shortName,
+      description: service.definition,
+      provider: { "@id": "https://www.packershub.in/#organization" },
+      areaServed: states.map((s: { name: string }) => ({ "@type": "State", name: s.name })),
+      // Deliberately no `offers`/fixed price here — this build doesn't
+      // publish unverified flat rupee pricing (see SEO_59_MODULES_AUDIT.md).
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.packershub.in/" },
+        { "@type": "ListItem", position: 2, name: "Services", item: "https://www.packershub.in/services" },
+        { "@type": "ListItem", position: 3, name: service.shortName, item: canonical },
+      ],
+    },
+  ],
+};
+---
+<BaseLayout
+  title={service.metaTitle}
+  description={service.metaDescription}
+  keywords={service.keywords}
+  canonical={canonical}
+  schema={serviceSchema}
+>
+  <!-- HERO -->
+  <section class="hero-bg pt-16 pb-16">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <nav aria-label="Breadcrumb" class="mb-6">
+        <ol class="flex justify-center items-center gap-2 text-sm text-brand-grey flex-wrap" role="list">
+          <li><a href="/" class="hover:text-brand-orange">Home</a></li>
+          <li aria-hidden="true">›</li>
+          <li><a href="/services/" class="hover:text-brand-orange">Services</a></li>
+          <li aria-hidden="true">›</li>
+          <li class="text-brand-orange font-semibold" aria-current="page">{service.shortName}</li>
+        </ol>
+      </nav>
+      <span class="text-6xl block mb-5" aria-hidden="true">{service.icon}</span>
+      <h1 class="font-display font-extrabold text-4xl sm:text-5xl text-brand-dark mb-5 speakable">
+        {service.name} <span class="text-gradient">in India</span>
+      </h1>
+      <p class="text-lg text-brand-grey max-w-2xl mx-auto leading-relaxed">{service.definition}</p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center mt-8">
+        <a href="#quote" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold shadow-cta hover:shadow-glow hover:scale-[1.02] transition-all btn-shine">
+          🚚 Get Free Quote
+        </a>
+        <a href="tel:+917731074075" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-white border-2 border-brand-orange/30 text-brand-dark font-bold hover:border-brand-orange hover:bg-orange-50 transition-all">
+          📞 +91 77310 74075
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT'S INCLUDED -->
+  <section class="py-16 bg-white" aria-labelledby="highlights-heading">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 id="highlights-heading" class="font-display font-extrabold text-3xl text-brand-dark mb-8 text-center">
+        What's Included with {service.shortName}
+      </h2>
+      <div class="grid sm:grid-cols-2 gap-4">
+        {service.highlights.map((h) => (
+          <div class="flex items-start gap-3 p-4 rounded-2xl bg-orange-50 border border-orange-100">
+            <span class="w-5 h-5 rounded-full bg-green-100 text-green-600 text-xs grid place-items-center font-bold shrink-0 mt-0.5">✓</span>
+            <span class="text-sm text-brand-grey leading-relaxed">{h}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="py-16 bg-gray-50" aria-labelledby="process-heading">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 id="process-heading" class="font-display font-extrabold text-3xl text-brand-dark mb-10 text-center">
+        How Our {service.shortName} Works
+      </h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {service.process.map((step, i) => (
+          <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+            <span class="text-xs font-black text-brand-orange bg-orange-100 px-2 py-0.5 rounded-full">STEP {i + 1}</span>
+            <h3 class="font-bold text-brand-dark mt-3 mb-2 text-sm">{step.title}</h3>
+            <p class="text-xs text-brand-grey leading-relaxed">{step.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CITIES WE SERVE -->
+  <section class="py-16 bg-white" aria-labelledby="cities-heading">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 id="cities-heading" class="font-display font-extrabold text-3xl text-brand-dark mb-4">
+        {service.shortName} — Available in 100 Cities
+      </h2>
+      <p class="text-brand-grey mb-8 max-w-2xl mx-auto">
+        PackersHub offers {service.shortName.toLowerCase()} across 100 cities in 5 South Indian states. Pick your state to see local coverage.
+      </p>
+      <div class="flex flex-wrap justify-center gap-3">
+        {states.map((s: { slug: string; name: string; flag: string }) => (
+          <a href={`/${s.slug}/`} class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-orange-50 border border-orange-100 text-brand-dark font-semibold text-sm hover:bg-brand-orange hover:text-white hover:border-brand-orange transition-colors">
+            <span>{s.flag}</span> {s.name}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-16 bg-gray-50" aria-labelledby="service-faq-heading">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 id="service-faq-heading" class="font-display font-extrabold text-3xl text-brand-dark mb-8 text-center">
+        FAQ — {service.shortName}
+      </h2>
+      <div class="space-y-3">
+        {service.faqs.map((f, i) => (
+          <details class="group bg-white hover:bg-orange-50/50 rounded-2xl border border-gray-100 hover:border-orange-100 overflow-hidden transition-colors duration-200" open={i === 0}>
+            <summary class="cursor-pointer px-6 py-5 flex items-center justify-between gap-4 font-semibold text-brand-dark hover:text-brand-orange transition-colors">
+              <span class="text-sm sm:text-base">{f.q}</span>
+              <span class="text-brand-orange shrink-0 group-open:rotate-45 transition-transform duration-300 text-2xl font-light">+</span>
+            </summary>
+            <div class="px-6 pb-5 text-brand-grey text-sm leading-relaxed border-t border-gray-100">
+              <p class="pt-3">{f.a}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- RELATED SERVICES (Module 53 — topic-cluster interlinking) -->
+  <section class="py-16 bg-white" aria-labelledby="related-heading">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 id="related-heading" class="font-display font-extrabold text-2xl text-brand-dark mb-6 text-center">
+        Other Services You Might Need
+      </h2>
+      <div class="grid sm:grid-cols-3 gap-4">
+        {related.map((r) => (
+          <a href={`/${r.slug}/`} class="block p-5 rounded-2xl border border-gray-100 hover:border-brand-orange/40 hover:shadow-lg transition-all bg-gray-50">
+            <span class="text-3xl block mb-2">{r.icon}</span>
+            <span class="font-bold text-brand-dark text-sm">{r.shortName}</span>
+          </a>
+        ))}
+      </div>
+      <p class="text-center mt-6">
+        <a href="/services/" class="text-brand-orange font-semibold text-sm hover:underline">View all services →</a>
+      </p>
+    </div>
+  </section>
+
+  <QuoteForm />
+</BaseLayout>
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />

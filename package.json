@@ -1,0 +1,30 @@
+{
+  "name": "packershub",
+  "type": "module",
+  "version": "10.7.34",
+  "private": true,
+  "description": "PackersHub v10.7.33 — South India Packers & Movers | 100 city pages | Astro 7.0.3 + Tailwind v4 + Cloudflare | Service Areas: 18 verified / 18 moderate / 64 low-confidence cities (Telangana, Tamil Nadu, Karnataka, and Kerala's 64 low-confidence cities are still the next re-verification target); v10.7.31 redesigned the ServiceAreas component into one combined card with three labelled sections instead of three separate cards; v10.7.32 fixed 36 blog posts with broken image() paths (was failing astro build) and removed 26 stray leftover headings from batch content generation",
+  "scripts": {
+    "dev": "astro dev --host",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "types": "wrangler types",
+    "deploy": "astro build && wrangler pages deploy dist",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "@tailwindcss/typography": "^0.5.20",
+    "@tailwindcss/vite": "^4.3.1",
+    "astro": "^7.0.3",
+    "sharp": "^0.33.5",
+    "tailwindcss": "^4.3.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@astrojs/cloudflare": "^14.1.0",
+    "typescript": "^6.0.3",
+    "wrangler": "^4.105.0"
+  }
+}

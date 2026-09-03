@@ -1,0 +1,327 @@
+---
+// v10.7.2 — new file. Staff-only tool, excluded from search via noindex AND
+// Disallow: /admin/ in robots.txt. Not linked from any public nav menu.
+//
+// Covers Module 55 (competitor gap matrix) and Module 59.4 (AI citation
+// tracking) from the 59-module SEO doc as a real working tool instead of a
+// spreadsheet template — both were flagged in SEO_59_MODULES_AUDIT.md as
+// "pure process/ops... happy to turn into an internal /admin page".
+//
+// Every entry here is staff-typed from something they personally observed
+// (a competitor's live listing, or an AI answer they actually saw) — the
+// tool stores it, it does not generate or estimate anything.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Staff — SEO Ops Tracker"
+  description="Internal tool: competitor gap matrix and AI citation log."
+  noindex={true}
+>
+  <section class="py-16 bg-gray-50 min-h-screen">
+    <div class="max-w-3xl mx-auto px-4">
+      <h1 class="text-2xl font-display font-extrabold text-brand-dark mb-2">SEO Ops Tracker</h1>
+      <p class="text-brand-grey mb-8 text-sm">Internal tool. Enter your staff token once — it's remembered on this device.</p>
+
+      <div class="bg-white rounded-2xl shadow-card border border-gray-100 p-6 mb-6">
+        <label class="block text-sm font-semibold text-brand-dark mb-1.5">Staff Token</label>
+        <div class="flex gap-2">
+          <input type="password" id="admin-token" class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-brand-orange" placeholder="Paste staff token" />
+          <button id="save-token" class="px-4 py-2.5 rounded-xl border border-gray-200 font-semibold hover:border-brand-orange hover:text-brand-orange transition-colors" type="button">Save</button>
+        </div>
+        <p class="text-xs text-brand-grey mt-1.5" id="token-status"></p>
+      </div>
+
+      <div class="flex gap-2 mb-6 flex-wrap">
+        <button id="tab-competitor" class="flex-1 py-2.5 rounded-xl font-semibold border border-brand-orange text-brand-orange" type="button">Competitor Gap Matrix</button>
+        <button id="tab-citation" class="flex-1 py-2.5 rounded-xl font-semibold border border-gray-200 text-brand-grey" type="button">AI Citation Log</button>
+        <button id="tab-rank" class="flex-1 py-2.5 rounded-xl font-semibold border border-gray-200 text-brand-grey" type="button">Rank Tracking</button>
+        <button id="tab-traffic" class="flex-1 py-2.5 rounded-xl font-semibold border border-gray-200 text-brand-grey" type="button">Traffic Log + Forecast</button>
+      </div>
+
+      <!-- Competitor Gap Matrix (Module 55) -->
+      <div id="panel-competitor">
+        <div class="bg-white rounded-2xl shadow-card border border-gray-100 p-6 mb-6">
+          <h2 class="font-bold text-brand-dark mb-4">Log a Competitor Data Point</h2>
+          <label class="block text-sm font-semibold text-brand-dark mb-1.5">Competitor name</label>
+          <input id="c-name" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-brand-orange mb-3" placeholder="e.g. Agarwal Packers" />
+          <label class="block text-sm font-semibold text-brand-dark mb-1.5">City / page compared</label>
+          <input id="c-city" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-brand-orange mb-3" placeholder="e.g. Vijayawada" />
+          <label class="block text-sm font-semibold text-brand-dark mb-1.5">What they have that we don't (observed)</label>
+          <textarea id="c-gap" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-brand-orange mb-3" placeholder="e.g. Video testimonials embedded on city page"></textarea>
+          <label class="block text-sm font-semibold text-brand-dark mb-1.5">Source URL</label>
+          <input id="c-url" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-brand-orange mb-4" placeholder="https://..." />
+          <button id="c-submit" class="w-full py-3 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold" type="button">Log Entry</button>
+          <p class="text-xs text-brand-grey mt-3" id="c-result"></p>
+        </div>
+        <div id="c-list" class="space-y-3"></div>
+      </div>
+
+      <!-- AI Citation Log (Module 59.4) -->
+      <div id="panel-citation" style="display:none">
+        <div class="bg-white rounded-2xl shadow-card border border-gray-100 p-6 mb-6">
+          <h2 class="font-bold text-brand-dark mb-4">Log an AI Answer Sighting</h2>
+          <label class="block text-sm font-semibold text-brand-dark mb-1.5">AI tool (ChatGPT / Perplexity / Gemini / Claude...)</label>
+          <input id="a-tool" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-brand-orange mb-3" placeholder="e.g. Perplexity" />
+          <label class="block text-sm font-semibold text-brand-dark mb-1.5">Question asked</label>
+          <input id="a-query" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-brand-orange mb-3" placeholder="e.g. best packers and movers in Nellore" />
+          <label class="block text-sm font-semibold text-brand-dark mb-1.5">Was PackersHub mentioned?</label>
+          <select id="a-mentioned" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-brand-orange mb-3">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+          <label class="block text-sm font-semibold text-brand-dark mb-1.5">Notes (what it said, screenshot filename, etc.)</label>
+          <textarea id="a-notes" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-brand-orange mb-4" placeholder="Optional"></textarea>
+          <button id="a-submit" class="w-full py-3 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold" type="button">Log Entry</button>
+          <p class="text-xs text-brand-grey mt-3" id="a-result"></p>
+        </div>
+        <div id="a-list" class="space-y-3"></div>
+      </div>
+
+      <!-- Rank Tracking (Module 44) -->
+      <div id="panel-rank" style="display:none">
+        <div class="bg-white rounded-2xl shadow-card border border-gray-100 p-6 mb-6">
+          <h2 class="font-bold text-brand-dark mb-4">Log a Real Ranking Position</h2>
+          <p class="text-xs text-brand-grey mb-4">Paste a position you actually saw in Search Console or a rank tool — this never estimates on its own.</p>
+          <label class="block text-sm font-semibold text-brand-dark mb-1.5">Keyword</label>
+          <input id="r-keyword" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-brand-orange mb-3" placeholder="e.g. packers and movers in Nellore" />
+          <label class="block text-sm font-semibold text-brand-dark mb-1.5">Position</label>
+          <input id="r-position" type="number" min="1" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-brand-orange mb-3" placeholder="e.g. 4" />
+          <label class="block text-sm font-semibold text-brand-dark mb-1.5">Source (GSC / Semrush / manual SERP check)</label>
+          <input id="r-source" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-brand-orange mb-4" placeholder="e.g. Search Console, 21 Aug 2026" />
+          <button id="r-submit" class="w-full py-3 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold" type="button">Log Entry</button>
+          <p class="text-xs text-brand-grey mt-3" id="r-result"></p>
+        </div>
+        <div id="r-list" class="space-y-3"></div>
+      </div>
+
+      <!-- Traffic Log + Forecast (Modules 46 & 48) -->
+      <div id="panel-traffic" style="display:none">
+        <div class="bg-white rounded-2xl shadow-card border border-gray-100 p-6 mb-6">
+          <h2 class="font-bold text-brand-dark mb-4">Log a Real Monthly Traffic Number</h2>
+          <p class="text-xs text-brand-grey mb-4">Paste a real monthly clicks/sessions figure from GSC or GA4. After 3 real months are logged, a plain linear trend appears below — arithmetic on your numbers, not a prediction model.</p>
+          <label class="block text-sm font-semibold text-brand-dark mb-1.5">Month (YYYY-MM)</label>
+          <input id="t-month" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-brand-orange mb-3" placeholder="e.g. 2026-08" />
+          <label class="block text-sm font-semibold text-brand-dark mb-1.5">Clicks / sessions</label>
+          <input id="t-clicks" type="number" min="0" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-brand-orange mb-3" placeholder="e.g. 2140" />
+          <label class="block text-sm font-semibold text-brand-dark mb-1.5">Notes (drop reason if any — algorithm update, seasonality, outage)</label>
+          <textarea id="t-notes" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-brand-orange mb-4" placeholder="Optional"></textarea>
+          <button id="t-submit" class="w-full py-3 rounded-full bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold" type="button">Log Entry</button>
+          <p class="text-xs text-brand-grey mt-3" id="t-result"></p>
+        </div>
+        <div id="t-forecast" class="mb-4"></div>
+        <div id="t-list" class="space-y-3"></div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const tokenInput = document.getElementById('admin-token') as HTMLInputElement;
+  const tokenStatus = document.getElementById('token-status')!;
+  const KEY = 'ph_admin_token';
+
+  const saved = localStorage.getItem(KEY);
+  if (saved) { tokenInput.value = saved; tokenStatus.textContent = 'Token loaded from this device.'; }
+
+  document.getElementById('save-token')!.addEventListener('click', () => {
+    localStorage.setItem(KEY, tokenInput.value.trim());
+    tokenStatus.textContent = 'Saved on this device.';
+  });
+
+  function token() { return tokenInput.value.trim() || localStorage.getItem(KEY) || ''; }
+
+  async function api(method: string, params: Record<string, string> = {}, body?: unknown) {
+    const qs = new URLSearchParams(params).toString();
+    const res = await fetch(`/api/admin/seo-ops${qs ? '?' + qs : ''}`, {
+      method,
+      headers: { 'Content-Type': 'application/json', 'x-admin-token': token() },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    return res.json();
+  }
+
+  // Tabs
+  const tabs = {
+    c: { btn: document.getElementById('tab-competitor')!, panel: document.getElementById('panel-competitor')!, load: loadCompetitors },
+    a: { btn: document.getElementById('tab-citation')!, panel: document.getElementById('panel-citation')!, load: loadCitations },
+    r: { btn: document.getElementById('tab-rank')!, panel: document.getElementById('panel-rank')!, load: loadRanks },
+    t: { btn: document.getElementById('tab-traffic')!, panel: document.getElementById('panel-traffic')!, load: loadTraffic },
+  } as const;
+  function showTab(which: keyof typeof tabs) {
+    for (const key of Object.keys(tabs) as (keyof typeof tabs)[]) {
+      const active = key === which;
+      tabs[key].panel.style.display = active ? '' : 'none';
+      tabs[key].btn.className = active
+        ? 'flex-1 py-2.5 rounded-xl font-semibold border border-brand-orange text-brand-orange'
+        : 'flex-1 py-2.5 rounded-xl font-semibold border border-gray-200 text-brand-grey';
+    }
+    tabs[which].load();
+  }
+  tabs.c.btn.addEventListener('click', () => showTab('c'));
+  tabs.a.btn.addEventListener('click', () => showTab('a'));
+  tabs.r.btn.addEventListener('click', () => showTab('r'));
+  tabs.t.btn.addEventListener('click', () => showTab('t'));
+
+  function entryCard(title: string, lines: string[], onDelete: () => void) {
+    const div = document.createElement('div');
+    div.className = 'bg-white rounded-2xl shadow-card border border-gray-100 p-4';
+    div.innerHTML = `<p class="font-semibold text-brand-dark mb-1">${title}</p>` +
+      lines.map(l => `<p class="text-sm text-brand-grey">${l}</p>`).join('') +
+      `<button class="text-xs text-red-600 font-semibold mt-2">Delete</button>`;
+    div.querySelector('button')!.addEventListener('click', onDelete);
+    return div;
+  }
+
+  async function loadCompetitors() {
+    const list = document.getElementById('c-list')!;
+    list.innerHTML = '<p class="text-sm text-brand-grey">Loading…</p>';
+    const data = await api('GET', { type: 'competitor' });
+    if (!data.ok) { list.innerHTML = `<p class="text-sm text-red-600">${data.error}</p>`; return; }
+    list.innerHTML = '';
+    for (const e of data.entries) {
+      list.appendChild(entryCard(
+        `${e.name} — ${e.city}`,
+        [e.gap, e.url ? `<a href="${e.url}" target="_blank" class="text-brand-orange">${e.url}</a>` : '', new Date(e.loggedAt).toLocaleDateString()].filter(Boolean),
+        async () => { await api('DELETE', { type: 'competitor', id: e.id }); loadCompetitors(); }
+      ));
+    }
+  }
+
+  async function loadCitations() {
+    const list = document.getElementById('a-list')!;
+    list.innerHTML = '<p class="text-sm text-brand-grey">Loading…</p>';
+    const data = await api('GET', { type: 'citation' });
+    if (!data.ok) { list.innerHTML = `<p class="text-sm text-red-600">${data.error}</p>`; return; }
+    list.innerHTML = '';
+    for (const e of data.entries) {
+      list.appendChild(entryCard(
+        `${e.tool} — ${e.mentioned === 'yes' ? '✅ mentioned' : '❌ not mentioned'}`,
+        [e.query, e.notes, new Date(e.loggedAt).toLocaleDateString()].filter(Boolean),
+        async () => { await api('DELETE', { type: 'citation', id: e.id }); loadCitations(); }
+      ));
+    }
+  }
+
+  async function loadRanks() {
+    const list = document.getElementById('r-list')!;
+    list.innerHTML = '<p class="text-sm text-brand-grey">Loading…</p>';
+    const data = await api('GET', { type: 'rank' });
+    if (!data.ok) { list.innerHTML = `<p class="text-sm text-red-600">${data.error}</p>`; return; }
+    list.innerHTML = '';
+    for (const e of data.entries) {
+      list.appendChild(entryCard(
+        `${e.keyword} — position ${e.position}`,
+        [e.source, new Date(e.loggedAt).toLocaleDateString()].filter(Boolean),
+        async () => { await api('DELETE', { type: 'rank', id: e.id }); loadRanks(); }
+      ));
+    }
+  }
+
+  async function loadTraffic() {
+    const list = document.getElementById('t-list')!;
+    const fc = document.getElementById('t-forecast')!;
+    list.innerHTML = '<p class="text-sm text-brand-grey">Loading…</p>';
+    fc.innerHTML = '';
+    const data = await api('GET', { type: 'traffic' });
+    if (!data.ok) { list.innerHTML = `<p class="text-sm text-red-600">${data.error}</p>`; return; }
+    if (data.forecast) {
+      const f = data.forecast;
+      fc.innerHTML = `<div class="bg-orange-50 border border-orange-100 rounded-2xl p-4 text-sm">
+        <p class="font-semibold text-brand-dark mb-1">Linear trend (${f.basedOnMonths} real months logged)</p>
+        <p class="text-brand-grey">Avg change/month: ${f.trendPerMonth >= 0 ? '+' : ''}${f.trendPerMonth} · Next-month estimate: ~${f.nextMonthEstimate}</p>
+        <p class="text-xs text-gray-400 mt-1">${f.note}</p>
+      </div>`;
+    } else {
+      fc.innerHTML = `<p class="text-xs text-brand-grey">Log 3+ real months to see a trend line here.</p>`;
+    }
+    list.innerHTML = '';
+    for (const e of data.entries) {
+      list.appendChild(entryCard(
+        `${e.month} — ${e.clicks} clicks/sessions`,
+        [e.notes, new Date(e.loggedAt).toLocaleDateString()].filter(Boolean),
+        async () => { await api('DELETE', { type: 'traffic', id: e.id }); loadTraffic(); }
+      ));
+    }
+  }
+
+  document.getElementById('r-submit')!.addEventListener('click', async () => {
+    const result = document.getElementById('r-result')!;
+    const body = {
+      type: 'rank',
+      keyword: (document.getElementById('r-keyword') as HTMLInputElement).value,
+      position: Number((document.getElementById('r-position') as HTMLInputElement).value),
+      source: (document.getElementById('r-source') as HTMLInputElement).value,
+    };
+    if (!body.keyword || !body.position) { result.textContent = 'Keyword and position are required.'; return; }
+    const data = await api('POST', {}, body);
+    result.textContent = data.ok ? 'Logged.' : data.error;
+    if (data.ok) {
+      (document.getElementById('r-keyword') as HTMLInputElement).value = '';
+      (document.getElementById('r-position') as HTMLInputElement).value = '';
+      (document.getElementById('r-source') as HTMLInputElement).value = '';
+      loadRanks();
+    }
+  });
+
+  document.getElementById('t-submit')!.addEventListener('click', async () => {
+    const result = document.getElementById('t-result')!;
+    const body = {
+      type: 'traffic',
+      month: (document.getElementById('t-month') as HTMLInputElement).value,
+      clicks: Number((document.getElementById('t-clicks') as HTMLInputElement).value),
+      notes: (document.getElementById('t-notes') as HTMLTextAreaElement).value,
+    };
+    if (!body.month || !(document.getElementById('t-clicks') as HTMLInputElement).value) { result.textContent = 'Month and clicks/sessions are required.'; return; }
+    const data = await api('POST', {}, body);
+    result.textContent = data.ok ? 'Logged.' : data.error;
+    if (data.ok) {
+      (document.getElementById('t-month') as HTMLInputElement).value = '';
+      (document.getElementById('t-clicks') as HTMLInputElement).value = '';
+      (document.getElementById('t-notes') as HTMLTextAreaElement).value = '';
+      loadTraffic();
+    }
+  });
+
+  document.getElementById('c-submit')!.addEventListener('click', async () => {
+    const result = document.getElementById('c-result')!;
+    const body = {
+      type: 'competitor',
+      name: (document.getElementById('c-name') as HTMLInputElement).value,
+      city: (document.getElementById('c-city') as HTMLInputElement).value,
+      gap: (document.getElementById('c-gap') as HTMLTextAreaElement).value,
+      url: (document.getElementById('c-url') as HTMLInputElement).value,
+    };
+    if (!body.name || !body.gap) { result.textContent = 'Name and gap are required.'; return; }
+    const data = await api('POST', {}, body);
+    result.textContent = data.ok ? 'Logged.' : data.error;
+    if (data.ok) {
+      (document.getElementById('c-name') as HTMLInputElement).value = '';
+      (document.getElementById('c-city') as HTMLInputElement).value = '';
+      (document.getElementById('c-gap') as HTMLTextAreaElement).value = '';
+      (document.getElementById('c-url') as HTMLInputElement).value = '';
+      loadCompetitors();
+    }
+  });
+
+  document.getElementById('a-submit')!.addEventListener('click', async () => {
+    const result = document.getElementById('a-result')!;
+    const body = {
+      type: 'citation',
+      tool: (document.getElementById('a-tool') as HTMLInputElement).value,
+      query: (document.getElementById('a-query') as HTMLInputElement).value,
+      mentioned: (document.getElementById('a-mentioned') as HTMLSelectElement).value,
+      notes: (document.getElementById('a-notes') as HTMLTextAreaElement).value,
+    };
+    if (!body.tool || !body.query) { result.textContent = 'Tool and question are required.'; return; }
+    const data = await api('POST', {}, body);
+    result.textContent = data.ok ? 'Logged.' : data.error;
+    if (data.ok) {
+      (document.getElementById('a-tool') as HTMLInputElement).value = '';
+      (document.getElementById('a-query') as HTMLInputElement).value = '';
+      (document.getElementById('a-notes') as HTMLTextAreaElement).value = '';
+      loadCitations();
+    }
+  });
+
+  loadCompetitors();
+</script>

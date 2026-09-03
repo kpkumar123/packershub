@@ -1,0 +1,6821 @@
+{
+  "heading_template": "Our Service Areas in {city}",
+  "intro_template": "PackersHub provides door-to-door packing and moving services across every major locality in {city} — from premium residential colonies to busy commercial belts and high-density neighbourhoods.",
+  "note": "Areas for tier-2/3 towns (confidence: low or moderate) are based on limited verifiable sources and should be cross-checked locally before publishing. 'verified' cities were confirmed via multi-source deep research.",
+  "meta": {
+    "total_states": 5,
+    "total_cities": 100,
+    "cities_per_state": {
+      "Andhra Pradesh": 20,
+      "Telangana": 20,
+      "Tamil Nadu": 20,
+      "Karnataka": 20,
+      "Kerala": 20
+    },
+    "confidence_breakdown": {
+      "verified": 18,
+      "moderate": 18,
+      "low": 64
+    },
+    "last_updated_note": "v10.7.21: replaced the weakest \"<Neighbouring-town> Road belt\" filler entries (added purely to reach the 20-area count) across the 12 lowest-confidence Andhra Pradesh cities (Anantapur, Kadapa, Vizianagaram, Eluru, Ongole, Nandyal, Machilipatnam, Proddatur, Chittoor, Hindupur, Srikakulam, Bhimavaram) with real locality/colony names sourced from AP Grama/Ward Sachivalayam secretariat lists and municipal ward records. All 20 AP cities still show exactly 20 areas each with no duplicates. Confidence tags left as-is since only the AP state has been re-verified this pass -- Telangana, Tamil Nadu, Karnataka, and Kerala's low-confidence entries (64 cities total, flagged in the prior review) still carry the original placeholder-style names and should be the next pass."
+  },
+  "states": [
+    {
+      "state": "Andhra Pradesh",
+      "city_count": 20,
+      "cities": [
+        {
+          "city": "Visakhapatnam",
+          "slug": "visakhapatnam",
+          "confidence": "verified",
+          "areas": [
+            {
+              "name": "Dwaraka Nagar",
+              "category": "commercial"
+            },
+            {
+              "name": "Siripuram",
+              "category": "commercial"
+            },
+            {
+              "name": "Asilmetta",
+              "category": "commercial"
+            },
+            {
+              "name": "Daba Gardens",
+              "category": "commercial"
+            },
+            {
+              "name": "MVP Colony",
+              "category": "affluent"
+            },
+            {
+              "name": "Seethammadhara",
+              "category": "affluent"
+            },
+            {
+              "name": "Madhurawada",
+              "category": "affluent"
+            },
+            {
+              "name": "Maddilapalem",
+              "category": "commercial"
+            },
+            {
+              "name": "Akkayyapalem",
+              "category": "high-population"
+            },
+            {
+              "name": "Gajuwaka",
+              "category": "high-population"
+            },
+            {
+              "name": "Pendurthi",
+              "category": "high-population"
+            },
+            {
+              "name": "Gopalapatnam",
+              "category": "high-population"
+            },
+            {
+              "name": "Madhavadhara",
+              "category": "affluent"
+            },
+            {
+              "name": "Sheela Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Muralinagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Pothinamallayya Palem",
+              "category": "affluent"
+            },
+            {
+              "name": "Duvvada",
+              "category": "high-population"
+            },
+            {
+              "name": "Yendada",
+              "category": "affluent"
+            },
+            {
+              "name": "Rushikonda",
+              "category": "affluent"
+            },
+            {
+              "name": "Kailasapuram",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Vijayawada",
+          "slug": "vijayawada",
+          "confidence": "verified",
+          "areas": [
+            {
+              "name": "Benz Circle",
+              "category": "commercial"
+            },
+            {
+              "name": "MG Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Governorpet",
+              "category": "commercial"
+            },
+            {
+              "name": "Labbipet",
+              "category": "affluent"
+            },
+            {
+              "name": "Patamata",
+              "category": "affluent"
+            },
+            {
+              "name": "Suryaraopet",
+              "category": "commercial"
+            },
+            {
+              "name": "Bhavanipuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Auto Nagar",
+              "category": "commercial"
+            },
+            {
+              "name": "Poranki",
+              "category": "high-population"
+            },
+            {
+              "name": "Vidyadharapuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Moghalrajpuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Krishna Lanka",
+              "category": "high-population"
+            },
+            {
+              "name": "Payakapuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Gunadala",
+              "category": "high-population"
+            },
+            {
+              "name": "Ramavarappadu",
+              "category": "high-population"
+            },
+            {
+              "name": "Tadigadapa",
+              "category": "affluent"
+            },
+            {
+              "name": "Ajit Singh Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Currency Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Enikepadu",
+              "category": "commercial"
+            },
+            {
+              "name": "Gollapudi",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Guntur",
+          "slug": "guntur",
+          "confidence": "verified",
+          "areas": [
+            {
+              "name": "Arundelpet",
+              "category": "commercial"
+            },
+            {
+              "name": "Brodipet",
+              "category": "commercial"
+            },
+            {
+              "name": "Lakshmipuram",
+              "category": "affluent"
+            },
+            {
+              "name": "Old Guntur / Kothapet",
+              "category": "commercial"
+            },
+            {
+              "name": "Nagarampalem",
+              "category": "high-population"
+            },
+            {
+              "name": "Pattabhipuram",
+              "category": "affluent"
+            },
+            {
+              "name": "Chandramouli Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Auto Nagar, Guntur",
+              "category": "commercial"
+            },
+            {
+              "name": "Chuttugunta",
+              "category": "commercial"
+            },
+            {
+              "name": "Syamala Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Gorantla",
+              "category": "high-population"
+            },
+            {
+              "name": "Koritepadu",
+              "category": "high-population"
+            },
+            {
+              "name": "Brindavan Gardens",
+              "category": "affluent"
+            },
+            {
+              "name": "Nallapadu",
+              "category": "high-population"
+            },
+            {
+              "name": "Kaza",
+              "category": "high-population"
+            },
+            {
+              "name": "Amaravathi Road",
+              "category": "commercial"
+            },
+            {
+              "name": "APHB Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Vidyanagar, Guntur",
+              "category": "high-population"
+            },
+            {
+              "name": "Sitaram Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Kunchanapalli",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Nellore",
+          "slug": "nellore",
+          "confidence": "verified",
+          "areas": [
+            {
+              "name": "Trunk Road (GT Road)",
+              "category": "commercial"
+            },
+            {
+              "name": "Dargamitta",
+              "category": "affluent"
+            },
+            {
+              "name": "Magunta Layout",
+              "category": "affluent"
+            },
+            {
+              "name": "Pogathota",
+              "category": "commercial"
+            },
+            {
+              "name": "AK Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "BV Nagar",
+              "category": "commercial"
+            },
+            {
+              "name": "Vedayapalem",
+              "category": "high-population"
+            },
+            {
+              "name": "Stonehousepet",
+              "category": "high-population"
+            },
+            {
+              "name": "Santhapet",
+              "category": "commercial"
+            },
+            {
+              "name": "Kondayapalem",
+              "category": "high-population"
+            },
+            {
+              "name": "Mulapet",
+              "category": "commercial"
+            },
+            {
+              "name": "Dhanalakshmi Puram",
+              "category": "affluent"
+            },
+            {
+              "name": "Balaji Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Nawabpet",
+              "category": "high-population"
+            },
+            {
+              "name": "Harinathpuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Parameshwari Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Ramji Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Kakupalli",
+              "category": "high-population"
+            },
+            {
+              "name": "Chintareddy Palem",
+              "category": "high-population"
+            },
+            {
+              "name": "Saraswathi Nagar",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Rajamahendravaram (Rajahmundry)",
+          "slug": "rajahmundry",
+          "confidence": "moderate",
+          "areas": [
+            {
+              "name": "Danavaipeta",
+              "category": "commercial"
+            },
+            {
+              "name": "Dwaraka Nagar, Rajamahendravaram",
+              "category": "affluent"
+            },
+            {
+              "name": "Kakinada Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Morampudi",
+              "category": "high-population"
+            },
+            {
+              "name": "Rajanagaram",
+              "category": "high-population"
+            },
+            {
+              "name": "Innespeta",
+              "category": "commercial"
+            },
+            {
+              "name": "Devi Chowk",
+              "category": "commercial"
+            },
+            {
+              "name": "Godavari Bund Road",
+              "category": "affluent"
+            },
+            {
+              "name": "Diwancheruvu",
+              "category": "high-population"
+            },
+            {
+              "name": "Konthamuru",
+              "category": "high-population"
+            },
+            {
+              "name": "Bommuru",
+              "category": "high-population"
+            },
+            {
+              "name": "AV Appa Rao Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Kotagummam",
+              "category": "high-population"
+            },
+            {
+              "name": "Balaji Cheruvu",
+              "category": "high-population"
+            },
+            {
+              "name": "Alcot Gardens",
+              "category": "affluent"
+            },
+            {
+              "name": "Katheru",
+              "category": "high-population"
+            },
+            {
+              "name": "Korukonda",
+              "category": "high-population"
+            },
+            {
+              "name": "Danavaipet",
+              "category": "commercial"
+            },
+            {
+              "name": "Vidyanagar, Rajamahendravaram",
+              "category": "high-population"
+            },
+            {
+              "name": "Ramannapeta",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Kakinada",
+          "slug": "kakinada",
+          "confidence": "moderate",
+          "areas": [
+            {
+              "name": "Sarpavaram",
+              "category": "high-population"
+            },
+            {
+              "name": "Gandhi Nagar, Kakinada",
+              "category": "commercial"
+            },
+            {
+              "name": "Vakalapudi",
+              "category": "high-population"
+            },
+            {
+              "name": "Rama Rao Peta",
+              "category": "high-population"
+            },
+            {
+              "name": "Vidyut Nagar, Kakinada",
+              "category": "affluent"
+            },
+            {
+              "name": "Bhanugudi Junction",
+              "category": "commercial"
+            },
+            {
+              "name": "ADB Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Turangi",
+              "category": "high-population"
+            },
+            {
+              "name": "Jagannadhapuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Kovvada",
+              "category": "high-population"
+            },
+            {
+              "name": "Valasapakala",
+              "category": "high-population"
+            },
+            {
+              "name": "Ramanayapeta",
+              "category": "affluent"
+            },
+            {
+              "name": "Madhura Nagar, Kakinada",
+              "category": "high-population"
+            },
+            {
+              "name": "Rajeshwari Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Thimmapuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Pratap Nagar, Kakinada",
+              "category": "high-population"
+            },
+            {
+              "name": "Santhi Nagar, Kakinada",
+              "category": "high-population"
+            },
+            {
+              "name": "Surya Rao Peta",
+              "category": "commercial"
+            },
+            {
+              "name": "Achampet Junction",
+              "category": "affluent"
+            },
+            {
+              "name": "Kakinada Pithapuram Road",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Tirupati",
+          "slug": "tirupati",
+          "confidence": "moderate",
+          "areas": [
+            {
+              "name": "K.T. Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Renigunta Road (RC Road)",
+              "category": "commercial"
+            },
+            {
+              "name": "AIR Bypass Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Korlagunta",
+              "category": "high-population"
+            },
+            {
+              "name": "Balaji Colony",
+              "category": "affluent"
+            },
+            {
+              "name": "Tiruchanur",
+              "category": "affluent"
+            },
+            {
+              "name": "Mangalam",
+              "category": "high-population"
+            },
+            {
+              "name": "Avilala",
+              "category": "high-population"
+            },
+            {
+              "name": "Renigunta",
+              "category": "high-population"
+            },
+            {
+              "name": "Yerpedu",
+              "category": "high-population"
+            },
+            {
+              "name": "Karakambadi Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Chandragiri",
+              "category": "high-population"
+            },
+            {
+              "name": "MR Pally",
+              "category": "high-population"
+            },
+            {
+              "name": "Peruru",
+              "category": "high-population"
+            },
+            {
+              "name": "Vaikuntapuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Padmavathi Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "New Balaji Colony",
+              "category": "affluent"
+            },
+            {
+              "name": "Bhavani Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Tata Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Alipiri",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Kurnool",
+          "slug": "kurnool",
+          "confidence": "moderate",
+          "areas": [
+            {
+              "name": "Nandikotkur Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Madhavi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Budhawarpet",
+              "category": "commercial"
+            },
+            {
+              "name": "Kallur",
+              "category": "high-population"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Venkataramana Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Krishna Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "C Camp",
+              "category": "high-population"
+            },
+            {
+              "name": "Bethel Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Uppini Gunta",
+              "category": "commercial"
+            },
+            {
+              "name": "Sanjeevaiah Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Santosh Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Ganesh Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Salim Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Padmavathi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Kurnool Old Town Main Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Gooty Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Shareen Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "G Pulla Reddy Nagar",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Anantapur",
+          "slug": "anantapur",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Subash Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Ramnagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Sai Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Bus Stand Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Raj Bazaar (Old Town)",
+              "category": "commercial"
+            },
+            {
+              "name": "Srinagar Colony",
+              "category": "affluent"
+            },
+            {
+              "name": "Kamalanagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Vidyanagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Ratnagiri",
+              "category": "high-population"
+            },
+            {
+              "name": "Sathya Sai Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Chinnaiah Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Konakondla Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Clock Tower Area",
+              "category": "commercial"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Navodaya Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Municipal Colony, Anantapur",
+              "category": "high-population"
+            },
+            {
+              "name": "SBI Officers Colony",
+              "category": "affluent"
+            },
+            {
+              "name": "Old Anantapur",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Kadapa (YSR Kadapa)",
+          "slug": "kadapa",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Yerramukkapalli",
+              "category": "high-population"
+            },
+            {
+              "name": "Vidyanagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Old Town Main Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Railway Kodur Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Nagarajupet",
+              "category": "high-population"
+            },
+            {
+              "name": "Raja Reddy Street",
+              "category": "commercial"
+            },
+            {
+              "name": "Krishna Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Sanjeevayya Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "One Town",
+              "category": "commercial"
+            },
+            {
+              "name": "Machupalli",
+              "category": "high-population"
+            },
+            {
+              "name": "Chinnayapalem",
+              "category": "high-population"
+            },
+            {
+              "name": "Devunikadapa",
+              "category": "affluent"
+            },
+            {
+              "name": "Ameerpet",
+              "category": "high-population"
+            },
+            {
+              "name": "Sadhu Peta",
+              "category": "commercial"
+            },
+            {
+              "name": "Nagireddy Palli",
+              "category": "high-population"
+            },
+            {
+              "name": "Putlampalli",
+              "category": "high-population"
+            },
+            {
+              "name": "New Colony, Kadapa",
+              "category": "high-population"
+            },
+            {
+              "name": "Adarsh Nagar, Kadapa",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Vizianagaram",
+          "slug": "vizianagaram",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Fort Area",
+              "category": "commercial"
+            },
+            {
+              "name": "Three Town",
+              "category": "commercial"
+            },
+            {
+              "name": "Balaji Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Ramnagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Lankapatnam",
+              "category": "high-population"
+            },
+            {
+              "name": "Lakshmi Ganapathi Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Old Vizianagaram",
+              "category": "commercial"
+            },
+            {
+              "name": "Cantonment Area",
+              "category": "affluent"
+            },
+            {
+              "name": "Gajapathi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Nellimarla Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Chinna Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Pedda Cherla Road",
+              "category": "high-population"
+            },
+            {
+              "name": "Kothapeta Gollaveedhi",
+              "category": "commercial"
+            },
+            {
+              "name": "Vepagunta",
+              "category": "high-population"
+            },
+            {
+              "name": "Sthambadri",
+              "category": "high-population"
+            },
+            {
+              "name": "Vidyut Nagar, Vizianagaram",
+              "category": "high-population"
+            },
+            {
+              "name": "MG Road, Vizianagaram",
+              "category": "commercial"
+            },
+            {
+              "name": "PB Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Santhapeta, Vizianagaram",
+              "category": "commercial"
+            },
+            {
+              "name": "Venugopala Puram",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Eluru",
+          "slug": "eluru",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Ramachandra Rao Peta",
+              "category": "commercial"
+            },
+            {
+              "name": "Powerpet",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "MRC Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Yadava Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Old Town Main Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Pedavegi Road",
+              "category": "high-population"
+            },
+            {
+              "name": "Sanivarapupeta",
+              "category": "high-population"
+            },
+            {
+              "name": "Kanuru",
+              "category": "high-population"
+            },
+            {
+              "name": "Tapimestri Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "R.R. Peta",
+              "category": "commercial"
+            },
+            {
+              "name": "Prakash Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Currency Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Bus Stand Road",
+              "category": "commercial"
+            },
+            {
+              "name": "11th Ward",
+              "category": "high-population"
+            },
+            {
+              "name": "Nawabpet, Eluru",
+              "category": "high-population"
+            },
+            {
+              "name": "Santhi Nagar, Eluru",
+              "category": "high-population"
+            },
+            {
+              "name": "Governorpet, Eluru",
+              "category": "commercial"
+            },
+            {
+              "name": "Ramannapeta, Eluru",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Ongole",
+          "slug": "ongole",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Trunk Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Ponugupati Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Santhapeta",
+              "category": "commercial"
+            },
+            {
+              "name": "Ramalingapuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Chinna Ongole",
+              "category": "high-population"
+            },
+            {
+              "name": "Kothapatnam Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Vidyut Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Prakasam Bhavan Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Siva Prasad Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Nehru Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Krishna Rao Peta",
+              "category": "commercial"
+            },
+            {
+              "name": "R.S. Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Gospadu Road",
+              "category": "high-population"
+            },
+            {
+              "name": "Indira Nagar, Ongole",
+              "category": "high-population"
+            },
+            {
+              "name": "A.C. Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Housing Board Colony, Ongole",
+              "category": "high-population"
+            },
+            {
+              "name": "Gandhi Nagar, Ongole",
+              "category": "commercial"
+            },
+            {
+              "name": "Vidyanagar, Ongole",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Nandyal",
+          "slug": "nandyal",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Srisailam Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Old Town Main Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Sanjeevaiah Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "NGO Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Venkatarama Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Krishna Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Vivekananda Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "New Town",
+              "category": "high-population"
+            },
+            {
+              "name": "Viswa Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Kolimigundla Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Rajiv Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Lalitha Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "YSR Nagar, Nandyal",
+              "category": "high-population"
+            },
+            {
+              "name": "Housing Board Colony, Nandyal",
+              "category": "high-population"
+            },
+            {
+              "name": "Municipal Market Area, Nandyal",
+              "category": "commercial"
+            },
+            {
+              "name": "Srisailam Bypass Road",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Machilipatnam",
+          "slug": "machilipatnam",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Bandar Old Town",
+              "category": "commercial"
+            },
+            {
+              "name": "Balaramunipeta",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Sarada Nagar, Machilipatnam",
+              "category": "high-population"
+            },
+            {
+              "name": "Krishna Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Port Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Ramachandrapuram Road",
+              "category": "high-population"
+            },
+            {
+              "name": "New Town",
+              "category": "affluent"
+            },
+            {
+              "name": "Kothapeta",
+              "category": "commercial"
+            },
+            {
+              "name": "Malakayapalli Road",
+              "category": "high-population"
+            },
+            {
+              "name": "Chinna Gollapalem",
+              "category": "high-population"
+            },
+            {
+              "name": "Sukarlabad",
+              "category": "high-population"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Gilakaladindi",
+              "category": "high-population"
+            },
+            {
+              "name": "Kalekhan Peta",
+              "category": "commercial"
+            },
+            {
+              "name": "Pandava Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Ramalayam Street",
+              "category": "commercial"
+            },
+            {
+              "name": "Kothapeta, Machilipatnam",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Proddatur",
+          "slug": "proddatur",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Main Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Gold Market Area",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "New Town",
+              "category": "affluent"
+            },
+            {
+              "name": "Sasthry Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Krishna Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Old Town",
+              "category": "commercial"
+            },
+            {
+              "name": "Ramanuja Circle",
+              "category": "commercial"
+            },
+            {
+              "name": "Venkateswara Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Vinayaka Nagar, Proddatur",
+              "category": "high-population"
+            },
+            {
+              "name": "Rajiv Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "SBI Colony, Proddatur",
+              "category": "high-population"
+            },
+            {
+              "name": "Proddatur MIG Layout",
+              "category": "affluent"
+            },
+            {
+              "name": "Rajiv Nagar, Proddatur",
+              "category": "high-population"
+            },
+            {
+              "name": "Municipal Market Area, Proddatur",
+              "category": "commercial"
+            },
+            {
+              "name": "Bhagya Nagar Colony",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Chittoor",
+          "slug": "chittoor",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Vengal Rao Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Gandhi Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "New Town",
+              "category": "affluent"
+            },
+            {
+              "name": "Vijaya Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Venkateswara Colony, Chittoor",
+              "category": "high-population"
+            },
+            {
+              "name": "Old Town Main Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Durga Nagar Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Krishna Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Greamspet",
+              "category": "high-population"
+            },
+            {
+              "name": "Rangampet Road",
+              "category": "high-population"
+            },
+            {
+              "name": "Sanjay Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Murukambattu",
+              "category": "high-population"
+            },
+            {
+              "name": "Chittoor Fort Area",
+              "category": "commercial"
+            },
+            {
+              "name": "Thotapalyam",
+              "category": "high-population"
+            },
+            {
+              "name": "Kattamanchi",
+              "category": "high-population"
+            },
+            {
+              "name": "Srinivasa Nagar, Chittoor",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Hindupur",
+          "slug": "hindupur",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "SC Colony, Hindupur",
+              "category": "high-population"
+            },
+            {
+              "name": "Main Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Textile Market Area",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "New Town",
+              "category": "affluent"
+            },
+            {
+              "name": "Chowdeswari Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Krishna Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Old Town",
+              "category": "commercial"
+            },
+            {
+              "name": "APSP Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Vidyanagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Dharma Puram",
+              "category": "high-population"
+            },
+            {
+              "name": "Aravind Nagar, Hindupur",
+              "category": "high-population"
+            },
+            {
+              "name": "Sri Sathya Sai Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Mudi Reddy Palli",
+              "category": "high-population"
+            },
+            {
+              "name": "Municipal Colony, Hindupur",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Srikakulam",
+          "slug": "srikakulam",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Arasavalli",
+              "category": "affluent"
+            },
+            {
+              "name": "Balaga",
+              "category": "high-population"
+            },
+            {
+              "name": "Jagannaikpur",
+              "category": "commercial"
+            },
+            {
+              "name": "Ranasthalam Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Palem",
+              "category": "high-population"
+            },
+            {
+              "name": "Peda Cherukupalli",
+              "category": "high-population"
+            },
+            {
+              "name": "Bhavanipuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Adivaram Peta",
+              "category": "high-population"
+            },
+            {
+              "name": "Danthalapalli",
+              "category": "high-population"
+            },
+            {
+              "name": "Housing Board Colony, Srikakulam",
+              "category": "high-population"
+            },
+            {
+              "name": "Chinna Bazaar, Srikakulam",
+              "category": "commercial"
+            },
+            {
+              "name": "Auto Nagar, Srikakulam",
+              "category": "commercial"
+            },
+            {
+              "name": "Krishna Nagar, Srikakulam",
+              "category": "high-population"
+            },
+            {
+              "name": "Bavaji Thota",
+              "category": "high-population"
+            },
+            {
+              "name": "Hudco Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Mahalakshmi Nagar, Srikakulam",
+              "category": "high-population"
+            },
+            {
+              "name": "Gandhi Nagar, Srikakulam",
+              "category": "commercial"
+            },
+            {
+              "name": "Gudi Veedhi",
+              "category": "commercial"
+            },
+            {
+              "name": "Ranastalam",
+              "category": "high-population"
+            },
+            {
+              "name": "RIMS Road",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Bhimavaram",
+          "slug": "bhimavaram",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Gunupudi",
+              "category": "affluent"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Durgapuram",
+              "category": "commercial"
+            },
+            {
+              "name": "Bank Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Somavaram",
+              "category": "high-population"
+            },
+            {
+              "name": "Prakasam Nagar, Bhimavaram",
+              "category": "high-population"
+            },
+            {
+              "name": "Kotha Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Old Town, Bhimavaram",
+              "category": "commercial"
+            },
+            {
+              "name": "Housing Board Colony, Bhimavaram",
+              "category": "high-population"
+            },
+            {
+              "name": "Ramachandra Nagar, Bhimavaram",
+              "category": "high-population"
+            },
+            {
+              "name": "T.P. Gudem",
+              "category": "high-population"
+            },
+            {
+              "name": "Ashok Nagar, Bhimavaram",
+              "category": "high-population"
+            },
+            {
+              "name": "Veeramma Park",
+              "category": "high-population"
+            },
+            {
+              "name": "Narasaiyya Agraharam",
+              "category": "high-population"
+            },
+            {
+              "name": "Sunkara Paddiah Street",
+              "category": "commercial"
+            },
+            {
+              "name": "Pothumraju Peta",
+              "category": "high-population"
+            },
+            {
+              "name": "R.R.K. Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Buddha Nagar, Bhimavaram",
+              "category": "high-population"
+            },
+            {
+              "name": "TV Tower ASR Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Water Tank Road, Bhimavaram",
+              "category": "commercial"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "state": "Telangana",
+      "city_count": 20,
+      "cities": [
+        {
+          "city": "Hyderabad",
+          "slug": "hyderabad",
+          "confidence": "verified",
+          "areas": [
+            {
+              "name": "Banjara Hills",
+              "category": "affluent"
+            },
+            {
+              "name": "Jubilee Hills",
+              "category": "affluent"
+            },
+            {
+              "name": "HITEC City",
+              "category": "commercial"
+            },
+            {
+              "name": "Gachibowli",
+              "category": "commercial"
+            },
+            {
+              "name": "Madhapur",
+              "category": "commercial"
+            },
+            {
+              "name": "Kondapur",
+              "category": "affluent"
+            },
+            {
+              "name": "Kokapet",
+              "category": "affluent"
+            },
+            {
+              "name": "Somajiguda",
+              "category": "commercial"
+            },
+            {
+              "name": "Begumpet",
+              "category": "commercial"
+            },
+            {
+              "name": "Kukatpally",
+              "category": "high-population"
+            },
+            {
+              "name": "Ameerpet",
+              "category": "commercial"
+            },
+            {
+              "name": "Dilsukhnagar",
+              "category": "high-population"
+            },
+            {
+              "name": "LB Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Miyapur",
+              "category": "high-population"
+            },
+            {
+              "name": "Mehdipatnam",
+              "category": "commercial"
+            },
+            {
+              "name": "Erragadda",
+              "category": "high-population"
+            },
+            {
+              "name": "Rasoolpura",
+              "category": "high-population"
+            },
+            {
+              "name": "Uppal",
+              "category": "high-population"
+            },
+            {
+              "name": "Malkajgiri",
+              "category": "high-population"
+            },
+            {
+              "name": "Attapur",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Warangal",
+          "slug": "warangal",
+          "confidence": "verified",
+          "areas": [
+            {
+              "name": "Hanamkonda",
+              "category": "commercial"
+            },
+            {
+              "name": "Kazipet",
+              "category": "high-population"
+            },
+            {
+              "name": "Fort Road / Kila Warangal",
+              "category": "commercial"
+            },
+            {
+              "name": "Subedari",
+              "category": "commercial"
+            },
+            {
+              "name": "Ekashila Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Kareemabad",
+              "category": "high-population"
+            },
+            {
+              "name": "Girmajipet",
+              "category": "commercial"
+            },
+            {
+              "name": "Naimnagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Chandra Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Kadipikonda",
+              "category": "high-population"
+            },
+            {
+              "name": "Shivanagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Lashkar Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Bhadrakali Road",
+              "category": "high-population"
+            },
+            {
+              "name": "Urus Bodrai",
+              "category": "high-population"
+            },
+            {
+              "name": "Nakkalagutta",
+              "category": "commercial"
+            },
+            {
+              "name": "Waddepally",
+              "category": "high-population"
+            },
+            {
+              "name": "Dharmasagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Kishanpura",
+              "category": "high-population"
+            },
+            {
+              "name": "Enumamula Market Yard",
+              "category": "commercial"
+            },
+            {
+              "name": "Kothawada",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Karimnagar",
+          "slug": "karimnagar",
+          "confidence": "verified",
+          "areas": [
+            {
+              "name": "Christian Colony",
+              "category": "affluent"
+            },
+            {
+              "name": "Mankammathota",
+              "category": "commercial"
+            },
+            {
+              "name": "Jyothinagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Ramnagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Old Town Main Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Vidyanagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Vavilalapalli",
+              "category": "high-population"
+            },
+            {
+              "name": "Subedari",
+              "category": "high-population"
+            },
+            {
+              "name": "Garrepalli",
+              "category": "high-population"
+            },
+            {
+              "name": "Lakshmipuram",
+              "category": "affluent"
+            },
+            {
+              "name": "Bhagat Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Hunter Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Rampur, Karimnagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Mankammathota Market",
+              "category": "commercial"
+            },
+            {
+              "name": "Rekurthy",
+              "category": "high-population"
+            },
+            {
+              "name": "Housing Board Colony, Karimnagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Sathaiah Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "NTR Nagar, Karimnagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Padmanagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Gopalpoor",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Khammam",
+          "slug": "khammam",
+          "confidence": "verified",
+          "areas": [
+            {
+              "name": "Bank Colony, Khammam",
+              "category": "affluent"
+            },
+            {
+              "name": "Mustafa Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Raparthi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Pandurangapuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Bhurhanpuram",
+              "category": "high-population"
+            },
+            {
+              "name": "New Bus Stand / Bypass Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Kandiraju Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Pakabanda Bazar",
+              "category": "commercial"
+            },
+            {
+              "name": "Mamillagudem",
+              "category": "high-population"
+            },
+            {
+              "name": "Edulapuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Kaviraj Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Nehru Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Vaddi Kotturu",
+              "category": "high-population"
+            },
+            {
+              "name": "Fort Area",
+              "category": "commercial"
+            },
+            {
+              "name": "Narayanapuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Gandhi Chowk, Khammam",
+              "category": "commercial"
+            },
+            {
+              "name": "Housing Board Colony, Khammam",
+              "category": "high-population"
+            },
+            {
+              "name": "Ashok Nagar, Khammam",
+              "category": "high-population"
+            },
+            {
+              "name": "Ramnagar, Khammam",
+              "category": "high-population"
+            },
+            {
+              "name": "Arempula",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Nizamabad",
+          "slug": "nizamabad",
+          "confidence": "moderate",
+          "areas": [
+            {
+              "name": "Gandhi Chowk",
+              "category": "commercial"
+            },
+            {
+              "name": "Khaleelwadi (Doctors' Lane)",
+              "category": "commercial"
+            },
+            {
+              "name": "Ahmed Pura Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Manikbhandar",
+              "category": "high-population"
+            },
+            {
+              "name": "Barkat Pura",
+              "category": "high-population"
+            },
+            {
+              "name": "Mustaid Pura",
+              "category": "high-population"
+            },
+            {
+              "name": "Vijayanagar Colony",
+              "category": "affluent"
+            },
+            {
+              "name": "Kanteshwar",
+              "category": "high-population"
+            },
+            {
+              "name": "Old Town / Fort Area",
+              "category": "commercial"
+            },
+            {
+              "name": "Mubarak Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Subhash Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Mahalaxmi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Gajulpet",
+              "category": "commercial"
+            },
+            {
+              "name": "Yellamma Gutta",
+              "category": "high-population"
+            },
+            {
+              "name": "Saraswathi Nagar, Nizamabad",
+              "category": "high-population"
+            },
+            {
+              "name": "Housing Board Colony, Nizamabad",
+              "category": "high-population"
+            },
+            {
+              "name": "Vinayak Nagar, Nizamabad",
+              "category": "high-population"
+            },
+            {
+              "name": "Sagar Hills",
+              "category": "affluent"
+            },
+            {
+              "name": "Madhav Nagar, Nizamabad",
+              "category": "high-population"
+            },
+            {
+              "name": "Malkapur, Nizamabad",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Nalgonda",
+          "slug": "nalgonda",
+          "confidence": "moderate",
+          "areas": [
+            {
+              "name": "Shanthi Nagar Colony (One Town)",
+              "category": "affluent"
+            },
+            {
+              "name": "New Venkateswara Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Main Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Bus Stand Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Sri Nagar Colony, Nalgonda",
+              "category": "affluent"
+            },
+            {
+              "name": "Vinoba Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Raghavendra Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "College Road",
+              "category": "high-population"
+            },
+            {
+              "name": "Kistapur",
+              "category": "high-population"
+            },
+            {
+              "name": "Cherlapalle, Nalgonda",
+              "category": "high-population"
+            },
+            {
+              "name": "Old Town",
+              "category": "commercial"
+            },
+            {
+              "name": "Rangareddy Guda",
+              "category": "high-population"
+            },
+            {
+              "name": "Annareddy Guda",
+              "category": "high-population"
+            },
+            {
+              "name": "Srinivasa Colony, Nalgonda",
+              "category": "affluent"
+            },
+            {
+              "name": "Yellareddy Guda",
+              "category": "high-population"
+            },
+            {
+              "name": "Shobanadripuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Vidyanagar, Nalgonda",
+              "category": "high-population"
+            },
+            {
+              "name": "Fort Road, Nalgonda",
+              "category": "commercial"
+            },
+            {
+              "name": "Edira Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Housing Board Colony, Nalgonda 2",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Miryalaguda",
+          "slug": "miryalaguda",
+          "confidence": "moderate",
+          "areas": [
+            {
+              "name": "Pedda Bazar (Main Bazar)",
+              "category": "commercial"
+            },
+            {
+              "name": "Kundala Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Old Town / Gadi Area",
+              "category": "commercial"
+            },
+            {
+              "name": "Rice Mills Belt (Industrial Area)",
+              "category": "commercial"
+            },
+            {
+              "name": "Avantipuram",
+              "category": "affluent"
+            },
+            {
+              "name": "Vadapally",
+              "category": "high-population"
+            },
+            {
+              "name": "Seetarampuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Hanumanpet",
+              "category": "high-population"
+            },
+            {
+              "name": "Bangarugadda",
+              "category": "high-population"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Reddy Colony",
+              "category": "affluent"
+            },
+            {
+              "name": "Gopireddy Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "New Town",
+              "category": "affluent"
+            },
+            {
+              "name": "Market Yard",
+              "category": "commercial"
+            },
+            {
+              "name": "Sivalayam Street",
+              "category": "commercial"
+            },
+            {
+              "name": "NG College Road, Miryalaguda",
+              "category": "commercial"
+            },
+            {
+              "name": "Alagadapa",
+              "category": "high-population"
+            },
+            {
+              "name": "Krishna Nagar, Miryalaguda",
+              "category": "high-population"
+            },
+            {
+              "name": "Golla Guda",
+              "category": "high-population"
+            },
+            {
+              "name": "Vinayak Nagar, Miryalaguda",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Mahbubnagar",
+          "slug": "mahbubnagar",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Old Mahbubnagar (Rangareddy Buzurg)",
+              "category": "commercial"
+            },
+            {
+              "name": "Budwel Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Sultan Bazar",
+              "category": "commercial"
+            },
+            {
+              "name": "Ravindra Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Deshaipet",
+              "category": "high-population"
+            },
+            {
+              "name": "Vivekananda Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Krishnapur",
+              "category": "high-population"
+            },
+            {
+              "name": "Shah Bazar",
+              "category": "commercial"
+            },
+            {
+              "name": "Bhageeratha Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Rajendra Nagar Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Balajinagar, Mahbubnagar",
+              "category": "high-population"
+            },
+            {
+              "name": "APMC Yard, Mahbubnagar",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Adilabad",
+          "slug": "adilabad",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Old Adilabad (Eddulapuram)",
+              "category": "commercial"
+            },
+            {
+              "name": "Ambedkar Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Chaitanyapuri",
+              "category": "high-population"
+            },
+            {
+              "name": "Dasnapur",
+              "category": "commercial"
+            },
+            {
+              "name": "New HB Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Mohalla Badh",
+              "category": "high-population"
+            },
+            {
+              "name": "Shanthinagar Colony",
+              "category": "affluent"
+            },
+            {
+              "name": "Subhash Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Collectorate Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Vinayak Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Mahalaxmiwada",
+              "category": "high-population"
+            },
+            {
+              "name": "Ramnagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Teachers Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Old Bank Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Wapalguda",
+              "category": "high-population"
+            },
+            {
+              "name": "Adarsh Nagar, Adilabad",
+              "category": "high-population"
+            },
+            {
+              "name": "Thantholi",
+              "category": "commercial"
+            },
+            {
+              "name": "Vivekananda Colony, Adilabad",
+              "category": "high-population"
+            },
+            {
+              "name": "Sanjay Nagar Colony",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Suryapet",
+          "slug": "suryapet",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Hi-Tech Bus Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Bhanupuri (Old Town)",
+              "category": "commercial"
+            },
+            {
+              "name": "Integrated Market Area",
+              "category": "commercial"
+            },
+            {
+              "name": "Nallala Bhavi",
+              "category": "high-population"
+            },
+            {
+              "name": "V V Giri Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Kudakuda",
+              "category": "high-population"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Alankar Centre",
+              "category": "commercial"
+            },
+            {
+              "name": "Vivekananda Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "College Road",
+              "category": "high-population"
+            },
+            {
+              "name": "Vinoba Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Bodrai Bazar",
+              "category": "commercial"
+            },
+            {
+              "name": "Krishna Nagar, Suryapet",
+              "category": "high-population"
+            },
+            {
+              "name": "Industrial Estate, Suryapet",
+              "category": "commercial"
+            },
+            {
+              "name": "Prashanth Nagar, Suryapet",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Jagtial",
+          "slug": "jagtial",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Bus Depot Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Nachupally",
+              "category": "high-population"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Old Town Main Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Vivekananda Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "College Road",
+              "category": "high-population"
+            },
+            {
+              "name": "Prashanth Nagar, Jagtial",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Mancherial",
+          "slug": "mancherial",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Srirampur Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Main Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Ramnagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Naspur",
+              "category": "high-population"
+            },
+            {
+              "name": "Garmilla",
+              "category": "high-population"
+            },
+            {
+              "name": "Gouthami Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Janmabhoomi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Zafar Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Thimmapur",
+              "category": "high-population"
+            },
+            {
+              "name": "Sarangapur",
+              "category": "high-population"
+            },
+            {
+              "name": "Tilak Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Iqbal Ahmed Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "FCI Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Mandamarri",
+              "category": "high-population"
+            },
+            {
+              "name": "Prashanth Nagar, Mancherial",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Ramagundam (Godavarikhani)",
+          "slug": "ramagundam",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Godavarikhani",
+              "category": "high-population"
+            },
+            {
+              "name": "NTPC Township",
+              "category": "affluent"
+            },
+            {
+              "name": "Singareni Colliery Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Old Ramagundam",
+              "category": "commercial"
+            },
+            {
+              "name": "Main Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Markandeya Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Jyothi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Gouthami Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Power House Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "8th Incline Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Sitarampur",
+              "category": "high-population"
+            },
+            {
+              "name": "Market Area",
+              "category": "commercial"
+            },
+            {
+              "name": "Kalyan Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Srinagar Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Kothapalli",
+              "category": "high-population"
+            },
+            {
+              "name": "RG-2 Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "RG-3 Township",
+              "category": "high-population"
+            },
+            {
+              "name": "Sarangapally",
+              "category": "high-population"
+            },
+            {
+              "name": "Kundanpalli",
+              "category": "high-population"
+            },
+            {
+              "name": "Basanth Nagar",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Kothagudem (Bhadradri)",
+          "slug": "kothagudem",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Singareni Colliery Township",
+              "category": "high-population"
+            },
+            {
+              "name": "Palvancha",
+              "category": "commercial"
+            },
+            {
+              "name": "Main Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Sarvaram",
+              "category": "high-population"
+            },
+            {
+              "name": "Chunchupalli",
+              "category": "high-population"
+            },
+            {
+              "name": "Hemachandrapuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Garibupet",
+              "category": "high-population"
+            },
+            {
+              "name": "Chatakonda",
+              "category": "high-population"
+            },
+            {
+              "name": "Vidyanagar Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Old Kothagudem",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Siddipet",
+          "slug": "siddipet",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Old Town Main Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Rangadampally",
+              "category": "high-population"
+            },
+            {
+              "name": "Shivaji Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Sriram Nagar Power Loom Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Indira Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Raghavendra Nagar Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Ponnala",
+              "category": "high-population"
+            },
+            {
+              "name": "Maruthi Nagar",
+              "category": "commercial"
+            },
+            {
+              "name": "College Road",
+              "category": "high-population"
+            },
+            {
+              "name": "Prashanth Nagar, Siddipet",
+              "category": "high-population"
+            },
+            {
+              "name": "Vinayak Nagar, Siddipet",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Vikarabad",
+          "slug": "vikarabad",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Old Town Main Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Venkatapur",
+              "category": "high-population"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "College Road",
+              "category": "high-population"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Prashanth Nagar, Vikarabad",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Secunderabad",
+          "slug": "secunderabad",
+          "confidence": "verified",
+          "areas": [
+            {
+              "name": "Paradise / MG Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Marredpally",
+              "category": "affluent"
+            },
+            {
+              "name": "Trimulgherry",
+              "category": "high-population"
+            },
+            {
+              "name": "Sainikpuri",
+              "category": "affluent"
+            },
+            {
+              "name": "Bowenpally",
+              "category": "high-population"
+            },
+            {
+              "name": "Karkhana",
+              "category": "commercial"
+            },
+            {
+              "name": "Alwal",
+              "category": "high-population"
+            },
+            {
+              "name": "Yapral",
+              "category": "high-population"
+            },
+            {
+              "name": "Tirumalgiri",
+              "category": "commercial"
+            },
+            {
+              "name": "Neredmet",
+              "category": "high-population"
+            },
+            {
+              "name": "Bolarum",
+              "category": "high-population"
+            },
+            {
+              "name": "Lothukunta",
+              "category": "high-population"
+            },
+            {
+              "name": "ECIL",
+              "category": "commercial"
+            },
+            {
+              "name": "Kompally",
+              "category": "affluent"
+            },
+            {
+              "name": "Malkajgiri, Secunderabad",
+              "category": "high-population"
+            },
+            {
+              "name": "Rasoolpura",
+              "category": "high-population"
+            },
+            {
+              "name": "Picket",
+              "category": "commercial"
+            },
+            {
+              "name": "Gopalapuram, Secunderabad",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Bhongir",
+          "slug": "bhongir",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Hussainabad",
+              "category": "high-population"
+            },
+            {
+              "name": "Hanuman Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "R.B. Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Indra Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Tarakarama Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Bus Stand Road, Bhongir",
+              "category": "commercial"
+            },
+            {
+              "name": "Housing Board Colony, Bhongir",
+              "category": "high-population"
+            },
+            {
+              "name": "Prashanth Nagar, Bhongir",
+              "category": "high-population"
+            },
+            {
+              "name": "APMC Yard, Bhongir",
+              "category": "commercial"
+            },
+            {
+              "name": "Vivekananda Nagar, Bhongir",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Jangaon",
+          "slug": "jangaon",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Rajeev Nagar Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Yeshwanthapur",
+              "category": "high-population"
+            },
+            {
+              "name": "Hanamkonda Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Bus Stand Road, Jangaon",
+              "category": "commercial"
+            },
+            {
+              "name": "Housing Board Colony, Jangaon",
+              "category": "high-population"
+            },
+            {
+              "name": "Prashanth Nagar, Jangaon",
+              "category": "high-population"
+            },
+            {
+              "name": "Ashok Nagar, Jangaon",
+              "category": "high-population"
+            },
+            {
+              "name": "APMC Yard, Jangaon",
+              "category": "commercial"
+            },
+            {
+              "name": "Old Town, Jangaon",
+              "category": "commercial"
+            },
+            {
+              "name": "New Colony, Jangaon",
+              "category": "high-population"
+            },
+            {
+              "name": "Government Hospital Road, Jangaon",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Medak",
+          "slug": "medak",
+          "confidence": "moderate",
+          "areas": [
+            {
+              "name": "Mission Compound",
+              "category": "affluent"
+            },
+            {
+              "name": "Ram Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Gangineni",
+              "category": "high-population"
+            },
+            {
+              "name": "Jambikunta",
+              "category": "high-population"
+            },
+            {
+              "name": "Chegunta Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Fort Road, Medak",
+              "category": "commercial"
+            },
+            {
+              "name": "Old Town, Medak",
+              "category": "commercial"
+            },
+            {
+              "name": "Bus Stand Road, Medak",
+              "category": "commercial"
+            },
+            {
+              "name": "APMC Yard, Medak",
+              "category": "commercial"
+            },
+            {
+              "name": "Government Hospital Road, Medak",
+              "category": "commercial"
+            },
+            {
+              "name": "Anjaiah Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Prashanth Nagar, Medak",
+              "category": "high-population"
+            },
+            {
+              "name": "Vivekananda Colony, Medak",
+              "category": "high-population"
+            }
+          ]
+        }
+      ],
+      "source_note": "Areas for tier-2/3 towns (confidence: low) are based on limited verifiable sources (mainly Wikipedia/district records) and should be cross-checked locally before publishing — several towns lack detailed locality-level real-estate coverage online."
+    },
+    {
+      "state": "Tamil Nadu",
+      "city_count": 20,
+      "cities": [
+        {
+          "city": "Chennai",
+          "slug": "chennai",
+          "confidence": "verified",
+          "areas": [
+            {
+              "name": "Boat Club / Poes Garden",
+              "category": "affluent"
+            },
+            {
+              "name": "Adyar",
+              "category": "affluent"
+            },
+            {
+              "name": "Anna Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Besant Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "T Nagar",
+              "category": "commercial"
+            },
+            {
+              "name": "Nungambakkam",
+              "category": "commercial"
+            },
+            {
+              "name": "Alwarpet",
+              "category": "affluent"
+            },
+            {
+              "name": "R.A. Puram",
+              "category": "affluent"
+            },
+            {
+              "name": "Mylapore",
+              "category": "commercial"
+            },
+            {
+              "name": "Velachery",
+              "category": "high-population"
+            },
+            {
+              "name": "Tambaram",
+              "category": "high-population"
+            },
+            {
+              "name": "Koyambedu",
+              "category": "commercial"
+            },
+            {
+              "name": "Ambattur",
+              "category": "high-population"
+            },
+            {
+              "name": "Porur",
+              "category": "affluent"
+            },
+            {
+              "name": "Sholinganallur (OMR)",
+              "category": "commercial"
+            },
+            {
+              "name": "Perambur",
+              "category": "high-population"
+            },
+            {
+              "name": "Anna Salai",
+              "category": "commercial"
+            },
+            {
+              "name": "Kilpauk",
+              "category": "affluent"
+            },
+            {
+              "name": "Egmore",
+              "category": "commercial"
+            },
+            {
+              "name": "Guindy",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Coimbatore",
+          "slug": "coimbatore",
+          "confidence": "verified",
+          "areas": [
+            {
+              "name": "Race Course",
+              "category": "affluent"
+            },
+            {
+              "name": "R.S. Puram",
+              "category": "affluent"
+            },
+            {
+              "name": "Saibaba Colony",
+              "category": "affluent"
+            },
+            {
+              "name": "Gandhipuram",
+              "category": "commercial"
+            },
+            {
+              "name": "Avinashi Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Saravanampatti",
+              "category": "high-population"
+            },
+            {
+              "name": "Peelamedu",
+              "category": "commercial"
+            },
+            {
+              "name": "Ganapathy",
+              "category": "high-population"
+            },
+            {
+              "name": "Trichy Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Singanallur",
+              "category": "high-population"
+            },
+            {
+              "name": "Ramanathapuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Podanur",
+              "category": "high-population"
+            },
+            {
+              "name": "Kalapatti",
+              "category": "high-population"
+            },
+            {
+              "name": "Vadavalli",
+              "category": "affluent"
+            },
+            {
+              "name": "Tatabad",
+              "category": "high-population"
+            },
+            {
+              "name": "Rathinapuri",
+              "category": "high-population"
+            },
+            {
+              "name": "Townhall",
+              "category": "commercial"
+            },
+            {
+              "name": "Selvapuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Kovaipudur",
+              "category": "affluent"
+            },
+            {
+              "name": "Kuniyamuthur",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Madurai",
+          "slug": "madurai",
+          "confidence": "moderate",
+          "areas": [
+            {
+              "name": "K.K. Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Anna Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Simmakkal",
+              "category": "commercial"
+            },
+            {
+              "name": "Villapuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Tallakulam",
+              "category": "affluent"
+            },
+            {
+              "name": "Goripalayam",
+              "category": "commercial"
+            },
+            {
+              "name": "Bypass Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Vilangudi",
+              "category": "high-population"
+            },
+            {
+              "name": "Arappalayam",
+              "category": "high-population"
+            },
+            {
+              "name": "Thirunagar",
+              "category": "high-population"
+            },
+            {
+              "name": "SS Colony",
+              "category": "affluent"
+            },
+            {
+              "name": "Ellis Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Iyer Bungalow",
+              "category": "commercial"
+            },
+            {
+              "name": "Pasumalai",
+              "category": "affluent"
+            },
+            {
+              "name": "Alagappan Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Kochadai",
+              "category": "high-population"
+            },
+            {
+              "name": "Mattuthavani",
+              "category": "commercial"
+            },
+            {
+              "name": "Anaiyur",
+              "category": "high-population"
+            },
+            {
+              "name": "TVS Nagar, Madurai",
+              "category": "commercial"
+            },
+            {
+              "name": "Ponmeni",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Tiruchirappalli (Trichy)",
+          "slug": "tiruchirappalli",
+          "confidence": "moderate",
+          "areas": [
+            {
+              "name": "Cantonment / Trichy Junction Area",
+              "category": "commercial"
+            },
+            {
+              "name": "Thillai Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Srirangam",
+              "category": "high-population"
+            },
+            {
+              "name": "Woraiyur",
+              "category": "high-population"
+            },
+            {
+              "name": "K.K. Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Cantonment Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Puthur",
+              "category": "high-population"
+            },
+            {
+              "name": "Bharathi Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Ariyamangalam",
+              "category": "high-population"
+            },
+            {
+              "name": "Palakkarai",
+              "category": "commercial"
+            },
+            {
+              "name": "Crawford",
+              "category": "high-population"
+            },
+            {
+              "name": "Golden Rock",
+              "category": "high-population"
+            },
+            {
+              "name": "Edamalaipatti Pudur",
+              "category": "high-population"
+            },
+            {
+              "name": "Ramalinga Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Thennur",
+              "category": "high-population"
+            },
+            {
+              "name": "BHEL Township",
+              "category": "commercial"
+            },
+            {
+              "name": "Abhishekapuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Melapudur",
+              "category": "high-population"
+            },
+            {
+              "name": "Panjapur",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Salem",
+          "slug": "salem",
+          "confidence": "moderate",
+          "areas": [
+            {
+              "name": "Fairlands",
+              "category": "affluent"
+            },
+            {
+              "name": "Suramangalam",
+              "category": "high-population"
+            },
+            {
+              "name": "Hasthampatti",
+              "category": "commercial"
+            },
+            {
+              "name": "Shevapet",
+              "category": "commercial"
+            },
+            {
+              "name": "Ammapet",
+              "category": "high-population"
+            },
+            {
+              "name": "Five Roads",
+              "category": "commercial"
+            },
+            {
+              "name": "Anna Nagar, Salem",
+              "category": "high-population"
+            },
+            {
+              "name": "Kondalampatti",
+              "category": "high-population"
+            },
+            {
+              "name": "Junction Main Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Alagapuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Ariyanur",
+              "category": "high-population"
+            },
+            {
+              "name": "Gugai",
+              "category": "high-population"
+            },
+            {
+              "name": "Arisipalayam",
+              "category": "commercial"
+            },
+            {
+              "name": "Gorimedu",
+              "category": "high-population"
+            },
+            {
+              "name": "Seelanaickenpatti",
+              "category": "high-population"
+            },
+            {
+              "name": "Devendrapuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Cherry Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Dadagapatti",
+              "category": "high-population"
+            },
+            {
+              "name": "Salem Steel Plant Township",
+              "category": "commercial"
+            },
+            {
+              "name": "Kitchipalayam",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Tirunelveli",
+          "slug": "tirunelveli",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Palayamkottai",
+              "category": "affluent"
+            },
+            {
+              "name": "Town Hall Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Vannarpettai",
+              "category": "commercial"
+            },
+            {
+              "name": "Melapalayam",
+              "category": "high-population"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "KTC Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Perumalpuram",
+              "category": "affluent"
+            },
+            {
+              "name": "Pettai",
+              "category": "high-population"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Vasantha Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "S.S. Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Maharaja Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "NGO Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Thatchanallur",
+              "category": "high-population"
+            },
+            {
+              "name": "Sankarnagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Sindupoondurai",
+              "category": "high-population"
+            },
+            {
+              "name": "Cudappanatham",
+              "category": "high-population"
+            },
+            {
+              "name": "Anna Nagar, Tirunelveli",
+              "category": "high-population"
+            },
+            {
+              "name": "Kallikulam",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Tiruppur",
+          "slug": "tiruppur",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Kumaran Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Rakkiyapalayam",
+              "category": "high-population"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "N.G.Pudur",
+              "category": "high-population"
+            },
+            {
+              "name": "Ganapathipalayam",
+              "category": "commercial"
+            },
+            {
+              "name": "Tex Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "SR Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Pongupalayam",
+              "category": "high-population"
+            },
+            {
+              "name": "Senapathipalayam",
+              "category": "high-population"
+            },
+            {
+              "name": "Nehru Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Kalipalayam",
+              "category": "high-population"
+            },
+            {
+              "name": "Veerapandi",
+              "category": "high-population"
+            },
+            {
+              "name": "Vijayapuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Rayapuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Chinnakarai",
+              "category": "high-population"
+            },
+            {
+              "name": "Polikalipalayam",
+              "category": "high-population"
+            },
+            {
+              "name": "New Tex Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Sheriff Colony Extension",
+              "category": "affluent"
+            }
+          ]
+        },
+        {
+          "city": "Vellore",
+          "slug": "vellore",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Officers' Line",
+              "category": "affluent"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Katpadi",
+              "category": "commercial"
+            },
+            {
+              "name": "Fort Area",
+              "category": "commercial"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Sathuvachari",
+              "category": "high-population"
+            },
+            {
+              "name": "Thorapadi",
+              "category": "high-population"
+            },
+            {
+              "name": "Bagayam",
+              "category": "high-population"
+            },
+            {
+              "name": "Viruthampet",
+              "category": "high-population"
+            },
+            {
+              "name": "Suthanthira Ponvizha Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Vasantham Nagar",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Erode",
+          "slug": "erode",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Surampatti",
+              "category": "high-population"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Textile Market Area",
+              "category": "commercial"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Veerappanchatram",
+              "category": "high-population"
+            },
+            {
+              "name": "Diagonal Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Brough Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Ammapettai",
+              "category": "high-population"
+            },
+            {
+              "name": "Karungalpalayam",
+              "category": "high-population"
+            },
+            {
+              "name": "Vairapalayam",
+              "category": "high-population"
+            },
+            {
+              "name": "Erode Fort Area",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Thoothukudi (Tuticorin)",
+          "slug": "thoothukudi",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Port Area",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Bryant Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Old Town Main Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Millerpuram",
+              "category": "high-population"
+            },
+            {
+              "name": "VOC Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Muthiahpuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Beach Road",
+              "category": "affluent"
+            },
+            {
+              "name": "Threspuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Amman Nagar, Thoothukudi",
+              "category": "high-population"
+            },
+            {
+              "name": "Korampallam",
+              "category": "high-population"
+            },
+            {
+              "name": "Meelavittan",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Dindigul",
+          "slug": "dindigul",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Main Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Begampur",
+              "category": "high-population"
+            },
+            {
+              "name": "Nehru Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Kamarajapuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Anna Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Leather Market Area",
+              "category": "commercial"
+            },
+            {
+              "name": "Nallampatti",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Thanjavur",
+          "slug": "thanjavur",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Old Town Main Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Karanthai",
+              "category": "high-population"
+            },
+            {
+              "name": "Nehru Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Anna Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "East Main Street",
+              "category": "commercial"
+            },
+            {
+              "name": "Balaganapathy Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Vadakkur, Thanjavur",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Ranipet",
+          "slug": "ranipet",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Main Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Nehru Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Anna Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "New Town",
+              "category": "high-population"
+            },
+            {
+              "name": "Old Town",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Sivakasi",
+          "slug": "sivakasi",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Main Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Nehru Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Anna Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "New Town",
+              "category": "high-population"
+            },
+            {
+              "name": "Old Town",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Karur",
+          "slug": "karur",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Main Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Textile Market Area",
+              "category": "commercial"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Nehru Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Anna Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "New Town",
+              "category": "high-population"
+            },
+            {
+              "name": "Old Town",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Udhagamandalam (Ooty)",
+          "slug": "ooty",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Charing Cross",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Fernhill",
+              "category": "affluent"
+            },
+            {
+              "name": "Nehru Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Anna Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "New Town",
+              "category": "high-population"
+            },
+            {
+              "name": "Old Town",
+              "category": "commercial"
+            },
+            {
+              "name": "Elk Hill",
+              "category": "affluent"
+            }
+          ]
+        },
+        {
+          "city": "Hosur",
+          "slug": "hosur",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Nehru Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Anna Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "New Town",
+              "category": "high-population"
+            },
+            {
+              "name": "Old Town",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Nagercoil",
+          "slug": "nagercoil",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Vadasery",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Kottar",
+              "category": "high-population"
+            },
+            {
+              "name": "Nehru Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Anna Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "New Town",
+              "category": "high-population"
+            },
+            {
+              "name": "Old Town",
+              "category": "commercial"
+            },
+            {
+              "name": "Vetturnimadam",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Kanchipuram",
+          "slug": "kanchipuram",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Big Kanchipuram",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Silk Weavers' Colony",
+              "category": "commercial"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Railway Station Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Little Kanchipuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Nehru Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Anna Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "New Town",
+              "category": "high-population"
+            },
+            {
+              "name": "Old Town",
+              "category": "commercial"
+            },
+            {
+              "name": "Pillaiyarpalayam",
+              "category": "high-population"
+            },
+            {
+              "name": "Vishnu Kanchi",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Kumbakonam",
+          "slug": "kumbakonam",
+          "confidence": "moderate",
+          "areas": [
+            {
+              "name": "Town Hall Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Mahamaham Tank area",
+              "category": "affluent"
+            },
+            {
+              "name": "TSR Big Street",
+              "category": "commercial"
+            },
+            {
+              "name": "Nageswaran Koil Street",
+              "category": "high-population"
+            },
+            {
+              "name": "Ayyappan Koil Street",
+              "category": "high-population"
+            },
+            {
+              "name": "Darasuram Road",
+              "category": "high-population"
+            },
+            {
+              "name": "Gandhi Nagar, Kumbakonam",
+              "category": "high-population"
+            },
+            {
+              "name": "Bus Stand Road, Kumbakonam",
+              "category": "commercial"
+            },
+            {
+              "name": "Big Bazaar Street",
+              "category": "commercial"
+            },
+            {
+              "name": "Railway Station Road, Kumbakonam",
+              "category": "commercial"
+            },
+            {
+              "name": "New Colony, Kumbakonam",
+              "category": "high-population"
+            },
+            {
+              "name": "Ambedkar Nagar, Kumbakonam",
+              "category": "high-population"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "state": "Karnataka",
+      "city_count": 20,
+      "cities": [
+        {
+          "city": "Bengaluru",
+          "slug": "bengaluru",
+          "confidence": "verified",
+          "areas": [
+            {
+              "name": "Indiranagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Koramangala",
+              "category": "affluent"
+            },
+            {
+              "name": "Jayanagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Sadashivanagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Whitefield",
+              "category": "commercial"
+            },
+            {
+              "name": "HITEC / Electronic City",
+              "category": "commercial"
+            },
+            {
+              "name": "Hebbal",
+              "category": "affluent"
+            },
+            {
+              "name": "HSR Layout",
+              "category": "commercial"
+            },
+            {
+              "name": "Sarjapur Road",
+              "category": "affluent"
+            },
+            {
+              "name": "Malleshwaram",
+              "category": "affluent"
+            },
+            {
+              "name": "Richmond Town / MG Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Marathahalli / ORR",
+              "category": "commercial"
+            },
+            {
+              "name": "Bellandur",
+              "category": "high-population"
+            },
+            {
+              "name": "Yelahanka",
+              "category": "high-population"
+            },
+            {
+              "name": "Banashankari",
+              "category": "high-population"
+            },
+            {
+              "name": "Rajajinagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Basavanagudi",
+              "category": "affluent"
+            },
+            {
+              "name": "Vijayanagar, Bengaluru",
+              "category": "high-population"
+            },
+            {
+              "name": "Bommanahalli",
+              "category": "high-population"
+            },
+            {
+              "name": "Yeshwanthpur",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Mysuru",
+          "slug": "mysuru",
+          "confidence": "verified",
+          "areas": [
+            {
+              "name": "Yadavagiri",
+              "category": "affluent"
+            },
+            {
+              "name": "Gokulam",
+              "category": "affluent"
+            },
+            {
+              "name": "Jayalakshmipuram",
+              "category": "affluent"
+            },
+            {
+              "name": "Vijayanagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Saraswathipuram",
+              "category": "affluent"
+            },
+            {
+              "name": "Kuvempunagar",
+              "category": "affluent"
+            },
+            {
+              "name": "VV Mohalla",
+              "category": "affluent"
+            },
+            {
+              "name": "Hebbal (Mysuru)",
+              "category": "high-population"
+            },
+            {
+              "name": "Devaraja Mohalla",
+              "category": "commercial"
+            },
+            {
+              "name": "Sayyaji Rao Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Ramakrishnanagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Bannimantap",
+              "category": "high-population"
+            },
+            {
+              "name": "Lalitha Mahal Road",
+              "category": "affluent"
+            },
+            {
+              "name": "Kuvempunagar 2nd Stage",
+              "category": "high-population"
+            },
+            {
+              "name": "Chamundipuram",
+              "category": "commercial"
+            },
+            {
+              "name": "Nazarbad",
+              "category": "high-population"
+            },
+            {
+              "name": "Ittigegud",
+              "category": "high-population"
+            },
+            {
+              "name": "Bogadi",
+              "category": "high-population"
+            },
+            {
+              "name": "Metagalli",
+              "category": "commercial"
+            },
+            {
+              "name": "Siddhartha Layout",
+              "category": "affluent"
+            }
+          ]
+        },
+        {
+          "city": "Hubballi-Dharwad",
+          "slug": "hubballi-dharwad",
+          "confidence": "verified",
+          "areas": [
+            {
+              "name": "Gandhinagar, Dharwad",
+              "category": "affluent"
+            },
+            {
+              "name": "Rajatgiri",
+              "category": "high-population"
+            },
+            {
+              "name": "Saraswatpur",
+              "category": "commercial"
+            },
+            {
+              "name": "Navanagar, Hubballi",
+              "category": "high-population"
+            },
+            {
+              "name": "Vidyanagar, Hubballi",
+              "category": "affluent"
+            },
+            {
+              "name": "Deshpande Nagar",
+              "category": "commercial"
+            },
+            {
+              "name": "Keshwapur",
+              "category": "high-population"
+            },
+            {
+              "name": "Unkal",
+              "category": "affluent"
+            },
+            {
+              "name": "Old Hubballi Market",
+              "category": "commercial"
+            },
+            {
+              "name": "Gokul Road",
+              "category": "high-population"
+            },
+            {
+              "name": "Tarihal Industrial Area (KIADB)",
+              "category": "commercial"
+            },
+            {
+              "name": "Haripriya Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Dhavalgiri",
+              "category": "high-population"
+            },
+            {
+              "name": "Vivekanand Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Vidyanagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Vidyagiri, Hubballi",
+              "category": "high-population"
+            },
+            {
+              "name": "Gokul Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Ashok Nagar, Hubballi",
+              "category": "high-population"
+            },
+            {
+              "name": "Bendigeri",
+              "category": "high-population"
+            },
+            {
+              "name": "Vidyanagar, Dharwad",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Mangaluru",
+          "slug": "mangaluru",
+          "confidence": "verified",
+          "areas": [
+            {
+              "name": "Kadri",
+              "category": "affluent"
+            },
+            {
+              "name": "Bejai",
+              "category": "commercial"
+            },
+            {
+              "name": "Falnir",
+              "category": "affluent"
+            },
+            {
+              "name": "Kankanady",
+              "category": "high-population"
+            },
+            {
+              "name": "Lalbagh",
+              "category": "commercial"
+            },
+            {
+              "name": "Deralakatte",
+              "category": "high-population"
+            },
+            {
+              "name": "Hampankatta",
+              "category": "commercial"
+            },
+            {
+              "name": "Mangaladevi",
+              "category": "high-population"
+            },
+            {
+              "name": "Balmatta",
+              "category": "affluent"
+            },
+            {
+              "name": "Surathkal (NITK belt)",
+              "category": "high-population"
+            },
+            {
+              "name": "Kottara",
+              "category": "high-population"
+            },
+            {
+              "name": "Bunder / Port Area",
+              "category": "commercial"
+            },
+            {
+              "name": "Valencia",
+              "category": "high-population"
+            },
+            {
+              "name": "Attavar",
+              "category": "commercial"
+            },
+            {
+              "name": "Kankanady",
+              "category": "high-population"
+            },
+            {
+              "name": "Yeyyadi",
+              "category": "high-population"
+            },
+            {
+              "name": "Falnir",
+              "category": "affluent"
+            },
+            {
+              "name": "Padil",
+              "category": "high-population"
+            },
+            {
+              "name": "Kulur",
+              "category": "high-population"
+            },
+            {
+              "name": "Urwa",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Belagavi",
+          "slug": "belagavi",
+          "confidence": "moderate",
+          "areas": [
+            {
+              "name": "Tilakwadi",
+              "category": "affluent"
+            },
+            {
+              "name": "Camp Area (Belgaum Cantonment)",
+              "category": "affluent"
+            },
+            {
+              "name": "Old Town (Killa/Fort Area)",
+              "category": "commercial"
+            },
+            {
+              "name": "Khade Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Shahapur",
+              "category": "high-population"
+            },
+            {
+              "name": "Ganeshpur",
+              "category": "high-population"
+            },
+            {
+              "name": "Bhagya Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Udyambag Industrial Area",
+              "category": "commercial"
+            },
+            {
+              "name": "Angol",
+              "category": "high-population"
+            },
+            {
+              "name": "APMC Market Yard",
+              "category": "commercial"
+            },
+            {
+              "name": "Sadashiv Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Shivabasava Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Vadgaon",
+              "category": "high-population"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Nehru Nagar, Belagavi",
+              "category": "high-population"
+            },
+            {
+              "name": "Hindwadi",
+              "category": "high-population"
+            },
+            {
+              "name": "College Road, Belagavi",
+              "category": "commercial"
+            },
+            {
+              "name": "Ramtirth Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Mahantesh Nagar",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Kalaburagi (Gulbarga)",
+          "slug": "kalaburagi",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Fort Area / Old Gulbarga",
+              "category": "commercial"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Jagat Circle",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Station Road (Railway)",
+              "category": "commercial"
+            },
+            {
+              "name": "Sharanabasaveshwar Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Nehru Gunj",
+              "category": "commercial"
+            },
+            {
+              "name": "Super Market Area",
+              "category": "commercial"
+            },
+            {
+              "name": "Bhavani Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Brahmapur",
+              "category": "high-population"
+            },
+            {
+              "name": "Shahabazar",
+              "category": "commercial"
+            },
+            {
+              "name": "Ring Road Colony, Kalaburagi",
+              "category": "high-population"
+            },
+            {
+              "name": "Chandra Bhaga Nagar",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Davanagere",
+          "slug": "davanagere",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "P.J. Extension",
+              "category": "affluent"
+            },
+            {
+              "name": "Vidyanagar",
+              "category": "high-population"
+            },
+            {
+              "name": "S.S. Layout",
+              "category": "affluent"
+            },
+            {
+              "name": "MCC B Block",
+              "category": "high-population"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Nittuvalli",
+              "category": "high-population"
+            },
+            {
+              "name": "Rice Mill Area (Industrial belt)",
+              "category": "commercial"
+            },
+            {
+              "name": "Anjaneya Extension",
+              "category": "affluent"
+            },
+            {
+              "name": "APMC Yard",
+              "category": "commercial"
+            },
+            {
+              "name": "Kuvempu Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "MCC A Block",
+              "category": "high-population"
+            },
+            {
+              "name": "Shivanagar, Davanagere",
+              "category": "high-population"
+            },
+            {
+              "name": "Basaveshwar Nagar, Davanagere",
+              "category": "high-population"
+            },
+            {
+              "name": "Vinoba Nagar, Davanagere",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Ballari (Bellary)",
+          "slug": "ballari",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Fort Area (Old Ballari)",
+              "category": "commercial"
+            },
+            {
+              "name": "Cowl Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Parvati Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Bruce Pet",
+              "category": "high-population"
+            },
+            {
+              "name": "Cantonment Area",
+              "category": "affluent"
+            },
+            {
+              "name": "Mining Belt Road (Sandur Road)",
+              "category": "commercial"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "APMC Yard",
+              "category": "commercial"
+            },
+            {
+              "name": "Bangalore Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Station Road (Railway)",
+              "category": "commercial"
+            },
+            {
+              "name": "Vidyanagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Gandhinagar Extension",
+              "category": "high-population"
+            },
+            {
+              "name": "Sathya Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Tilak Nagar, Ballari",
+              "category": "high-population"
+            },
+            {
+              "name": "APMC Colony, Ballari",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Vijayapura (Bijapur)",
+          "slug": "vijayapura",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Old Fort City Area",
+              "category": "commercial"
+            },
+            {
+              "name": "Station Road (Railway)",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Chowk",
+              "category": "commercial"
+            },
+            {
+              "name": "Adarsh Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Jalanagar",
+              "category": "high-population"
+            },
+            {
+              "name": "APMC Yard",
+              "category": "commercial"
+            },
+            {
+              "name": "Vidyagiri",
+              "category": "affluent"
+            },
+            {
+              "name": "Shivaji Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Basaveshwar Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Jubilee Circle",
+              "category": "commercial"
+            },
+            {
+              "name": "Ainapur Colony",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Shivamogga",
+          "slug": "shivamogga",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Gopala Extension",
+              "category": "affluent"
+            },
+            {
+              "name": "Vinoba Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Durgigudi",
+              "category": "high-population"
+            },
+            {
+              "name": "Kote Area (Old Town)",
+              "category": "commercial"
+            },
+            {
+              "name": "Malemahadeshwara Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Gandhi Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Vidyanagar",
+              "category": "affluent"
+            },
+            {
+              "name": "APMC Yard",
+              "category": "commercial"
+            },
+            {
+              "name": "Anandapuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Kamala Nehru Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Gopalgowda Extension",
+              "category": "high-population"
+            },
+            {
+              "name": "Rajendra Nagar, Shivamogga",
+              "category": "high-population"
+            },
+            {
+              "name": "Basavanagudi Extension, Shivamogga",
+              "category": "high-population"
+            },
+            {
+              "name": "Vinoba Nagar Extension, Shivamogga",
+              "category": "high-population"
+            },
+            {
+              "name": "Kuvempu Nagar, Shivamogga",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Tumakuru",
+          "slug": "tumakuru",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Ashoknagar",
+              "category": "affluent"
+            },
+            {
+              "name": "SS Puram",
+              "category": "high-population"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Vinayaka Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Kuvempu Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Batavadi",
+              "category": "commercial"
+            },
+            {
+              "name": "Bellavi Extension",
+              "category": "affluent"
+            },
+            {
+              "name": "APMC Yard (Coconut Market)",
+              "category": "commercial"
+            },
+            {
+              "name": "Devarayapatna",
+              "category": "high-population"
+            },
+            {
+              "name": "Upparahalli",
+              "category": "high-population"
+            },
+            {
+              "name": "Vidyanagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Amanikere",
+              "category": "high-population"
+            },
+            {
+              "name": "Gubbi Gate",
+              "category": "commercial"
+            },
+            {
+              "name": "Batwadi Industrial Area",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Raichur",
+          "slug": "raichur",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Fort Area (Old Raichur)",
+              "category": "commercial"
+            },
+            {
+              "name": "Nehru Gunj",
+              "category": "commercial"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Station Road (Railway)",
+              "category": "commercial"
+            },
+            {
+              "name": "APMC Yard",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Yeramarus Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Vidyanagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Jawahar Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Krishna Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Wadi Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "New Extension, Raichur",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Bidar",
+          "slug": "bidar",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Bidar Fort Area",
+              "category": "commercial"
+            },
+            {
+              "name": "Chidri",
+              "category": "high-population"
+            },
+            {
+              "name": "Naubad",
+              "category": "high-population"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "New Bidar",
+              "category": "affluent"
+            },
+            {
+              "name": "Bazaar Street (Old Town)",
+              "category": "commercial"
+            },
+            {
+              "name": "APMC Yard",
+              "category": "commercial"
+            },
+            {
+              "name": "Papnash",
+              "category": "high-population"
+            },
+            {
+              "name": "Gandhi Gunj",
+              "category": "commercial"
+            },
+            {
+              "name": "Kanaka Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Sanatnagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Zilla Parishad Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Bidar Railway Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Basava Nagar, Bidar",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Hosapete (Hospet)",
+          "slug": "hosapete",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Station Road (Railway)",
+              "category": "commercial"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "APMC Yard (Iron Ore / Grain Market)",
+              "category": "commercial"
+            },
+            {
+              "name": "Old Hospet Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Vidyanagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Krishna Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Jai Bheema Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Cowl Bazaar, Hosapete",
+              "category": "commercial"
+            },
+            {
+              "name": "New Extension, Hosapete",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Gadag-Betageri",
+          "slug": "gadag",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Old Gadag Market",
+              "category": "commercial"
+            },
+            {
+              "name": "Betageri",
+              "category": "high-population"
+            },
+            {
+              "name": "Station Road (Railway)",
+              "category": "commercial"
+            },
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "APMC Yard (Cotton Market)",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Vidyanagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Kalmeshwar Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Sattur Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Cotton Market Extension, Gadag",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Udupi",
+          "slug": "udupi",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Car Street (Temple Area)",
+              "category": "commercial"
+            },
+            {
+              "name": "Manipal",
+              "category": "affluent"
+            },
+            {
+              "name": "Kunjibettu",
+              "category": "high-population"
+            },
+            {
+              "name": "Ambalpady",
+              "category": "high-population"
+            },
+            {
+              "name": "Kalsanka",
+              "category": "high-population"
+            },
+            {
+              "name": "Bannanje",
+              "category": "high-population"
+            },
+            {
+              "name": "Santhekatte",
+              "category": "high-population"
+            },
+            {
+              "name": "Indrali",
+              "category": "high-population"
+            },
+            {
+              "name": "Ambagilu",
+              "category": "high-population"
+            },
+            {
+              "name": "Perampalli",
+              "category": "high-population"
+            },
+            {
+              "name": "Kalyanpur, Udupi",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Hassan",
+          "slug": "hassan",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Vidyanagar",
+              "category": "affluent"
+            },
+            {
+              "name": "APMC Yard",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Beleyur",
+              "category": "high-population"
+            },
+            {
+              "name": "K.R. Puram (Hassan)",
+              "category": "high-population"
+            },
+            {
+              "name": "Shanthi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Vidya Nagar Extension, Hassan",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Mandya",
+          "slug": "mandya",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Ashok Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Vidyanagar",
+              "category": "affluent"
+            },
+            {
+              "name": "APMC Yard (Sugarcane/Paddy Market)",
+              "category": "commercial"
+            },
+            {
+              "name": "Gandhi Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "New Extension",
+              "category": "affluent"
+            },
+            {
+              "name": "Nehru Nagar",
+              "category": "high-population"
+            },
+            {
+              "name": "Ashoknagar Extension",
+              "category": "high-population"
+            },
+            {
+              "name": "Krishnamurthypura",
+              "category": "high-population"
+            },
+            {
+              "name": "Vishveshwaraiah Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Ashokapuram, Mandya",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Kolar",
+          "slug": "kolar",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Tamaka",
+              "category": "high-population"
+            },
+            {
+              "name": "Bavanahalli",
+              "category": "high-population"
+            },
+            {
+              "name": "Parasepalli",
+              "category": "high-population"
+            },
+            {
+              "name": "Kamandahalli",
+              "category": "high-population"
+            },
+            {
+              "name": "Kolar Gold Fields (KGF)",
+              "category": "high-population"
+            },
+            {
+              "name": "MB Road, Kolar",
+              "category": "commercial"
+            },
+            {
+              "name": "Housing Board Colony, Kolar",
+              "category": "high-population"
+            },
+            {
+              "name": "Ambedkar Circle, Kolar",
+              "category": "commercial"
+            },
+            {
+              "name": "Vinoba Nagar, Kolar",
+              "category": "high-population"
+            },
+            {
+              "name": "Ashoka Nagar, Kolar",
+              "category": "high-population"
+            },
+            {
+              "name": "APMC Yard, Kolar",
+              "category": "commercial"
+            },
+            {
+              "name": "Old Town, Kolar",
+              "category": "commercial"
+            },
+            {
+              "name": "New Extension, Kolar",
+              "category": "high-population"
+            },
+            {
+              "name": "Fort Road, Kolar",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Chitradurga",
+          "slug": "chitradurga",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "V.P. Extension",
+              "category": "affluent"
+            },
+            {
+              "name": "CK Puram",
+              "category": "high-population"
+            },
+            {
+              "name": "Municipal Colony",
+              "category": "high-population"
+            },
+            {
+              "name": "Kelagote",
+              "category": "high-population"
+            },
+            {
+              "name": "Teachers Colony (Jogimatti Road)",
+              "category": "affluent"
+            },
+            {
+              "name": "Bus Stand Road, Chitradurga",
+              "category": "commercial"
+            },
+            {
+              "name": "APMC Yard, Chitradurga",
+              "category": "commercial"
+            },
+            {
+              "name": "Fort Road, Chitradurga",
+              "category": "commercial"
+            },
+            {
+              "name": "SJM Extension",
+              "category": "high-population"
+            },
+            {
+              "name": "Vinoba Nagar, Chitradurga",
+              "category": "high-population"
+            },
+            {
+              "name": "Gandhi Circle, Chitradurga",
+              "category": "commercial"
+            },
+            {
+              "name": "New Extension, Chitradurga",
+              "category": "high-population"
+            },
+            {
+              "name": "Rangayyana Durga",
+              "category": "high-population"
+            },
+            {
+              "name": "Ashok Nagar, Chitradurga",
+              "category": "high-population"
+            }
+          ]
+        }
+      ],
+      "source_note": "Areas for tier-2/3 towns (confidence: low) are based on limited verifiable sources and should be cross-checked locally before publishing."
+    },
+    {
+      "state": "Kerala",
+      "city_count": 20,
+      "cities": [
+        {
+          "city": "Thiruvananthapuram",
+          "slug": "thiruvananthapuram",
+          "confidence": "verified",
+          "areas": [
+            {
+              "name": "Kowdiar",
+              "category": "affluent"
+            },
+            {
+              "name": "Vellayambalam",
+              "category": "affluent"
+            },
+            {
+              "name": "Akkulam",
+              "category": "affluent"
+            },
+            {
+              "name": "Vazhuthacaud",
+              "category": "commercial"
+            },
+            {
+              "name": "Palayam",
+              "category": "commercial"
+            },
+            {
+              "name": "Thampanoor",
+              "category": "commercial"
+            },
+            {
+              "name": "Vanchiyoor",
+              "category": "commercial"
+            },
+            {
+              "name": "Peroorkada",
+              "category": "high-population"
+            },
+            {
+              "name": "Kazhakkoottam (Technopark belt)",
+              "category": "commercial"
+            },
+            {
+              "name": "Sasthamangalam",
+              "category": "affluent"
+            },
+            {
+              "name": "Vattiyoorkavu",
+              "category": "high-population"
+            },
+            {
+              "name": "Poojapura",
+              "category": "high-population"
+            },
+            {
+              "name": "Pettah",
+              "category": "high-population"
+            },
+            {
+              "name": "Neyyattinkara",
+              "category": "high-population"
+            },
+            {
+              "name": "Manacaud",
+              "category": "high-population"
+            },
+            {
+              "name": "Ulloor",
+              "category": "affluent"
+            },
+            {
+              "name": "Sreekaryam",
+              "category": "high-population"
+            },
+            {
+              "name": "Attukal",
+              "category": "high-population"
+            },
+            {
+              "name": "Karamana",
+              "category": "high-population"
+            },
+            {
+              "name": "Nalanchira",
+              "category": "affluent"
+            }
+          ]
+        },
+        {
+          "city": "Kochi",
+          "slug": "kochi",
+          "confidence": "verified",
+          "areas": [
+            {
+              "name": "Panampilly Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Kadavanthra",
+              "category": "affluent"
+            },
+            {
+              "name": "Kakkanad (Infopark belt)",
+              "category": "commercial"
+            },
+            {
+              "name": "Marine Drive",
+              "category": "commercial"
+            },
+            {
+              "name": "Kaloor",
+              "category": "commercial"
+            },
+            {
+              "name": "Palarivattom",
+              "category": "commercial"
+            },
+            {
+              "name": "Vyttila",
+              "category": "high-population"
+            },
+            {
+              "name": "Thrikkakara",
+              "category": "affluent"
+            },
+            {
+              "name": "Vazhakkala",
+              "category": "high-population"
+            },
+            {
+              "name": "Thevara",
+              "category": "affluent"
+            },
+            {
+              "name": "Edappally",
+              "category": "high-population"
+            },
+            {
+              "name": "Aluva",
+              "category": "high-population"
+            },
+            {
+              "name": "Fort Kochi",
+              "category": "commercial"
+            },
+            {
+              "name": "Nettoor",
+              "category": "affluent"
+            },
+            {
+              "name": "Kumbalam",
+              "category": "high-population"
+            },
+            {
+              "name": "Chittoor Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Kacheripady",
+              "category": "commercial"
+            },
+            {
+              "name": "Elamkulam",
+              "category": "high-population"
+            },
+            {
+              "name": "Ravipuram",
+              "category": "commercial"
+            },
+            {
+              "name": "Vennala",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Kozhikode (Calicut)",
+          "slug": "kozhikode",
+          "confidence": "moderate",
+          "areas": [
+            {
+              "name": "Chalappuram",
+              "category": "affluent"
+            },
+            {
+              "name": "West Hill",
+              "category": "affluent"
+            },
+            {
+              "name": "Kuttichira",
+              "category": "commercial"
+            },
+            {
+              "name": "Mananchira / SM Street",
+              "category": "commercial"
+            },
+            {
+              "name": "Palayam, Kozhikode",
+              "category": "commercial"
+            },
+            {
+              "name": "Mankavu",
+              "category": "high-population"
+            },
+            {
+              "name": "Eranhipalam",
+              "category": "high-population"
+            },
+            {
+              "name": "Nadakkavu",
+              "category": "affluent"
+            },
+            {
+              "name": "Cherootty Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Meenchanda",
+              "category": "high-population"
+            },
+            {
+              "name": "Kovoor",
+              "category": "high-population"
+            },
+            {
+              "name": "Vellimadukunnu",
+              "category": "high-population"
+            },
+            {
+              "name": "Thondayad",
+              "category": "high-population"
+            },
+            {
+              "name": "Cyberpark Road (Kinaloor)",
+              "category": "commercial"
+            },
+            {
+              "name": "Beach Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Puthiyara",
+              "category": "high-population"
+            },
+            {
+              "name": "Malaparamba",
+              "category": "high-population"
+            },
+            {
+              "name": "Medical College Road",
+              "category": "high-population"
+            },
+            {
+              "name": "Feroke",
+              "category": "high-population"
+            },
+            {
+              "name": "Karaparamba",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Thrissur",
+          "slug": "thrissur",
+          "confidence": "moderate",
+          "areas": [
+            {
+              "name": "Gandhinagar, Thrissur",
+              "category": "affluent"
+            },
+            {
+              "name": "Swaraj Round",
+              "category": "commercial"
+            },
+            {
+              "name": "Nedupuzha",
+              "category": "high-population"
+            },
+            {
+              "name": "Chettupuzha",
+              "category": "high-population"
+            },
+            {
+              "name": "Poothole",
+              "category": "commercial"
+            },
+            {
+              "name": "Ayyanthole",
+              "category": "affluent"
+            },
+            {
+              "name": "Ollur",
+              "category": "high-population"
+            },
+            {
+              "name": "East Fort",
+              "category": "commercial"
+            },
+            {
+              "name": "Kuriachira",
+              "category": "high-population"
+            },
+            {
+              "name": "Punkunnam",
+              "category": "affluent"
+            },
+            {
+              "name": "Viyyur",
+              "category": "high-population"
+            },
+            {
+              "name": "Mannuthy",
+              "category": "commercial"
+            },
+            {
+              "name": "Ramavarmapuram",
+              "category": "affluent"
+            },
+            {
+              "name": "Koorkenchery",
+              "category": "high-population"
+            },
+            {
+              "name": "Pattikkad",
+              "category": "high-population"
+            },
+            {
+              "name": "Chembukkavu",
+              "category": "commercial"
+            },
+            {
+              "name": "Kokkalai",
+              "category": "high-population"
+            },
+            {
+              "name": "Marar Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Naikkanal",
+              "category": "commercial"
+            },
+            {
+              "name": "Ayyanthole East",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Kollam",
+          "slug": "kollam",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Kureepuzha",
+              "category": "high-population"
+            },
+            {
+              "name": "Chinnakada",
+              "category": "commercial"
+            },
+            {
+              "name": "Kadappakada",
+              "category": "high-population"
+            },
+            {
+              "name": "Asramam",
+              "category": "affluent"
+            },
+            {
+              "name": "Thangassery",
+              "category": "affluent"
+            },
+            {
+              "name": "Cutchery",
+              "category": "commercial"
+            },
+            {
+              "name": "Kilikollur",
+              "category": "high-population"
+            },
+            {
+              "name": "Vadakkevila",
+              "category": "high-population"
+            },
+            {
+              "name": "Karikkode",
+              "category": "high-population"
+            },
+            {
+              "name": "Chamakkada",
+              "category": "commercial"
+            },
+            {
+              "name": "Sakthikulangara",
+              "category": "high-population"
+            },
+            {
+              "name": "Polayathode",
+              "category": "commercial"
+            },
+            {
+              "name": "Maruthadi",
+              "category": "high-population"
+            },
+            {
+              "name": "Andamukkom",
+              "category": "high-population"
+            },
+            {
+              "name": "Mundakkal",
+              "category": "high-population"
+            },
+            {
+              "name": "Kaithavana",
+              "category": "high-population"
+            },
+            {
+              "name": "Kavanad",
+              "category": "high-population"
+            },
+            {
+              "name": "Vadi Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Thattamala",
+              "category": "high-population"
+            },
+            {
+              "name": "Eravipuram",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Kannur",
+          "slug": "kannur",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Textile / Handloom Trade Belt (Thottada Road)",
+              "category": "commercial"
+            },
+            {
+              "name": "Fort Road (St. Angelo Fort belt)",
+              "category": "affluent"
+            },
+            {
+              "name": "Thavakkara",
+              "category": "commercial"
+            },
+            {
+              "name": "Chovva",
+              "category": "high-population"
+            },
+            {
+              "name": "Thalap",
+              "category": "high-population"
+            },
+            {
+              "name": "Pallikkunnu",
+              "category": "high-population"
+            },
+            {
+              "name": "Ashokapuram",
+              "category": "affluent"
+            },
+            {
+              "name": "Burnassery",
+              "category": "high-population"
+            },
+            {
+              "name": "SM Street, Kannur",
+              "category": "commercial"
+            },
+            {
+              "name": "Edakkad",
+              "category": "high-population"
+            },
+            {
+              "name": "Chalad",
+              "category": "high-population"
+            },
+            {
+              "name": "South Bazaar, Kannur",
+              "category": "commercial"
+            },
+            {
+              "name": "Kizhake Bazar",
+              "category": "commercial"
+            },
+            {
+              "name": "Vadakkumbad",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Alappuzha (Alleppey)",
+          "slug": "alappuzha",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Coir Industry Belt (Punnapra)",
+              "category": "commercial"
+            },
+            {
+              "name": "Mullackal",
+              "category": "commercial"
+            },
+            {
+              "name": "Vazhicherry",
+              "category": "high-population"
+            },
+            {
+              "name": "Thathampally",
+              "category": "high-population"
+            },
+            {
+              "name": "Punnapra",
+              "category": "high-population"
+            },
+            {
+              "name": "Kalarcode",
+              "category": "affluent"
+            },
+            {
+              "name": "Chungam Junction",
+              "category": "commercial"
+            },
+            {
+              "name": "Vazhippurayidam",
+              "category": "high-population"
+            },
+            {
+              "name": "Kommadi",
+              "category": "high-population"
+            },
+            {
+              "name": "Punnapra North",
+              "category": "high-population"
+            },
+            {
+              "name": "Punnapra South",
+              "category": "high-population"
+            },
+            {
+              "name": "Nooranad Junction",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Kottayam",
+          "slug": "kottayam",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Rubber Trade Belt (Nagampadam)",
+              "category": "commercial"
+            },
+            {
+              "name": "Nagampadam",
+              "category": "commercial"
+            },
+            {
+              "name": "Kanjikuzhy",
+              "category": "affluent"
+            },
+            {
+              "name": "Thirunakkara",
+              "category": "commercial"
+            },
+            {
+              "name": "Nattakom",
+              "category": "high-population"
+            },
+            {
+              "name": "Kodimatha",
+              "category": "high-population"
+            },
+            {
+              "name": "Vadavathoor",
+              "category": "high-population"
+            },
+            {
+              "name": "Gandhi Nagar, Kottayam",
+              "category": "high-population"
+            },
+            {
+              "name": "Kumaranalloor",
+              "category": "high-population"
+            },
+            {
+              "name": "Kodimatha Junction",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Malappuram",
+          "slug": "malappuram",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Down Hill (Town Centre)",
+              "category": "commercial"
+            },
+            {
+              "name": "Up Hill",
+              "category": "affluent"
+            },
+            {
+              "name": "Kottappadi",
+              "category": "high-population"
+            },
+            {
+              "name": "Munduparamba",
+              "category": "high-population"
+            },
+            {
+              "name": "Kunnummal",
+              "category": "affluent"
+            },
+            {
+              "name": "Pookkiparamb",
+              "category": "high-population"
+            },
+            {
+              "name": "Melmuri",
+              "category": "high-population"
+            },
+            {
+              "name": "Vettichira",
+              "category": "high-population"
+            },
+            {
+              "name": "Kacherippady",
+              "category": "affluent"
+            },
+            {
+              "name": "Down Hill Junction",
+              "category": "commercial"
+            },
+            {
+              "name": "Kacherippady Bazaar",
+              "category": "commercial"
+            },
+            {
+              "name": "Munduparamba Extension, Malappuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Kottappadi Junction",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Kasaragod",
+          "slug": "kasaragod",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Fort Road (Bekal-Kasaragod belt)",
+              "category": "affluent"
+            },
+            {
+              "name": "City Junction (Town Centre)",
+              "category": "commercial"
+            },
+            {
+              "name": "Chattanchal",
+              "category": "high-population"
+            },
+            {
+              "name": "Vidyanagar",
+              "category": "affluent"
+            },
+            {
+              "name": "MG Road, Kasaragod",
+              "category": "commercial"
+            },
+            {
+              "name": "Nellikunnu",
+              "category": "high-population"
+            },
+            {
+              "name": "Talangara",
+              "category": "high-population"
+            },
+            {
+              "name": "Nellikunnu Junction",
+              "category": "commercial"
+            },
+            {
+              "name": "Talangara Extension, Kasaragod",
+              "category": "high-population"
+            },
+            {
+              "name": "Cheruvathur Junction",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Pathanamthitta",
+          "slug": "pathanamthitta",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "College Junction",
+              "category": "affluent"
+            },
+            {
+              "name": "Kaviyoor",
+              "category": "high-population"
+            },
+            {
+              "name": "Pramadam",
+              "category": "high-population"
+            },
+            {
+              "name": "Ring Road Junction, Pathanamthitta",
+              "category": "commercial"
+            },
+            {
+              "name": "Vadasserikkara Junction",
+              "category": "commercial"
+            },
+            {
+              "name": "MC Road Junction, Pathanamthitta",
+              "category": "commercial"
+            },
+            {
+              "name": "Mylapra Junction",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Thodupuzha (Idukki)",
+          "slug": "thodupuzha",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Town Centre (Puliyanmala Road)",
+              "category": "commercial"
+            },
+            {
+              "name": "Karikode",
+              "category": "affluent"
+            },
+            {
+              "name": "Elamdesam",
+              "category": "high-population"
+            },
+            {
+              "name": "Kumaramangalam",
+              "category": "high-population"
+            },
+            {
+              "name": "Vellilappilly",
+              "category": "high-population"
+            },
+            {
+              "name": "Painavu",
+              "category": "commercial"
+            },
+            {
+              "name": "Vazhathope",
+              "category": "high-population"
+            },
+            {
+              "name": "Cheruthoni",
+              "category": "commercial"
+            },
+            {
+              "name": "Kudayathoor Junction",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Perinthalmanna",
+          "slug": "perinthalmanna",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Kulappuram",
+              "category": "high-population"
+            },
+            {
+              "name": "Thazhekode",
+              "category": "affluent"
+            },
+            {
+              "name": "Cherukara",
+              "category": "high-population"
+            },
+            {
+              "name": "Moorkkanad",
+              "category": "high-population"
+            },
+            {
+              "name": "Town Bus Stand Extension, Perinthalmanna",
+              "category": "commercial"
+            },
+            {
+              "name": "Cherukara Junction",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Palakkad",
+          "slug": "palakkad",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Chandranagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Kalmandapam",
+              "category": "high-population"
+            },
+            {
+              "name": "Olavakkode",
+              "category": "high-population"
+            },
+            {
+              "name": "Kunnathurmedu",
+              "category": "affluent"
+            },
+            {
+              "name": "GB Road (Textile/Trade belt)",
+              "category": "commercial"
+            },
+            {
+              "name": "Marutharoad",
+              "category": "high-population"
+            },
+            {
+              "name": "Chittoor Road, Palakkad",
+              "category": "commercial"
+            },
+            {
+              "name": "Puthur",
+              "category": "high-population"
+            },
+            {
+              "name": "Kalpathy",
+              "category": "affluent"
+            },
+            {
+              "name": "Puthupariyaram",
+              "category": "high-population"
+            },
+            {
+              "name": "Vadakkanthara",
+              "category": "high-population"
+            },
+            {
+              "name": "Fathima Nagar, Palakkad",
+              "category": "high-population"
+            }
+          ]
+        },
+        {
+          "city": "Guruvayur",
+          "slug": "guruvayur",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Temple Town Centre (East Nada belt)",
+              "category": "commercial"
+            },
+            {
+              "name": "Thiruvenkitapuram",
+              "category": "affluent"
+            },
+            {
+              "name": "Mammiyoor",
+              "category": "affluent"
+            },
+            {
+              "name": "Chowallur Junction",
+              "category": "commercial"
+            },
+            {
+              "name": "Manathala Junction",
+              "category": "commercial"
+            },
+            {
+              "name": "Thiruvenkitapuram Extension, Guruvayur",
+              "category": "high-population"
+            },
+            {
+              "name": "Edamuttam Junction",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Wayanad",
+          "slug": "wayanad",
+          "confidence": "moderate",
+          "areas": [
+            {
+              "name": "Kalpetta",
+              "category": "commercial"
+            },
+            {
+              "name": "Sulthan Bathery",
+              "category": "high-population"
+            },
+            {
+              "name": "Mananthavady",
+              "category": "high-population"
+            },
+            {
+              "name": "Vythiri",
+              "category": "affluent"
+            },
+            {
+              "name": "Meppadi",
+              "category": "high-population"
+            },
+            {
+              "name": "Meenangadi",
+              "category": "high-population"
+            },
+            {
+              "name": "Panamaram Junction",
+              "category": "commercial"
+            },
+            {
+              "name": "Padinharathara Junction",
+              "category": "commercial"
+            },
+            {
+              "name": "Muttil Junction",
+              "category": "commercial"
+            },
+            {
+              "name": "Chundale",
+              "category": "high-population"
+            },
+            {
+              "name": "Vaduvanchal",
+              "category": "high-population"
+            },
+            {
+              "name": "Pozhuthana",
+              "category": "high-population"
+            },
+            {
+              "name": "Nadavayal",
+              "category": "high-population"
+            },
+            {
+              "name": "Kottathara Junction",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Ernakulam",
+          "slug": "ernakulam",
+          "confidence": "verified",
+          "areas": [
+            {
+              "name": "MG Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Marine Drive",
+              "category": "affluent"
+            },
+            {
+              "name": "Kadavanthra",
+              "category": "affluent"
+            },
+            {
+              "name": "Panampilly Nagar",
+              "category": "affluent"
+            },
+            {
+              "name": "Kaloor",
+              "category": "commercial"
+            },
+            {
+              "name": "Palarivattom",
+              "category": "high-population"
+            },
+            {
+              "name": "Vyttila",
+              "category": "high-population"
+            },
+            {
+              "name": "Edappally",
+              "category": "high-population"
+            },
+            {
+              "name": "Fort Kochi",
+              "category": "affluent"
+            },
+            {
+              "name": "Thammanam",
+              "category": "high-population"
+            },
+            {
+              "name": "Kacheripady, Ernakulam",
+              "category": "commercial"
+            },
+            {
+              "name": "Ravipuram, Ernakulam",
+              "category": "commercial"
+            },
+            {
+              "name": "Chittoor Road",
+              "category": "commercial"
+            },
+            {
+              "name": "Elamkulam, Ernakulam",
+              "category": "high-population"
+            },
+            {
+              "name": "Vennala, Ernakulam",
+              "category": "high-population"
+            },
+            {
+              "name": "Pallimukku",
+              "category": "commercial"
+            },
+            {
+              "name": "Kalamassery",
+              "category": "high-population"
+            },
+            {
+              "name": "High Court Junction",
+              "category": "commercial"
+            },
+            {
+              "name": "Convent Junction",
+              "category": "commercial"
+            },
+            {
+              "name": "Broadway Market Area",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Munnar",
+          "slug": "munnar",
+          "confidence": "moderate",
+          "areas": [
+            {
+              "name": "Munnar Town",
+              "category": "commercial"
+            },
+            {
+              "name": "Chithirapuram",
+              "category": "affluent"
+            },
+            {
+              "name": "Devikulam",
+              "category": "high-population"
+            },
+            {
+              "name": "Pallivasal",
+              "category": "high-population"
+            },
+            {
+              "name": "Chinnakanal",
+              "category": "high-population"
+            },
+            {
+              "name": "Kannan Devan Hills",
+              "category": "affluent"
+            },
+            {
+              "name": "Old Munnar Town",
+              "category": "commercial"
+            },
+            {
+              "name": "New Munnar Town",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Varkala",
+          "slug": "varkala",
+          "confidence": "moderate",
+          "areas": [
+            {
+              "name": "Varkala Cliff (North Cliff)",
+              "category": "affluent"
+            },
+            {
+              "name": "South Cliff",
+              "category": "affluent"
+            },
+            {
+              "name": "Odayam",
+              "category": "high-population"
+            },
+            {
+              "name": "Edava",
+              "category": "high-population"
+            },
+            {
+              "name": "Kappil",
+              "category": "high-population"
+            },
+            {
+              "name": "Varkala Town",
+              "category": "commercial"
+            },
+            {
+              "name": "Temple Junction, Varkala",
+              "category": "commercial"
+            },
+            {
+              "name": "Janardhanapuram",
+              "category": "commercial"
+            },
+            {
+              "name": "Beach Road, Varkala",
+              "category": "commercial"
+            }
+          ]
+        },
+        {
+          "city": "Changanassery",
+          "slug": "changanassery",
+          "confidence": "low",
+          "areas": [
+            {
+              "name": "Perunna",
+              "category": "high-population"
+            },
+            {
+              "name": "Vazhappally East",
+              "category": "high-population"
+            },
+            {
+              "name": "Vazhappally West",
+              "category": "high-population"
+            },
+            {
+              "name": "Town Market area",
+              "category": "commercial"
+            },
+            {
+              "name": "MC Road Junction, Changanassery",
+              "category": "commercial"
+            },
+            {
+              "name": "Railway Station Road, Changanassery",
+              "category": "commercial"
+            },
+            {
+              "name": "Nellikunnam",
+              "category": "high-population"
+            },
+            {
+              "name": "Chunkam Junction",
+              "category": "commercial"
+            },
+            {
+              "name": "Vazhappally South",
+              "category": "high-population"
+            },
+            {
+              "name": "Mannady Junction",
+              "category": "commercial"
+            },
+            {
+              "name": "Kaithavelil",
+              "category": "high-population"
+            }
+          ]
+        }
+      ],
+      "source_note": "Areas for tier-2/3 towns (confidence: low) are based on limited verifiable sources and should be cross-checked locally before publishing."
+    }
+  ]
+}

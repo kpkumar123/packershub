@@ -1,0 +1,7 @@
+# PackersHub — security.txt (RFC 9116)
+Contact: mailto:info@packershub.in
+Contact: tel:+917731074075
+Expires: 2027-08-16T00:00:00.000Z
+Preferred-Languages: en, te
+Canonical: https://www.packershub.in/.well-known/security.txt
+Policy: https://www.packershub.in/privacy

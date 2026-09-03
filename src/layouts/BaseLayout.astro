@@ -1,0 +1,94 @@
+---
+/**
+ * PackersHub v10.1 — BaseLayout.astro
+ * Astro 7.0.3
+ * • Passes all props cleanly to SEOHead
+ * • Registers SW after load (never blocks first paint)
+ * • IntersectionObserver .reveal animation
+ * • Skip-to-content for accessibility (SXO)
+ */
+import SEOHead from '../components/SEOHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ChatBot from '../components/ChatBot.astro';
+import CallButton from '../components/CallButton.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import InstallPrompt from '../components/InstallPrompt.astro';
+import Analytics from '../components/Analytics.astro';
+import { ClientRouter } from 'astro:transitions';
+import '../styles/global.css';
+
+const props = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en-IN" dir="ltr">
+<head>
+  <SEOHead {...props} />
+  <Analytics />
+  <!-- Astro 7 View Transitions — app-like navigation between the 100+ city
+       pages without a full reload. Falls back to normal navigation in
+       browsers without View Transitions support. -->
+  <ClientRouter />
+  <!-- Speculation Rules API — modern (2026) browser-native prefetch/
+       prerender on hover/pointerdown, layered on top of Astro's own
+       viewport prefetch for near-instant navigations on supporting
+       browsers (Chrome/Edge). Silently ignored elsewhere. -->
+  <script type="speculationrules" is:inline>
+    {
+      "prerender": [{
+        "where": { "href_matches": "/*", "and": [{ "not": { "href_matches": "/api/*" } }, { "not": { "href_matches": "/admin/*" } }] },
+        "eagerness": "moderate"
+      }]
+    }
+  </script>
+</head>
+<body class="font-sans bg-white text-brand-dark antialiased">
+  <!-- Skip to main content — a11y + SXO -->
+  <a
+    href="#main-content"
+    class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-brand-orange focus:text-white focus:rounded-lg focus:font-bold"
+  >
+    Skip to main content
+  </a>
+
+  <Header />
+
+  <main id="main-content" tabindex="-1">
+    <slot />
+  </main>
+
+  <Footer />
+  <WhatsAppButton />
+  <CallButton />
+  <ChatBot />
+  <InstallPrompt />
+
+  <!-- Scroll reveal — re-attaches on every View Transitions navigation via
+       astro:page-load, so it keeps working after the ClientRouter swaps
+       the DOM (a plain DOMContentLoaded/IIFE would only fire once). -->
+  <script is:inline>
+    document.addEventListener('astro:page-load', function () {
+      var ro = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) e.target.classList.add('visible');
+          });
+        },
+        { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+      );
+      document.querySelectorAll('.reveal').forEach(function (el) { ro.observe(el); });
+    });
+  </script>
+
+  <!-- Service Worker registration (after load, never blocks paint).
+       Registered once per browser session — survives View Transitions
+       navigations since the worker itself isn't torn down by them. -->
+  <script is:inline>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function () {});
+      });
+    }
+  </script>
+</body>
+</html>
